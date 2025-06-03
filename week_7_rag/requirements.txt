@@ -1,0 +1,14 @@
+matplotlib
+numpy
+pandas
+torch
+scikit-learn
+statsmodels
+transformers[torch]
+langchain
+langchain-openai
+langchain-community
+langchain-core
+streamlit
+openai
+langchain

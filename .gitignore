@@ -1,0 +1,28 @@
+# Environment variables
+.env
+
+# Gradio cache and temporary files
+.gradio/
+
+# Model checkpoints
+checkpoints/
+
+# Generated plots
+plots/
+
+# Optional: If you also want to ignore any files that might end up
+# directly in the root with names like "checkpoints" or "plots" (less common),
+# you could add:
+# checkpoints
+# plots
+
+# Optional: Python cache files and compiled files (common additions)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Optional: IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+*~
