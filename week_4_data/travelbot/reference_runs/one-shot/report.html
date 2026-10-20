@@ -1,0 +1,368 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run Report</title><style>
+:root { --fg:#1d1d1f; --muted:#5f6368; --line:#d9dce1; --bg:#ffffff; --panel:#f6f7f9; --ok:#1e7d32; --bad:#b3261e; --warn:#8a5a00; --accent:#1a4f8b; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e8eaed; --muted:#a0a4aa; --line:#3a3d42; --bg:#16181b; --panel:#1f2226; --ok:#7cc48a; --bad:#f28b82; --warn:#e6b85c; --accent:#8ab4f8; } }
+* { box-sizing: border-box; }
+body { font-family: Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 24px 16px 64px; line-height: 1.45; }
+main { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; } h2 { font-size: 18px; margin: 32px 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+h3 { font-size: 15px; margin: 16px 0 6px; }
+.muted { color: var(--muted); } .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+.badge { display: inline-block; padding: 2px 8px; border: 1px solid currentColor; border-radius: 3px; font-size: 12px; font-weight: bold; letter-spacing: .04em; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 6px 0 12px; }
+th, td { text-align: left; vertical-align: top; padding: 5px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: normal; }
+pre { white-space: pre-wrap; word-break: break-word; background: var(--panel); padding: 10px; font-size: 12px; max-height: 480px; overflow: auto; }
+details { margin: 4px 0; } summary { cursor: pointer; color: var(--accent); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.card { border: 1px solid var(--line); padding: 10px 12px; background: var(--panel); }
+.turn { border-left: 3px solid var(--line); padding-left: 12px; margin: 12px 0; }
+</style></head><body><main>
+<h1>Run report: one-shot agent, initial</h1>
+<p><span class="badge warn">planner_mode=simulated (rule-based; not an LLM measurement)</span> <span class="muted">session one-shot &middot; run run-56b11431 &middot;
+fixture inventory-2027-04-v1 &middot; clock 2027-03-15T14:00:00+00:00 to 2027-03-15T14:00:00+00:00 &middot; phase complete</span></p>
+<p class="muted">Model settings: {&quot;planner_mode&quot;: &quot;simulated&quot;, &quot;model&quot;: null, &quot;note&quot;: &quot;Deterministic rule-based planner. Results do not measure LLM capability.&quot;}</p>
+<p>1 model calls, 0 agent tool calls, 1 application prefetches, 9,929 input characters; token usage not reported (simulated planner)</p>
+<h2>Turn-by-turn</h2><div class="turn"><h3>Turn 0</h3><p><strong>user:</strong> Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.</p><table><tr><th>Step</th><th>Purpose</th><th>Action</th><th>Result</th><th>Model input</th></tr><tr><td>app</td><td class="muted">application prefetch</td><td>inventory_snapshot</td><td>quote-f1-r1-2a0c $600, quote-f2-r1-2a0c $640, quote-f3-r1-2a0c $560, quote-f4-r1-2a0c $1,080, quote-f5-r1-2a0c $620; excluded: f6 (dates 2027-04-13..2027-04-16 do not match) / quote-h11-r1-2a0c $600, quote-h17-r1-2a0c $660, quote-h22-r1-2a0c $500, quote-h30-r1-2a0c $1,150; excluded: h41 (sold out for these dates)</td><td></td></tr><tr><td>0</td><td>respond_to_change<br><span class="muted">initial request</span></td><td>present_plan quote-f1-r1-2a0c + quote-h11-r1-2a0c (claimed $1,200)</td><td>displayed as plan-001</td><td>9,929 chars<details><summary>exact model input</summary><pre>{
+  &quot;implementation&quot;: &quot;one-shot&quot;,
+  &quot;system&quot;: &quot;You are a travel-planning assistant. You propose plans; you cannot book, charge, or reserve anything.\n\nTask rules (fixed for this exercise):\n- Plans are one round-trip flight product plus one hotel stay covering every night of the trip.\n- Hard constraints: travel dates, seats for every traveler, hotel occupancy for every traveler, and the\n  budget. A child needs a flight seat and counts toward hotel occupancy. The budget covers flights plus\n  hotel only and the total must not exceed it.\n- Preferences (not hard constraints): walking distance to the venue, and an earlier outbound arrival when\n  the user asks for one. \&quot;Earlier\&quot; means an outbound arrival in Chicago (America/Chicago) strictly before\n  the reference arrival the user was looking at when they asked. That reference does not move when you\n  propose a new flight.\n- Prices come only from tool results. A quote is valid only for the party and dates it was issued for and\n  only until it expires or is superseded. Flight prices are per traveler; hotel prices cover the whole stay.\n- Money is in integer cents. Any total you state is a claim; the application recomputes it.\n- If the user accepted a hotel, keep that hotel unless it can no longer work. Accepting a hotel at one\n  price is not acceptance of a different price: disclose a material price change and ask for reconfirmation.\n- Disclose tradeoffs in your explanation: connections, price changes, unmet preferences.\n- If required information is missing, or no combination satisfies the hard constraints, ask the user one\n  targeted question that names the tradeoff instead of presenting a non-compliant plan.\n\nHow to respond: every reply must be exactly one tool call. You have no search tools in this mode. The request includes an inventory snapshot\nprepared by the application. Finish with present_plan or ask_user. Before showing a plan, the application\nvalidates it independently; if validation fails you will receive reason codes and can try again.\n&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;index&quot;: 0,
+      &quot;turn&quot;: 0,
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.\n\n{\n  \&quot;requirements\&quot;: {\n    \&quot;origin\&quot;: \&quot;RDU\&quot;,\n    \&quot;destination\&quot;: \&quot;CHI\&quot;,\n    \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n    \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;,\n    \&quot;nights\&quot;: 3,\n    \&quot;party\&quot;: {\n      \&quot;adults\&quot;: 2,\n      \&quot;children\&quot;: 0\n    },\n    \&quot;budget\&quot;: {\n      \&quot;max_total_cents\&quot;: 180000,\n      \&quot;currency\&quot;: \&quot;USD\&quot;\n    },\n    \&quot;walk_preference\&quot;: {\n      \&quot;max_minutes\&quot;: 15,\n      \&quot;venue\&quot;: \&quot;Lakeside Conference Center (synthetic)\&quot;\n    }\n  },\n  \&quot;inventory_snapshot\&quot;: {\n    \&quot;quotes\&quot;: [\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-f1-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;f1\&quot;,\n        \&quot;item_kind\&quot;: \&quot;flight\&quot;,\n        \&quot;label\&quot;: \&quot;Synthetic Air 410, RDU-ORD nonstop\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;per_traveler\&quot;,\n        \&quot;unit_amount_cents\&quot;: 30000,\n        \&quot;total_cents\&quot;: 60000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: \&quot;18:00\&quot;,\n        \&quot;stops\&quot;: 0,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: 9,\n        \&quot;capacity\&quot;: null,\n        \&quot;walk_minutes\&quot;: null\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-f2-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;f2\&quot;,\n        \&quot;item_kind\&quot;: \&quot;flight\&quot;,\n        \&quot;label\&quot;: \&quot;Synthetic Air 118, RDU-ORD nonstop\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;per_traveler\&quot;,\n        \&quot;unit_amount_cents\&quot;: 32000,\n        \&quot;total_cents\&quot;: 64000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: \&quot;12:00\&quot;,\n        \&quot;stops\&quot;: 0,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: 9,\n        \&quot;capacity\&quot;: null,\n        \&quot;walk_minutes\&quot;: null\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-f3-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;f3\&quot;,\n        \&quot;item_kind\&quot;: \&quot;flight\&quot;,\n        \&quot;label\&quot;: \&quot;Pretend Airlines 77/203, RDU-CLT-MDW\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;per_traveler\&quot;,\n        \&quot;unit_amount_cents\&quot;: 28000,\n        \&quot;total_cents\&quot;: 56000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: \&quot;15:00\&quot;,\n        \&quot;stops\&quot;: 1,\n        \&quot;connection\&quot;: \&quot;CLT, 55-minute layover\&quot;,\n        \&quot;seats_available\&quot;: 9,\n        \&quot;capacity\&quot;: null,\n        \&quot;walk_minutes\&quot;: null\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-f4-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;f4\&quot;,\n        \&quot;item_kind\&quot;: \&quot;flight\&quot;,\n        \&quot;label\&quot;: \&quot;Synthetic Air 102, RDU-ORD nonstop (early)\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;per_traveler\&quot;,\n        \&quot;unit_amount_cents\&quot;: 54000,\n        \&quot;total_cents\&quot;: 108000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: \&quot;08:45\&quot;,\n        \&quot;stops\&quot;: 0,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: 9,\n        \&quot;capacity\&quot;: null,\n        \&quot;walk_minutes\&quot;: null\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-f5-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;f5\&quot;,\n        \&quot;item_kind\&quot;: \&quot;flight\&quot;,\n        \&quot;label\&quot;: \&quot;Pretend Airlines 15, RDU-ORD nonstop (nearly full)\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;per_traveler\&quot;,\n        \&quot;unit_amount_cents\&quot;: 31000,\n        \&quot;total_cents\&quot;: 62000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: \&quot;13:30\&quot;,\n        \&quot;stops\&quot;: 0,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: 2,\n        \&quot;capacity\&quot;: null,\n        \&quot;walk_minutes\&quot;: null\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-h11-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;h11\&quot;,\n        \&quot;item_kind\&quot;: \&quot;hotel\&quot;,\n        \&quot;label\&quot;: \&quot;Harbor Row Inn, king room\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;whole_stay\&quot;,\n        \&quot;unit_amount_cents\&quot;: 60000,\n        \&quot;total_cents\&quot;: 60000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: null,\n        \&quot;stops\&quot;: null,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: null,\n        \&quot;capacity\&quot;: 2,\n        \&quot;walk_minutes\&quot;: 8\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-h17-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;h17\&quot;,\n        \&quot;item_kind\&quot;: \&quot;hotel\&quot;,\n        \&quot;label\&quot;: \&quot;Lakeview Suites, queen suite with sofa bed\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;whole_stay\&quot;,\n        \&quot;unit_amount_cents\&quot;: 66000,\n        \&quot;total_cents\&quot;: 66000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: null,\n        \&quot;stops\&quot;: null,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: null,\n        \&quot;capacity\&quot;: 3,\n        \&quot;walk_minutes\&quot;: 10\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-h22-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;h22\&quot;,\n        \&quot;item_kind\&quot;: \&quot;hotel\&quot;,\n        \&quot;label\&quot;: \&quot;Westgate Lodge, family room\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;whole_stay\&quot;,\n        \&quot;unit_amount_cents\&quot;: 50000,\n        \&quot;total_cents\&quot;: 50000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: null,\n        \&quot;stops\&quot;: null,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: null,\n        \&quot;capacity\&quot;: 4,\n        \&quot;walk_minutes\&quot;: 25\n      },\n      {\n        \&quot;quote_id\&quot;: \&quot;quote-h30-r1-2a0c\&quot;,\n        \&quot;item_id\&quot;: \&quot;h30\&quot;,\n        \&quot;item_kind\&quot;: \&quot;hotel\&quot;,\n        \&quot;label\&quot;: \&quot;The Meridian Tower, deluxe double\&quot;,\n        \&quot;inventory_revision\&quot;: 1,\n        \&quot;scope\&quot;: {\n          \&quot;adults\&quot;: 2,\n          \&quot;children\&quot;: 0,\n          \&quot;depart_date\&quot;: \&quot;2027-04-12\&quot;,\n          \&quot;return_date\&quot;: \&quot;2027-04-15\&quot;\n        },\n        \&quot;pricing_basis\&quot;: \&quot;whole_stay\&quot;,\n        \&quot;unit_amount_cents\&quot;: 115000,\n        \&quot;total_cents\&quot;: 115000,\n        \&quot;currency\&quot;: \&quot;USD\&quot;,\n        \&quot;observed_at\&quot;: \&quot;2027-03-15T14:00:00Z\&quot;,\n        \&quot;expires_at\&quot;: \&quot;2027-03-15T16:00:00Z\&quot;,\n        \&quot;tool_call_id\&quot;: \&quot;app-0001\&quot;,\n        \&quot;arrive_local\&quot;: null,\n        \&quot;stops\&quot;: null,\n        \&quot;connection\&quot;: null,\n        \&quot;seats_available\&quot;: null,\n        \&quot;capacity\&quot;: 3,\n        \&quot;walk_minutes\&quot;: 6\n      }\n    ],\n    \&quot;excluded\&quot;: [\n      {\n        \&quot;item_id\&quot;: \&quot;f6\&quot;,\n        \&quot;reason\&quot;: \&quot;dates 2027-04-13..2027-04-16 do not match\&quot;\n      },\n      {\n        \&quot;item_id\&quot;: \&quot;h41\&quot;,\n        \&quot;reason\&quot;: \&quot;sold out for these dates\&quot;\n      }\n    ]\n  }\n}&quot;,
+      &quot;tool_call&quot;: null,
+      &quot;tool_call_id&quot;: null,
+      &quot;normalized&quot;: {
+        &quot;kind&quot;: &quot;one_shot_request&quot;,
+        &quot;requirements&quot;: {
+          &quot;origin&quot;: &quot;RDU&quot;,
+          &quot;destination&quot;: &quot;CHI&quot;,
+          &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+          &quot;return_date&quot;: &quot;2027-04-15&quot;,
+          &quot;nights&quot;: 3,
+          &quot;party&quot;: {
+            &quot;adults&quot;: 2,
+            &quot;children&quot;: 0
+          },
+          &quot;budget&quot;: {
+            &quot;max_total_cents&quot;: 180000,
+            &quot;currency&quot;: &quot;USD&quot;
+          },
+          &quot;walk_preference&quot;: {
+            &quot;max_minutes&quot;: 15,
+            &quot;venue&quot;: &quot;Lakeside Conference Center (synthetic)&quot;
+          }
+        },
+        &quot;display&quot;: &quot;Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.&quot;,
+        &quot;inventory_snapshot&quot;: {
+          &quot;quotes&quot;: [
+            {
+              &quot;quote_id&quot;: &quot;quote-f1-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;f1&quot;,
+              &quot;item_kind&quot;: &quot;flight&quot;,
+              &quot;label&quot;: &quot;Synthetic Air 410, RDU-ORD nonstop&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;per_traveler&quot;,
+              &quot;unit_amount_cents&quot;: 30000,
+              &quot;total_cents&quot;: 60000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: &quot;18:00&quot;,
+              &quot;stops&quot;: 0,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: 9,
+              &quot;capacity&quot;: null,
+              &quot;walk_minutes&quot;: null
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-f2-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;f2&quot;,
+              &quot;item_kind&quot;: &quot;flight&quot;,
+              &quot;label&quot;: &quot;Synthetic Air 118, RDU-ORD nonstop&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;per_traveler&quot;,
+              &quot;unit_amount_cents&quot;: 32000,
+              &quot;total_cents&quot;: 64000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: &quot;12:00&quot;,
+              &quot;stops&quot;: 0,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: 9,
+              &quot;capacity&quot;: null,
+              &quot;walk_minutes&quot;: null
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-f3-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;f3&quot;,
+              &quot;item_kind&quot;: &quot;flight&quot;,
+              &quot;label&quot;: &quot;Pretend Airlines 77/203, RDU-CLT-MDW&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;per_traveler&quot;,
+              &quot;unit_amount_cents&quot;: 28000,
+              &quot;total_cents&quot;: 56000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: &quot;15:00&quot;,
+              &quot;stops&quot;: 1,
+              &quot;connection&quot;: &quot;CLT, 55-minute layover&quot;,
+              &quot;seats_available&quot;: 9,
+              &quot;capacity&quot;: null,
+              &quot;walk_minutes&quot;: null
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-f4-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;f4&quot;,
+              &quot;item_kind&quot;: &quot;flight&quot;,
+              &quot;label&quot;: &quot;Synthetic Air 102, RDU-ORD nonstop (early)&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;per_traveler&quot;,
+              &quot;unit_amount_cents&quot;: 54000,
+              &quot;total_cents&quot;: 108000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: &quot;08:45&quot;,
+              &quot;stops&quot;: 0,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: 9,
+              &quot;capacity&quot;: null,
+              &quot;walk_minutes&quot;: null
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-f5-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;f5&quot;,
+              &quot;item_kind&quot;: &quot;flight&quot;,
+              &quot;label&quot;: &quot;Pretend Airlines 15, RDU-ORD nonstop (nearly full)&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;per_traveler&quot;,
+              &quot;unit_amount_cents&quot;: 31000,
+              &quot;total_cents&quot;: 62000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: &quot;13:30&quot;,
+              &quot;stops&quot;: 0,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: 2,
+              &quot;capacity&quot;: null,
+              &quot;walk_minutes&quot;: null
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-h11-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;h11&quot;,
+              &quot;item_kind&quot;: &quot;hotel&quot;,
+              &quot;label&quot;: &quot;Harbor Row Inn, king room&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;whole_stay&quot;,
+              &quot;unit_amount_cents&quot;: 60000,
+              &quot;total_cents&quot;: 60000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: null,
+              &quot;stops&quot;: null,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: null,
+              &quot;capacity&quot;: 2,
+              &quot;walk_minutes&quot;: 8
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-h17-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;h17&quot;,
+              &quot;item_kind&quot;: &quot;hotel&quot;,
+              &quot;label&quot;: &quot;Lakeview Suites, queen suite with sofa bed&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;whole_stay&quot;,
+              &quot;unit_amount_cents&quot;: 66000,
+              &quot;total_cents&quot;: 66000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: null,
+              &quot;stops&quot;: null,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: null,
+              &quot;capacity&quot;: 3,
+              &quot;walk_minutes&quot;: 10
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-h22-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;h22&quot;,
+              &quot;item_kind&quot;: &quot;hotel&quot;,
+              &quot;label&quot;: &quot;Westgate Lodge, family room&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;whole_stay&quot;,
+              &quot;unit_amount_cents&quot;: 50000,
+              &quot;total_cents&quot;: 50000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: null,
+              &quot;stops&quot;: null,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: null,
+              &quot;capacity&quot;: 4,
+              &quot;walk_minutes&quot;: 25
+            },
+            {
+              &quot;quote_id&quot;: &quot;quote-h30-r1-2a0c&quot;,
+              &quot;item_id&quot;: &quot;h30&quot;,
+              &quot;item_kind&quot;: &quot;hotel&quot;,
+              &quot;label&quot;: &quot;The Meridian Tower, deluxe double&quot;,
+              &quot;inventory_revision&quot;: 1,
+              &quot;scope&quot;: {
+                &quot;adults&quot;: 2,
+                &quot;children&quot;: 0,
+                &quot;depart_date&quot;: &quot;2027-04-12&quot;,
+                &quot;return_date&quot;: &quot;2027-04-15&quot;
+              },
+              &quot;pricing_basis&quot;: &quot;whole_stay&quot;,
+              &quot;unit_amount_cents&quot;: 115000,
+              &quot;total_cents&quot;: 115000,
+              &quot;currency&quot;: &quot;USD&quot;,
+              &quot;observed_at&quot;: &quot;2027-03-15T14:00:00Z&quot;,
+              &quot;expires_at&quot;: &quot;2027-03-15T16:00:00Z&quot;,
+              &quot;tool_call_id&quot;: &quot;app-0001&quot;,
+              &quot;arrive_local&quot;: null,
+              &quot;stops&quot;: null,
+              &quot;connection&quot;: null,
+              &quot;seats_available&quot;: null,
+              &quot;capacity&quot;: 3,
+              &quot;walk_minutes&quot;: 6
+            }
+          ],
+          &quot;excluded&quot;: [
+            {
+              &quot;item_id&quot;: &quot;f6&quot;,
+              &quot;reason&quot;: &quot;dates 2027-04-13..2027-04-16 do not match&quot;
+            },
+            {
+              &quot;item_id&quot;: &quot;h41&quot;,
+              &quot;reason&quot;: &quot;sold out for these dates&quot;
+            }
+          ]
+        }
+      },
+      &quot;provider_raw&quot;: null
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;name&quot;: &quot;present_plan&quot;,
+      &quot;description&quot;: &quot;Present one plan to the user: a flight quote ID and a hotel quote ID from tool results, your claimed total in cents, and an explanation that discloses tradeoffs (connections, price changes, unmet preferences, anything awaiting confirmation). The application validates it independently before the user sees it; a failed validation comes back to you with reason codes.&quot;,
+      &quot;parameters&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;flight_quote_id&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;hotel_quote_id&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;claimed_total_cents&quot;: {
+            &quot;type&quot;: [
+              &quot;integer&quot;,
+              &quot;null&quot;
+            ]
+          },
+          &quot;explanation&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        },
+        &quot;required&quot;: [
+          &quot;flight_quote_id&quot;,
+          &quot;hotel_quote_id&quot;,
+          &quot;explanation&quot;
+        ],
+        &quot;additionalProperties&quot;: false
+      }
+    },
+    {
+      &quot;name&quot;: &quot;ask_user&quot;,
+      &quot;description&quot;: &quot;Ask the user one targeted question when required information is missing or no plan satisfies the hard constraints. Name the constraint that is unresolved.&quot;,
+      &quot;parameters&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;question&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;unresolved_constraint&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        },
+        &quot;required&quot;: [
+          &quot;question&quot;,
+          &quot;unresolved_constraint&quot;
+        ],
+        &quot;additionalProperties&quot;: false
+      }
+    }
+  ],
+  &quot;context&quot;: null
+}</pre></details></td></tr></table><p class="ok">Plan presented: plan-001 (0 tool calls, 1 steps)</p><div class="card"><strong>plan-001</strong>: flight f1 (quote-f1-r1-2a0c) + hotel h11 (quote-h11-r1-2a0c)<br>Computed total <strong>$1,200</strong> (claimed $1,200)<br>Hard constraints: <span class="ok">pass</span> &middot; Quote freshness: <span class="ok">fresh</span> &middot; Preferences: <span class="ok">met</span> &middot; Confirmation: <span class="muted">pending_user_review</span><details><summary>Reason codes</summary><ul><li>none</li></ul></details><details><summary>Explanation shown to the user</summary><p>Flight f1, Synthetic Air 410, RDU-ORD nonstop: outbound arrives 18:00 Chicago time, nonstop, $300 per traveler x 2 = $600. Hotel h11, Harbor Row Inn, king room: 8-minute walk to the venue, sleeps 2, $600 for the full stay. Total $1,200 against the $1,800 budget. This is a proposal only; nothing has been booked.</p></details></div></div>
+<h2>Task state</h2><p class="muted">This implementation keeps no structured task state. Its only memory is the transcript (transcript.json), which is replayed to the model in full on every step.</p>
+<h2>Independent checks</h2><table><tr><th></th><th>Check</th><th>Description</th><th>Detail</th></tr><tr><td class="ok">PASS</td><td>displayed_plans_compliant</td><td>No displayed plan violates a hard constraint or relies on an invalid quote.</td><td>1 displayed plans checked</td></tr><tr><td class="ok">PASS</td><td>totals_match_arithmetic</td><td>Displayed totals equal per-traveler fare x seats + whole-stay hotel price.</td><td>all totals recomputed from the fixture</td></tr><tr><td class="muted">n/a</td><td>accepted_hotel_preserved</td><td>Plans after acceptance keep the accepted hotel.</td><td>no hotel was accepted in this run</td></tr><tr><td class="muted">n/a</td><td>earlier_anchor_respected</td><td>Flights after the request arrive before the original reference.</td><td>no earlier flight was requested</td></tr><tr><td class="muted">n/a</td><td>price_change_flagged</td><td>A plan that shows the accepted hotel at a new price asks for reconfirmation.</td><td>no repriced plan was displayed</td></tr><tr><td class="ok">PASS</td><td>turns_finished</td><td>Every processed turn ended with a validated plan or a question.</td><td>1 turns finished</td></tr><tr><td class="ok">PASS</td><td>planner_mode_labeled</td><td>Every model call is labeled with the configured planner mode.</td><td>planner_mode=simulated</td></tr></table>
+<p class="muted">Rendered from recorded execution data in reference_runs/one-shot. Synthetic inventory; not travel advice.</p>
+</main></body></html>

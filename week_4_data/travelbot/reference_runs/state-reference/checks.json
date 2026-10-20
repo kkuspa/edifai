@@ -1,0 +1,121 @@
+[
+  {
+    "id": "displayed_plans_compliant",
+    "description": "No displayed plan violates a hard constraint or relies on an invalid quote.",
+    "passed": true,
+    "detail": "4 displayed plans checked",
+    "category": "outcome"
+  },
+  {
+    "id": "totals_match_arithmetic",
+    "description": "Displayed totals equal per-traveler fare x seats + whole-stay hotel price.",
+    "passed": true,
+    "detail": "all totals recomputed from the fixture",
+    "category": "outcome"
+  },
+  {
+    "id": "accepted_hotel_preserved",
+    "description": "Plans after acceptance keep the accepted hotel (or flag the replacement for confirmation).",
+    "passed": true,
+    "detail": "2 later plans keep h17",
+    "category": "outcome"
+  },
+  {
+    "id": "earlier_anchor_respected",
+    "description": "Flights after the request arrive before 18:00 (from plan-002).",
+    "passed": true,
+    "detail": "2 later plans arrive before 18:00",
+    "category": "outcome"
+  },
+  {
+    "id": "price_change_flagged",
+    "description": "A plan that shows the accepted hotel at a new price asks for reconfirmation.",
+    "passed": true,
+    "detail": "flagged: ['plan-004']",
+    "category": "outcome"
+  },
+  {
+    "id": "turns_finished",
+    "description": "Every processed turn ended with a validated plan or a question.",
+    "passed": true,
+    "detail": "4 turns finished",
+    "category": "outcome"
+  },
+  {
+    "id": "no_compliant_plan_asks",
+    "description": "When no compliant plan keeps the accepted hotel, the agent asks.",
+    "passed": null,
+    "detail": "a compliant plan with the accepted hotel exists",
+    "category": "outcome"
+  },
+  {
+    "id": "planner_mode_labeled",
+    "description": "Every model call is labeled with the configured planner mode.",
+    "passed": true,
+    "detail": "planner_mode=simulated",
+    "category": "integrity"
+  },
+  {
+    "id": "state_party_change_preserves",
+    "description": "Adding the child preserves destination, dates, budget, and walking preference.",
+    "passed": true,
+    "detail": "preserved",
+    "category": "state"
+  },
+  {
+    "id": "state_old_party_quotes_not_current",
+    "description": "Two-person quotes stop being current when the party grows.",
+    "passed": true,
+    "detail": "all old-party quotes marked",
+    "category": "state"
+  },
+  {
+    "id": "state_small_hotel_unsuitable",
+    "description": "Hotels too small for the new party are marked unsuitable with a reason.",
+    "passed": true,
+    "detail": "marked: ['h11']",
+    "category": "state"
+  },
+  {
+    "id": "state_acceptance_recorded",
+    "description": "The hotel acceptance is stored as a separate decision.",
+    "passed": true,
+    "detail": "{\"hotel_id\": \"h17\", \"accepted_from_proposal_id\": \"plan-002\", \"accepted_quote_id\": \"quote-h17-r1-2a1c\", \"accepted_total_cents\": 72000, \"status\": \"accepted\", \"requires_reconfirmation\": false, \"reason\": ",
+    "category": "state"
+  },
+  {
+    "id": "state_acceptance_survives_earlier",
+    "description": "The accepted hotel survives the earlier-flight request.",
+    "passed": true,
+    "detail": "{\"hotel_id\": \"h17\", \"accepted_from_proposal_id\": \"plan-002\", \"accepted_quote_id\": \"quote-h17-r1-2a1c\", \"accepted_total_cents\": 72000, \"status\": \"accepted\", \"requires_reconfirmation\": false, \"reason\": ",
+    "category": "state"
+  },
+  {
+    "id": "state_earlier_anchor_fixed",
+    "description": "The earlier-arrival reference stays anchored to the original proposal.",
+    "passed": true,
+    "detail": "{\"reference_proposal_id\": \"plan-002\", \"reference_flight_id\": \"f1\", \"reference_arrival_local\": \"18:00\", \"direction\": \"outbound_arrival\", \"comparison\": \"strictly_before\", \"time_zone\": \"America/Chicago\",",
+    "category": "state"
+  },
+  {
+    "id": "state_expiry_keeps_choice",
+    "description": "Quote expiry marks the quote expired, keeps the hotel choice, and opens a refresh task.",
+    "passed": true,
+    "detail": "decision=True statuses={'quote-h17-r1-2a0c': 'expired', 'quote-h17-r1-2a1c': 'expired'} refresh_tasks=1",
+    "category": "state"
+  },
+  {
+    "id": "state_price_rise_reconfirm",
+    "description": "A price rise on the accepted hotel marks the decision for reconfirmation.",
+    "passed": true,
+    "detail": "status=needs_reconfirmation requires_reconfirmation=True",
+    "category": "state"
+  },
+  {
+    "id": "state_no_stuck_tasks",
+    "description": "No pending task stays open at the end of the run.",
+    "passed": true,
+    "detail": "all tasks closed",
+    "category": "state"
+  }
+]

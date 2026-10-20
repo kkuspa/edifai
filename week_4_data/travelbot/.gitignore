@@ -1,0 +1,20 @@
+# Python and environments
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Generated sessions, databases, and submissions (reference_runs/ is committed on purpose)
+runs/
+submissions/*
+!submissions/.gitkeep
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+.lock
+.DS_Store
