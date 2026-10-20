@@ -1,233 +1,88 @@
-# Workshop instructions: the user changed their mind
+# Workshop reference
 
-You have 20 minutes after setup. Setup means `uv sync --frozen` and a `uv run workshop doctor` that ends with `Ready.` Work from the repository root. Every command below has a GUI equivalent, and the GUI is optional. The table at the end maps one to the other.
+The [README](../README.md) walks through the exercise step by step. This page collects the background you may want beside it: the scenario's facts and numbers, the rules a complete solution follows, and fixes for common snags. Work at your own pace; nothing here is timed or graded.
 
-## The assignment
+## The scenario's facts
 
-> You have a travel assistant that can generate a useful initial plan. Now the user changes the brief, accepts one part of the plan, and asks for revisions while inventory prices change.
->
-> Design the state the application needs to continue the task. Implement two small functions: one that applies a change, and one that builds context for the next model invocation.
->
-> Preserve requirements and choices that still apply. Mark affected options and quotes for reconsideration. Give the agent enough information to choose its next tool call and produce a valid revised plan.
->
-> Compare a transcript-driven agent with your state-driven agent using the supplied scenario. Show what each implementation supplied to the model and what happened next.
+The trip runs from April 12 to April 15, 2027: three nights, RDU to Chicago, round trip. Times of day are Chicago time (America/Chicago). Every run starts the same fixture clock at 2027-03-15 14:00 UTC, and the scenario moves it forward by fixed amounts, so nothing depends on the time on your machine.
 
-The scenario starts with this request: "Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue." Then three things happen, in order.
+These rules hold throughout:
 
-1. The party changes: "Actually, we're bringing our child. We need a room that accommodates three."
-2. The user accepts a hotel and asks for revisions: "That hotel looks good, but can you find an earlier flight?" The application has already resolved "that hotel" to the hotel in the proposal the user was looking at, so you receive two typed changes (`HotelAccepted` and `EarlierFlightRequested`) with explicit IDs.
-3. Inventory changes: the accepted hotel's quote expires, and a refreshed quote costs more.
+- Flight prices are per traveler and cover the round trip. A child needs a seat and pays the same fare.
+- Hotel prices cover all three nights, and a child counts toward the room's occupancy.
+- The budget covers flights and the hotel only. The total must not exceed $1,800, so a total of $1,800 fits.
+- Dates, seats, occupancy, and the budget are hard constraints. The walking distance and an earlier arrival are preferences.
+- "Earlier" means an outbound arrival in Chicago strictly before the arrival of the flight the user was looking at when they asked.
+- A quote holds only for the party and dates it was issued for, and only until it expires (after 120 minutes on the fixture clock) or the inventory reprices the item.
 
-The README lists the fixed facts: dates, the budget rule, what "earlier" means, and the reference arithmetic. Read its "The fixed scenario" section if you have not.
+## The changes that matter
 
-## The 20 minutes
-
-| Minutes | You do | Evidence |
+| Turn | What happens | What it should affect |
 |---|---|---|
-| 0 to 4 | Inspect the three implementations and run the initial change sequence. Predict which data each change affects. | A short prediction table |
-| 4 to 12 | Complete the two functions in `workshop/exercises.py`. | Current quotes and decisions stay correctly scoped |
-| 12 to 17 | Run the changes with your functions and generate the comparison report. | Actual inputs, tools, totals, and preserved choices |
-| 17 to 20 | Complete the findings and discuss. | One selective invalidation and one code and model boundary |
+| 0 | The initial request for two adults | Nothing yet; the agent searches and proposes `plan-001` |
+| 1 | The user adds a child | The party, every party-scoped quote, the capacity of each room, and the proposal's total |
+| 2 | The user accepts the hotel and asks for an earlier flight | A new hotel decision and a new arrival preference, anchored to the flight in `plan-002` |
+| 3 | The accepted hotel's quote expires and reprices | That quote's validity, the proposal's total, and whether the user must confirm the hotel again |
 
-## Minutes 0 to 4: inspect and predict
+Turn 2 is one user message that yields two normalized changes, applied in order with no planning step between them. The application resolves "that hotel" to the hotel in the proposal it displayed, so your code receives an explicit hotel ID.
 
-Spend the first minute on the prediction table. Fill it in before you run anything. "Data" means requirements, quotes, the user's decisions, the current proposal, and pending work.
+## The inventory
 
-| Change | What I expect to change | What I expect to stay | Tool I expect the agent to call next |
-|---|---|---|---|
-| 1. A child joins the party | | | |
-| 2. The user accepts the hotel and asks for an earlier flight | | | |
-| 3. The hotel quote expires and reprices | | | |
-
-Then run the three implementations. If a session from an earlier run already exists at that path, add `--overwrite` to replace it. `--overwrite` replaces only an existing session and deletes only the files the session owns; it refuses a directory that holds anything else.
-
-```bash
-uv run workshop run --implementation one-shot --scenario initial --planner simulated --out runs/one-shot
-uv run workshop run --implementation transcript --scenario changing-trip --planner simulated --out runs/transcript
-uv run workshop run --implementation state --strategy student --scenario changing-trip --planner simulated --out runs/state
-```
-
-In the GUI, run `uv run workshop gui`, open http://127.0.0.1:8765, and open the "New session" form. Create each session with these settings, then press "Run to completion".
-
-| Session name | Implementation | Planner | Strategy | Scenario |
-|---|---|---|---|---|
-| `one-shot` | One-shot | simulated | any | `initial` |
-| `transcript` | Transcript-driven | simulated | any | `changing-trip` |
-| `state` | Structured state | simulated | student (workshop/exercises.py) | `changing-trip` |
-
-To go slower, press "Run turn" instead (the agent finishes the current turn), then press the next button under "Scenario changes", then "Run turn" again. "Step" takes one planner decision at a time.
-
-What to look at:
-
-- The one-shot agent answers the first request, so it presents plan-001 at $1,200. Run `uv run workshop run --implementation one-shot --scenario changing-trip --planner simulated --out runs/one-shot-bare` to see what it does with the later changes. It asks a question each time, because nobody restated the brief. Add `--restated-brief` and it plans correctly, which raises the question of who rebuilds the brief.
-- The transcript agent presents four plans and ends with plan-004 at $1,740, flagged for reconfirmation. Run `uv run workshop session status transcript` to read the conversation.
-- The starter state agent presents plan-001 and then ends turns 1, 2, and 3 as incomplete. The end of its output shows why: nine two-person quotes are still current, `invalidated: none`, and `hotel decision: none`. Run `uv run workshop session show state tools` and read the `validate_plan` results. Each one reports `quote_scope_mismatch`, because the agent keeps proposing quotes that were issued for two adults.
-- Compare what you predicted with what the transcript agent did. In the GUI, open the "State" tab of each session and note which two implementations have no structured state to show.
-
-## Minutes 4 to 12: implement
-
-Open `workshop/exercises.py`. It contains `apply_change` and `build_context`, and the starter versions run but are naive. Six TODO comments mark your decisions. About 30 to 60 lines of code complete them. The comments and the module docstring name the helpers to call.
-
-The application calls your functions on its own schedule.
-
-- `apply_change(state, change)` runs once for every change, in order: each user change, each world notification, each tool result (including `validate_plan` results), each plan shown, and each question asked. Return a new `TaskState` and leave the one you received alone. Duplicate changes, sequence numbers, and revisions of the state itself are handled for you.
-- Tasks you open close themselves. When new evidence arrives (a quote for the item, a flight search with the matching arrival time, a validation), a supplied helper marks the task done. You open tasks and never write the closing code.
-- `build_context(state, next_step)` runs before every model call of the state agent. `next_step` says why the call is happening. It is never an answer key.
-
-Do not edit the fixtures, the tools, or the validator. The validator builds its own view of the requirements from the change log, so changing state cannot make a proposal pass.
-
-Edit, then run the checks:
-
-```bash
-uv run workshop check --strategy student
-```
-
-In the GUI, set "Strategy" under "Checks and evidence" to `student`, press "Run exercise checks", and read the "Check results" tab. Both interfaces reload `workshop/exercises.py` on every run, so there is nothing to restart.
-
-### What each TODO needs
-
-| TODO | The branch | Checks that cover it |
+| Item | Facts | Price |
 |---|---|---|
-| 1 | `PartySizeChanged` | `child_preserves_requirements`, `old_quotes_not_current`, `small_hotel_unsuitable_with_reason`, `proposal_flagged_after_party_change`, `pending_work_after_party_change` |
-| 2 | `HotelAccepted` | `acceptance_recorded`, `acceptance_survives_earlier_request` |
-| 3 | `EarlierFlightRequested` | `earlier_anchor_set`, `earlier_anchor_stays_fixed`, `acceptance_survives_earlier_request` |
-| 4 | `QuoteExpired` | `expiry_keeps_hotel_identity`, `expiry_flags_proposal` |
-| 5 | `ToolObservationReceived` | `price_rise_needs_reconfirmation` |
-| 6 | `build_context` | `missing_data_explicit`, `context_required_sections`, `context_current_vs_historical`, `context_shows_decision_and_work` |
+| `f1` | Nonstop, lands 18:00 | $300 per traveler |
+| `f2` | Nonstop, lands 12:00 | $320 per traveler |
+| `f3` | One stop in Charlotte, lands 15:00 | $280 per traveler |
+| `f4` | Nonstop, lands 08:45 | $540 per traveler |
+| `f5` | Nonstop, lands 13:30, two seats left | $310 per traveler |
+| `f6` | Flies a day later than the trip | $250 per traveler |
+| `h11` | Sleeps 2, 8-minute walk | $600 |
+| `h17` | Sleeps 3, 10-minute walk | $660 for two, $720 for three; $900 for three after it reprices |
+| `h22` | Sleeps 4, 25-minute walk | $500 |
+| `h30` | Sleeps 3, 6-minute walk | $1,150 |
+| `h41` | Sleeps 3, 12-minute walk, sold out | none |
 
-Two checks (`two_person_quote_cannot_validate` and `duplicate_change_is_noop`) test supplied code and should pass from the start. After the exercise checks, `check` replays the simulated state agent on the `changing-trip` and `no-compliant` scenarios and checks the recorded outcomes.
+The reference solution produces this path. Other plans are fine when they meet the hard constraints and disclose their tradeoffs.
 
-### Hints
+| Turn | Plan | Total | Why |
+|---|---|---:|---|
+| 0 | `f1` × 2 + `h11` | $1,200 | The cheapest nonstop and the cheapest room within the walk |
+| 1 | `f1` × 3 + `h17` | $1,620 | `h11` sleeps two, and every price now covers three travelers |
+| 2 | `f2` × 3 + `h17` | $1,680 | Keeps the accepted hotel and lands before 18:00 |
+| 3 | `f2` × 3 + `h17` at $900 | $1,860 | Over budget; the validator rejects it, and the user never sees it |
+| 3 | `f3` × 3 + `h17` at $900 | $1,740 | Lands at 15:00, discloses the connection and the price change, and asks the user to reconfirm the hotel |
 
-TODO 1. Ask what is true once the party is three, and what stays exactly as it was. Every requirement other than the party stays. A quote records the party and dates it was issued for, and `scope_matches` tells you whether a quote still prices the trip. A quote that no longer matches stays on record with a different status. Capacity is a fact stored in each hotel quote, so derive unsuitable hotels from it, and write down why so the reason survives. Consider what the change does to a hotel decision that already exists, to the proposal on the table, and to the work that remains.
+In the `no-compliant` scenario the hotel reprices to $1,200 instead. The cheapest flight with it brings the total to $2,040, so the agent asks the user whether to raise the budget or look at other hotels.
 
-TODO 2. The change carries three IDs. The decision also needs the price the user saw, and the quote in `state.quotes` holds it. Store that total on the decision itself, because the quote's status can change later and the decision must still say what the user agreed to. Accepting a hotel invalidates nothing.
+## The data rules
 
-TODO 3. Take the anchor from the change, never from `state.proposal`. The current proposal changes with every new plan, and the anchor must not move. A preference lives in the requirements, so the requirements revision moves with it. The hotel decision is none of this change's business.
+A complete `apply_change` and `build_context` follow these rules.
 
-TODO 4. Separate what is no longer true (the price evidence) from what stays true (the user's choice). The world expires every quote of the repriced hotel, including old two-person quotes you already marked stale, so this branch runs more than once for one hotel. Decide for each quote whether follow-up work is needed. `add_task` ignores a task that is already open with the same kind and target. `proposal_uses_quote` tells you whether the current proposal depends on the quote.
+1. A party change replaces the party and nothing else among the requirements. The origin, destination, dates, budget, and walking preference carry over.
+2. Quotes belong to a party and dates. When the party changes, each current quote for the old party becomes stale. It stays on record for comparison, but it no longer prices the trip.
+3. A room too small for the party becomes unsuitable, and the state keeps the reason.
+4. When a change invalidates the inputs to the current proposal, the proposal is flagged for a recheck, and the remaining work appears as pending tasks: refresh a quote, find a room, search for an earlier flight, revalidate, or confirm with the user.
+5. A hotel acceptance is a decision of its own. It records the hotel, the proposal it came from, the quote, and the accepted price. It is not a booking, and it does not accept a different price.
+6. An earlier-arrival request records the arrival time of the flight in the proposal the user saw. Later proposals never move that reference.
+7. An expired quote is marked expired. The user's choice of hotel survives, and a task to refresh the quote opens.
+8. When a fresh quote prices the accepted hotel differently, the decision needs the user's confirmation again.
+9. The context shows current data as current and keeps stale quotes, earlier proposals, and notes in a section marked historical. Required inputs that are unknown appear in their own section, so the model asks instead of guessing.
 
-TODO 5. A price change shows up as a new quote, and `record_tool_observation` returns the quotes the state had not seen. A new quote should trigger reconfirmation only when it is for the accepted hotel, it prices the current party and dates, and its total differs from the total the user accepted. Compare against the accepted total, not against the previous quote. A quote for another hotel, a quote for the old party, and an unchanged price all leave the decision alone.
+The helpers in `workshop/state.py` handle the bookkeeping, such as change IDs, task IDs, and closing a task once the state shows it done. Your code decides what each change affects.
 
-TODO 6. The simulator and the report understand these section names: `requirements`, `unknowns`, `decisions`, `current_quotes`, `unsuitable_items`, `current_proposal`, `pending_work`, `historical`. Label each section `current` or `historical` honestly. A useful test is whether the model would be wrong to rely on the item today. Inactive quotes, earlier proposals, and notes are history, and the model should still be able to find them. A compact summary (ID, status, reason, total) serves history better than a full dump. `unknowns` comes from `state.requirements.missing_fields()`. `pending_work` holds open tasks only. Keep the supplied sections.
+## What the model sees
 
-Common mistakes the checks catch: clearing everything on every change (`child_preserves_requirements` fails), deleting old quotes (`old_quotes_not_current` tells you to keep them and change their status), moving the earlier-arrival anchor to the newest proposal (`earlier_anchor_stays_fixed`), and listing stale quotes as current (`context_current_vs_historical`).
+The state agent's context is a list of named sections, each marked current, historical, or instructions. The simulator and the report understand these names: `purpose`, `requirements`, `unknowns`, `decisions`, `current_quotes`, `unsuitable_items`, `current_proposal`, `pending_work`, `validation_feedback`, `historical`, and `history_access`. The simulator trusts what the context says. If a stale quote appears under `current_quotes`, the simulator uses it, and the validator rejects the plan. A live model might notice the mismatch, and comparing the two is one of the experiments in the README.
 
-### Reading check output
+## Common snags
 
-`check` prints one line per check, then the simulated replays, then an `Overall` line. It exits with 0 only when everything passes.
-
-```text
-Exercise checks for strategy=student
-  PASS                     child_preserves_requirements: requirements preserved; party is 2 adults, 1 child
-  FAIL                     old_quotes_not_current: AssertionError: still current: ['quote-h11-r1-2a0c', ...]
-  TODO                     acceptance_recorded: stage 'accepted_and_earlier' was not reached; building 'accepted_and_earlier' raised NotImplementedError: TODO 2
-  ERROR (your code)        expiry_flags_proposal: stage 'quote_expired' was not reached; building 'quote_expired' raised KeyError: 'no-such-quote'
-```
-
-| Label | Meaning | What to do |
-|---|---|---|
-| `PASS` | The assertion held. | Nothing. |
-| `FAIL` | Your function ran, and its result did not meet the check. The line states what the check found. | Read the detail and compare it with the hint for that TODO. |
-| `TODO` | A function raised `NotImplementedError`. Later checks that need its output say `stage ... was not reached`. | Implement that branch. |
-| `ERROR (your code)` | An exception other than `NotImplementedError` came from `workshop/exercises.py`. The GUI shows the traceback under the row. | Fix the exception, starting with the first one listed. |
-| `ERROR (infrastructure)` | The failure came from code outside your file. | Tell the instructor. It is not your bug. |
-
-The starter file passes 3 of the 18 exercise checks and fails the rest with readable messages, because it contains no `NotImplementedError`. You will see `FAIL` lines first, not `TODO`. The scenario replays print `PASS`, `FAIL`, or `n/a` lines (`n/a` means the check did not apply to that run). The last line is `Overall: PASS`, `FAIL`, `TODO`, `STUDENT_ERROR` (your file does not import), or `INFRASTRUCTURE_ERROR`. The full results are in `submissions/check-results.json`.
-
-If the `Overall` line says `INFRASTRUCTURE_ERROR` but a detail line begins `Your exercise code raised` or names `exercises.py`, the cause is in your file. A syntax error reports its file and line number in the message.
-
-If a `run` or `session` command stops with `Your exercise code raised ...` and `Nothing was saved`, the error is in your file and the failed operation changed nothing. The session directory exists at its starting point. After you fix the code, continue it with `uv run workshop session run NAME` or replace it by repeating the `run` command with `--overwrite`.
-
-## Minutes 12 to 17: run, compare, and look
-
-When `check` is green, or the scenario runs complete, generate your runs.
-
-```bash
-uv run workshop run --implementation state --strategy student --scenario changing-trip --planner simulated --out runs/state-fixed
-uv run workshop compare --runs runs/transcript runs/state-fixed --output submissions/comparison.html
-```
-
-Open `submissions/comparison.html` in a browser (`open submissions/comparison.html` on macOS, `xdg-open` on Linux). A correct solution reaches the same four plans as the transcript agent (plan-001 through plan-004, ending at $1,740).
-
-In the GUI: create a session named `state-fixed` (Structured state, simulated, student strategy, `changing-trip`) and press "Run to completion". Select the `transcript` session under "Open session", choose `state-fixed` under "Compare with", and press "Compare side by side". The "Comparison" tab shows both runs. Press "Export comparison HTML" to write `submissions/comparison.html`. You can also press "Run exercise checks", which writes `submissions/check-results.json`.
-
-### What to look at in the state diff
-
-The diff shows what one change did to the task state. Focus on the `chg-` snapshots, which follow user and world changes. The `obs-` snapshots follow tool results, and the `presented-` snapshots follow plans shown to the user. In the reference run the snapshot numbers are 6 (`chg-t1-0`, the child joins), 11 and 12 (`chg-t2-0` and `chg-t2-1`, the acceptance and the earlier-flight request), 16 and 17 (the two quote expirations), and 18 (`obs-tc-0012`, the refreshed hotel quote arrives). Your numbers match if your agent makes the same tool calls. To list yours:
-
-```bash
-uv run python -c "import json; [print(s['index'], s['change_id']) for s in map(json.loads, open('runs/state-fixed/state_snapshots.jsonl'))]"
-```
-
-```bash
-uv run workshop session show state-fixed diff --index 6
-```
-
-In the GUI, open the "State" tab, find "State snapshots", pick a snapshot, and read "What snapshot N changed". The checkbox hides revision counters and bookkeeping. Look for four things.
-
-- Which paths changed, and which requirement fields do not appear at all. Origin, destination, dates, budget, and the walking preference should be absent from the diff of the child change.
-- Whether old quotes changed status and kept their reason, or disappeared.
-- Whether `decisions.hotel` appears after the acceptance and survives every later change.
-- Which pending tasks the change opened.
-
-### What to look at in the model input
-
-Open the exact input of a model call. In the GUI, use the "Model input" tab and pick a call from the list, which shows each call's turn, step, and input size. In the CLI, run `uv run workshop session show NAME model-input --index N`; without `--index` it shows the latest call, and its first line gives the call's turn, step, and size. Call 12 is the first call of turn 3 in the reference run, right after the quote expires.
-
-Compare the two agents at that call.
-
-- The transcript agent receives 26 messages: the whole conversation, every tool result, and the expiry notification. Nothing marks which earlier results still hold. The model must work out from each quote's party fields that the two-person quotes are stale.
-- The state agent receives one message built from your `build_context`. Check that sections marked `CURRENT` hold only what is true now, that `decisions` still shows the accepted hotel, that `pending_work` lists the refresh task, and that `HISTORICAL` holds the old quotes with their status and reason.
-- Compare the sizes. In the reference run, call 12 is about 10,000 characters for the state agent and about 18,000 for the transcript agent. The state agent is larger on the first call. Size follows the design, and it is not a goal.
-
-Then open the "Tool calls" tab and note which tool each agent called next. Find the information in its input that justified that call.
-
-## Minutes 17 to 20: findings and discussion
-
-Copy [findings-template.md](findings-template.md) to `submissions/findings.md` and fill it in. The template has a table of three state transitions, one division of responsibility between code and the model, answers to seven questions, and a short comparison of the two agents. One run is one sample, so write what this run showed, not what it proves.
-
-| Question | Where to look |
+| Message | What to do |
 |---|---|
-| 1. Which data changed when the child was added, and which did not? | The state diff for `chg-t1-0` |
-| 2. Where is the hotel choice represented? | "Retained hotel decision" in the State tab, and the diff for `chg-t2-0` |
-| 3. What happened to that choice when the quote expired? | The diffs for `chg-t3-1` and for `obs-tc-0012` |
-| 4. Which input shows history versus current context? | A late model call of each agent |
-| 5. Which tool did the agent call next, and why? | The "Tool calls" tab and the input of the call before it |
-| 6. Which conclusions did code check? | The "Validation" tab: reason codes, computed totals, claimed totals |
-| 7. If both agents succeeded, what differs? | The comparison page: tool counts, input sizes, retained decision, state transitions |
-
-## Submission
-
-- `workshop/exercises.py`, completed.
-- `submissions/comparison.html`, generated from your own `runs/transcript` and `runs/state-fixed` runs.
-- `submissions/check-results.json`, written by `workshop check`.
-- `submissions/findings.md`, your completed findings template.
-
-Git ignores `submissions/`, so hand the files in the way your instructor asks.
-
-## Step by step, and the GUI equivalents
-
-Use these commands when you want to pause between changes. A session named `NAME` lives in `runs/NAME`, so `--out runs/state` and the session name `state` refer to the same directory.
-
-| To do this | CLI | GUI |
-|---|---|---|
-| Create a session | `uv run workshop session start NAME --implementation state --strategy student` | "New session": Name, Implementation, Planner, Strategy, Scenario, then "Create session" |
-| Run a whole scenario | `uv run workshop run ... --out runs/NAME`, or `session run NAME` | "Run to completion" |
-| Let the agent answer the current turn | `uv run workshop session run-turn NAME` | "Run turn" |
-| Take one planner decision | `uv run workshop session step NAME` | "Step" |
-| Apply the next change | `uv run workshop session apply-change NAME` | The button under "Scenario changes" marked "next: ready to apply" ("Turn 1: Add the child", "Turn 2: Accept hotel + request earlier flight", "Turn 3: Expire the hotel quote") |
-| See the status and conversation | `uv run workshop session status NAME` | "Conversation" tab and the "Proposed plan" card |
-| Inspect the task state | `uv run workshop session show NAME state` | "State" tab |
-| See what a change did | `uv run workshop session show NAME diff --index N` | "State" tab, "State snapshots" |
-| See the exact model input | `uv run workshop session show NAME model-input --index N` | "Model input" tab, pick a call |
-| See tool calls | `uv run workshop session show NAME tools` | "Tool calls" tab |
-| See validator results | `uv run workshop session show NAME validation` | "Validation" tab |
-| Run the exercise checks | `uv run workshop check --strategy student` | "Run exercise checks", then the "Check results" tab |
-| Compare two runs | `uv run workshop compare --runs runs/A runs/B --output submissions/comparison.html` | "Compare with", "Compare side by side", then "Export comparison HTML" |
-| Rewrite a run's artifacts | `uv run workshop session export NAME` | "Export artifacts", then "Open report.html" |
-| Start the session over | `uv run workshop session reset NAME` | "Reset this session" (asks for confirmation) |
-
-A session starts in the `ready` phase with the initial request applied and unanswered. Let the agent answer it (a step or a turn) before you apply the first change. A change button stays disabled until the agent has finished the turn before it.
-
-If a command says a session already exists, choose another name, add `--overwrite` to `run` or `session start`, or reset the session. If the GUI reports that the session is at a newer version, something else changed it, such as a CLI command or another tab. The page has already refreshed, so press the button again.
+| `... already holds a session` | Choose another name or `--out`, run `uv run workshop session reset NAME`, or add `--overwrite`. |
+| `... exists, is not empty, and is not a session directory` | The path holds other files. Choose another path. |
+| `Cannot step while the session is 'awaiting_change'` | The turn ended. Apply the next change with `session apply-change NAME`, or finish with `session run NAME`. |
+| `Cannot apply a change while the session is 'ready'` | The agent has not finished the current turn. Use `session step NAME` or `session run-turn NAME`. |
+| `Your exercise code raised ...` | Fix the line the message names. The failed action saved nothing, so continue with `session run NAME` afterwards. |
+| A turn ends `incomplete` at the tool-call limit | The agent kept proposing plans the validator rejected. Look at `session show NAME validation` and the latest `model-input` to see what it was given. |
+| The web interface says the session is at a newer version | Another tab or a terminal command changed the session. The page has refreshed, so press the button again. |
+| `No session at ...` for a path in `reference_runs/` | Fresh clones lack the session databases. Run `bash scripts/regenerate_reference_runs.sh`. |

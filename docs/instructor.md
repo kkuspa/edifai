@@ -1,19 +1,18 @@
 # Instructor guide
 
-This guide covers what a correct run looks like, what the starter code gets wrong and how that shows up, how to run the discussion, how to treat live-model results, and what to do when something breaks. Student instructions are in [workshop.md](workshop.md).
+This guide covers what a correct run looks like, what the starter code gets wrong and how that shows up, how to run the discussion, how to treat live-model results, and what to do when something breaks. Students work from the [README](../README.md), with [workshop.md](workshop.md) as their reference page. Keep this file and `solutions/` out of the copy students start from if you want the exercise unspoiled.
 
 The lesson is not that more state machinery is always better. Ongoing tasks create data lifecycle responsibilities, and those responsibilities need an explicit owner in the application design. The transcript agent may succeed on every scenario, and that is an acceptable outcome to report as it is.
 
 ## Before class
 
-1. On a clean machine, run `uv sync --frozen` and `uv run workshop doctor`. It must end with `Ready.` Add `--extra gui` to the sync if anyone will use the GUI, because a plain `uv sync` removes the GUI packages.
-2. Run `uv run workshop check --strategy reference`. It must end with `Overall: PASS. All checks pass.` Expect two `n/a` lines in the scenario replays: `no_compliant_plan_asks` for `changing-trip` (a compliant plan exists) and `price_change_flagged` for `no-compliant` (the run ends on a question).
+1. On a clean machine, run `uv sync --frozen` and `uv run workshop doctor`. It ends with `Ready.` Students who want the GUI launch it with `uv run --extra gui workshop gui`, which installs the extra on first use.
+2. Run `uv run workshop check --strategy reference`. It ends with `18 pass, 0 not yet (strategy=reference)` and `Every check passes.` Expect two `n/a` lines in the scenario replays: `no_compliant_plan_asks` for `changing-trip` (a compliant plan exists) and `price_change_flagged` for `no-compliant` (the run ends on a question).
 3. Run `uv run pytest`. The suite works in temporary directories, reads no credentials, and opens no network connection. It should finish with every test passing.
 4. Open `reference_runs/comparison.html` to see the reference comparison. Regenerate the runs with `bash scripts/regenerate_reference_runs.sh` if you changed any code or fixture.
-5. Pilot the exercise once yourself. The 20-minute target comes from the specification, and your room may need a different pace.
-6. Decide how students hand in work. Git ignores `submissions/`, so a commit will not collect it.
-7. If students will use live mode, finish the live-mode checks below.
-8. If students will use the GUI, confirm that port 8765 is free on their machines, or tell them to pass `--port`.
+5. Work through the exercise once yourself, so you know where people slow down and which questions come up.
+6. If students will use live mode, finish the live-mode checks below.
+7. If students will use the GUI, confirm that port 8765 is free on their machines, or tell them to pass `--port`.
 
 ## Reference behavior
 
@@ -61,7 +60,7 @@ Turn 2 resolves against the wrong proposal. The scenario resolves "that hotel lo
 
 Turn 3 ends incomplete for the same reason. There is only one h17 quote to expire (`quote-h17-r1-2a0c`, issued for two adults), so the run records one expiry change where the reference run records two.
 
-The starter passes 3 of the 18 exercise checks. `uv run workshop check --strategy student` fails the rest with messages such as "still current: ['quote-h11-r1-2a0c', ...]" and "decisions.hotel is None". The scenario replays report `turns_finished: incomplete turns: [1, 2, 3]`.
+The starter passes 3 of the 18 exercise checks. `uv run workshop check --strategy student` reports the rest as `NOT YET`, with details such as "still current: ['quote-h11-r1-2a0c', ...]" and "decisions.hotel is None". The scenario replays report `turns_finished: incomplete turns: [1, 2, 3]`.
 
 This failure belongs to the simulator, which trusts the `CURRENT` label. A live model might notice that a quote's `party` field disagrees with the requirements and recover. If a live run of the starter succeeds, use that result in the discussion instead of explaining it away.
 
@@ -71,12 +70,12 @@ Both functions matter, and the checks isolate which one is missing.
 
 | Student state | What `check` and `run` show |
 |---|---|
-| `apply_change` done, `build_context` still the starter | The four context checks fail (`missing_data_explicit`, `context_required_sections`, `context_current_vs_historical`, `context_shows_decision_and_work`). The run completes turns 1 and 2, but turn 3 drops the accepted hotel. With no decision or refresh task in front of it, the agent presents f2 + h22 at $1,460 (a 25-minute walk, so preferences are unmet), flagged `reconfirmation_required`. The state held the decision, and the model never saw it. The `no-compliant` replay fails `no_compliant_plan_asks`, and `state_no_stuck_tasks` fails because the refresh and search tasks never close. |
-| `build_context` done, `apply_change` still the starter | The state never records the child, the acceptance, or the anchor, so thirteen exercise checks fail and turns 1 to 3 end incomplete. A good context over state that nobody updated has nothing true to show. |
+| `apply_change` done, `build_context` still the starter | The four context checks show `NOT YET` (`missing_data_explicit`, `context_required_sections`, `context_current_vs_historical`, `context_shows_decision_and_work`). The run completes turns 1 and 2, but turn 3 drops the accepted hotel. With no decision or refresh task in front of it, the agent presents f2 + h22 at $1,460 (a 25-minute walk, so preferences are unmet), flagged `reconfirmation_required`. The state held the decision, and the model never saw it. The `no-compliant` replay fails `no_compliant_plan_asks`, and `state_no_stuck_tasks` fails because the refresh and search tasks never close. |
+| `build_context` done, `apply_change` still the starter | The state never records the child, the acceptance, or the anchor, so thirteen exercise checks show `NOT YET`, and turns 1 to 3 end incomplete. A good context over state that nobody updated has nothing true to show. |
 
 ## Discussion
 
-### The seven required findings, with model answers
+### The README's questions, with reference answers
 
 Snapshot numbers and call numbers below come from the reference run. A student run that makes the same tool calls matches them.
 
@@ -135,9 +134,9 @@ The runner records a live failure as it happened. A reply that is not one valid 
 | `doctor` prints `FAIL imports and fixtures` | The environment is not installed, or the Python version is wrong. Run `uv sync --frozen`. The repository needs Python 3.12, which uv installs. |
 | `doctor` prints `FAIL persistence and simulated run` or `FAIL report generation` | The machine cannot write to its temp directory, or a supplied file is broken. Read the message after the colon. If it names a file outside `workshop/exercises.py`, treat it as infrastructure. |
 | `doctor` prints `FAIL student exercise module imports: SyntaxError ... (exercises.py, line N)` | The student's file does not import. Open that line. |
-| `check` ends with `Overall: INFRASTRUCTURE_ERROR` and a message that names `exercises.py` or begins `Your exercise code raised` | The error is in the student's file. A syntax error and an exception raised during the scenario replays can reach the report under this heading. Fix the file as the message says. |
+| `check` prints `ERROR in exercises.py` | The student's code raised an exception. The detail names the file and line. |
 | `Your exercise code raised NotImplementedError: ... Nothing was saved; fix it and retry.` | A branch still raises `NotImplementedError`. The failed operation rolled back, so the session is unchanged and sits at its starting point (`phase=ready`, version 1). After the fix, continue with `uv run workshop session run NAME`, or repeat the `run` command with `--overwrite`. `check` reports the same condition as `TODO`. |
-| A Python traceback that ends in `exercises.py` when running `run` or `session start`, and an "HTTP 500" message in the GUI | The student's module fails at import (a syntax error, or a bad name at module level). `doctor` and `check` print the file and line. |
+| `error: Your exercise code raised SyntaxError ...` (or `NameError`) from `run` or `session start`, or the same message in the GUI | The student's module fails at import. The message names the file and line. |
 | `error: ... already holds a session. Use reset, choose another name, or pass --overwrite.` | The name is taken. Choose another name, run `session reset NAME`, or repeat the command with `--overwrite`. In the GUI the message is "That session name is taken." |
 | `error: ... exists, is not empty, and is not a session directory.` | The target directory holds files that are not a session. The command refuses it even with `--overwrite`; choose another `--out` or session name. |
 | `error: Cannot apply a change while the session is 'ready'.` | The agent has not finished the turn. Run `session run-turn NAME`, or press "Run turn". |
@@ -146,8 +145,9 @@ The runner records a live failure as it happened. A reply that is not one valid 
 | GUI message: "Session is at version N, request expected M. Refresh and retry. The page was refreshed with the current state." (HTTP 409) | Something else moved the session after the page last read it: a CLI command, another browser tab, or a repeated click. The page has already refreshed. Press the button again if the action is still wanted. The check protects against running a step twice. |
 | GUI message: "Already done. This operation ID was applied earlier, so nothing ran again." | The page retried a request after a network failure, and the server returned the stored result. No action is needed. |
 | GUI shows old data after a CLI command | The page does not watch the disk. Reload it. |
-| `uv run workshop gui` fails with `address already in use` | Another process holds port 8765, often a second copy of the GUI. Run `uv run workshop gui --port 8766` and open that address. |
-| `The GUI needs the optional extra: uv sync --extra gui` | The extra is not installed, or a plain `uv sync` removed it. Run `uv sync --frozen --extra gui`. |
+| `uv run --extra gui workshop gui` fails with `address already in use` | Another process holds port 8765, often a second copy of the GUI. Run `uv run --extra gui workshop gui --port 8766` and open that address. |
+| `check` prints `SETUP PROBLEM` | Something outside `exercises.py` failed. Run `uv run workshop doctor` and read its `FAIL` line. |
+| `The GUI is an optional extra. Launch it with: uv run --extra gui workshop gui` | Run that command. It installs FastAPI and uvicorn on first use. |
 | The GUI answers `This server only answers requests addressed to localhost.` | The page was opened under another host name. The server binds to 127.0.0.1 on purpose. Use `http://127.0.0.1:PORT`. |
 | A command seems to hang | Another process holds the session's lock, for example a long live run started from the GUI. The CLI and the GUI serialize against each other per session. Wait for it to finish. |
 | `error: No live provider configured. Copy .env.example to .env and set ANTHROPIC_API_KEY or OPENAI_API_KEY.` | No credential is present, and `--planner live` needs one. Create `.env` as the README describes. |
@@ -157,7 +157,7 @@ The runner records a live failure as it happened. A reply that is not one valid 
 
 ## Optional extensions
 
-These sit outside the timed exercise.
+These go beyond the core exercise.
 
 - Extract typed changes with a live model. The scenarios in `fixtures/scenarios/` ship typed changes with resolved references, and `Engine.apply_next_change` in `workshop/runner.py` turns them into `Change` objects. A model-driven extractor would feed that step from the user's raw text. Compare its output with the shipped changes, and decide which of its proposals code should validate before applying.
 - Add a conflicting request that needs clarification. Write a new scenario file (copy `changing-trip.json`) in which two changes disagree, and check that the agent asks one targeted question and does not guess.

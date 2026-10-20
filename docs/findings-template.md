@@ -1,91 +1,43 @@
-# Findings
+# Notes
 
-Copy this file to `submissions/findings.md`, and replace each bracketed prompt with your answer. Keep answers short and specific. Cite evidence by path or by name, so that a reader can find what you saw.
+A place to jot down what you noticed. Nobody collects this; use it to think, and bring it to the discussion if it helps. `uv run workshop session show NAME diff --index N` and `session show NAME model-input --index N` find the details again if you want to look something up.
 
-Name:
+## One request at a time
 
-Runs compared (for example `runs/transcript` and `runs/state-fixed`):
+What did the one-shot planner need in its input to produce a good plan?
 
-Planner mode of each run (`simulated`, or `live` with the provider and model):
+When the brief was restated before each call, which code did the restating, and where did it get the current requirements?
 
-Strategy of the state run (`student`):
+## When the child joined
 
-## 1. Three state transitions
+Which data changed, and which stayed as it was?
 
-Pick three changes from your state run. For each one, say what the application kept as it was, what it reconsidered, and where you saw it. The evidence is a line in `state_snapshots.jsonl` (give the `index` and the `change_id`, for example `index 6, chg-t1-0`) or a snapshot in the GUI's State tab (it is labeled `N: after CHANGE_ID`). Use `uv run workshop session show state-fixed diff --index N` to read the diff.
+What happened to the quotes issued for two adults? Were they still true, and did they still apply?
 
-| Change | What was preserved | What was reconsidered | Evidence path |
-|---|---|---|---|
-| [change 1] | [data that stayed, and why it still applies] | [data that was marked stale, expired, flagged, or opened as work, and why] | [file and index, or GUI snapshot] |
-| [change 2] | | | |
-| [change 3] | | | |
+## The hotel the user chose
 
-## 2. One division of responsibility between code and the model
+Where is the user's hotel choice recorded in your state agent? Where is it in the transcript agent?
 
-| | |
-|---|---|
-| A decision or calculation your code owns | [what it is] |
-| A decision or calculation the model owns | [what it is] |
-| Why the boundary sits there | [the reason, in one or two sentences] |
-| Evidence | [a validator reason code, a tool result, or a model input you inspected] |
+What happened to that choice when the quote expired, and again when the refreshed price came back?
 
-## 3. The seven required findings
+What does "earlier" refer to after the agent proposes a new flight?
 
-1. Which data changed when the child was added, and which did not?
+## What the model saw
 
-   [answer]
+Which model input shows the difference between the conversation's history and the current working context?
 
-   Evidence: [path]
+Which tool did the agent call right after the quote expired, and what in its input justified that choice?
 
-2. Where is the user's hotel choice represented?
+Which conclusions did code check rather than trust from the model?
 
-   [answer]
+## The two agents
 
-   Evidence: [path]
+Both agents reached the same plans. What differences remain in how each one updates its data, how much it sends the model, and how easily you can inspect what it knew?
 
-3. What happened to that choice when the quote expired?
+## If you tried a live model
 
-   [answer]
+Did the transcript agent work out the current state from the conversation? How did what you observed differ from what the simulator showed, and why might that be?
 
-   Evidence: [path]
+## For your own agent
 
-4. Which model input demonstrates the difference between history and current working context?
-
-   [answer: name the run, the model call number, and the part of the input]
-
-   Evidence: [path or GUI location]
-
-5. Which tool did the agent choose next, and what available information justified it?
-
-   [answer: name the tool and its arguments, and quote the lines of its input that justify the choice]
-
-   Evidence: [path or GUI location]
-
-6. Which conclusions were checked by code rather than trusted from generated text?
-
-   [answer]
-
-   Evidence: [validator reason codes, computed totals, or tool results]
-
-7. If both agents succeeded, what differences remain in update behavior and inspectability?
-
-   [answer]
-
-   Evidence: [path]
-
-## 4. The two agents compared
-
-Fill in what you observed in your own runs. If both agents did equally well on a row, say so.
-
-| | Transcript agent | State agent | Evidence |
-|---|---|---|---|
-| Correctness (the final plan, its total, hard constraints, validator codes) | | | |
-| Preserved decisions (the hotel choice and the earlier-arrival reference) | | | |
-| Data freshness (how stale or expired quotes were handled) | | | |
-| Inspectability (what you could look up without rereading the whole conversation) | | | |
-| Tool usage (which tools, how many calls) | | | |
-| Input size (characters or reported tokens, per call and in total) | | | |
-
-One run is one sample. These observations describe what happened in the runs you generated, and they do not establish that either implementation is more reliable. A simulated run shows how the data design behaves, and it does not measure what a language model can do. If you ran a live model, record the provider and model above and read the settings in `manifest.json`.
-
-Summary (two or three sentences): [What does the state design give you here, what does it cost, and when would the transcript agent be enough?]
+What does the agent you are building for the final project need to remember across turns? Which of that is a requirement, a decision, or an observation, and what should each kind of change update?
