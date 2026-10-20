@@ -796,24 +796,24 @@ function renderValidations(records) {
 // Check results
 // ---------------------------------------------------------------------------------
 
+// Labels match the command line's `workshop check` output.
 const EXERCISE_STATUS = {
-  pass: ["PASS", "ok"], todo: ["TODO", "warn"], fail: ["FAIL", "bad"],
-  student_error: ["ERROR (your code)", "bad"], infrastructure_error: ["ERROR (infrastructure)", "bad"],
+  pass: ["PASS", "ok"], todo: ["TODO", "warn"], not_yet: ["NOT YET", "warn"],
+  student_error: ["ERROR in exercises.py", "bad"], infrastructure_error: ["SETUP PROBLEM", "bad"],
 };
 
 function scenarioChecksTable(checks) {
   if (!checks.length) return note("No checks recorded.");
   return table(["Result", "Check", "Detail"], checks.map((c) => [
-    c.passed === true ? span("ok", "PASS") : c.passed === false ? span("bad", "FAIL") : span("muted", "n/a"),
+    c.passed === true ? span("ok", "PASS") : c.passed === false ? span("warn", "NOT YET") : span("muted", "n/a"),
     h("span", { title: c.description }, c.id), c.detail]));
 }
 
 function renderChecks(report) {
-  const verdict = report.overall === "pass" ? "ok" : report.overall === "todo" ? "warn" : "bad";
-  const counts = Object.entries(report.counts || {}).map(([k, n]) => n + " " + words(k)).join(", ");
+  const tone = report.overall === "pass" ? "ok" : /error/.test(report.overall) ? "bad" : "warn";
   fill($("check-view"),
-    h("h3", {}, "Overall: ", span(verdict, words(report.overall).toUpperCase())),
-    h("p", { class: "small muted" }, "Strategy " + report.strategy + (counts ? SEP + counts : "")),
+    h("h3", {}, span(tone, report.summary || "")),
+    h("p", {}, report.next_step || ""),
     report.error ? h("p", { class: "bad" }, report.error) : null,
     h("h3", {}, "Exercise checks"),
     report.exercise_checks.length ? table(["Status", "Check", "Detail"], report.exercise_checks.map((c) => {
@@ -823,7 +823,7 @@ function renderChecks(report) {
     })) : note("No exercise checks ran."),
     h("h3", {}, "Scenario runs (simulated state agent)"),
     report.scenario_runs.map((r) => h("div", { class: "card" },
-      h("strong", {}, r.scenario), SEP, r.status === "ran" ? span("muted", "ran") : span("bad", words(r.status)),
+      h("strong", {}, r.scenario), SEP, r.status === "ran" ? span("muted", "ran") : span("bad", (EXERCISE_STATUS[r.status] || [words(r.status)])[0]),
       r.error ? [h("p", { class: "bad" }, r.error), r.traceback ? fold("Traceback", pre(r.traceback)) : null] : null,
       scenarioChecksTable(r.checks))));
 }
@@ -974,7 +974,7 @@ function wire() {
     (r) => "Exported " + r.files.length + " files to " + S.status.path + ": " + r.files.join(", ") + "."));
 
   $("btn-check").addEventListener("click", () => act("Run checks", "/api/check", { strategy: $("c-strategy").value },
-    (r) => "Exercise checks finished: overall " + words(r.report.overall) + ".",
+    (r) => "Checks finished: " + r.report.summary + ".",
     (r) => { renderChecks(r.report); showTab("center", "checks"); }));
 
   $("btn-compare").addEventListener("click", compareSideBySide);

@@ -317,7 +317,7 @@ def _steps_table(steps: list[dict[str, Any]], app_calls: list[dict[str, Any]]) -
 def _checks_table(checks: list[dict[str, Any]]) -> str:
     rows = "".join(
         f'<tr><td class="{"ok" if c["passed"] else ("muted" if c["passed"] is None else "bad")}">'
-        f'{"PASS" if c["passed"] else ("n/a" if c["passed"] is None else "FAIL")}</td><td>{e(c["id"])}</td><td>{e(c["description"])}</td><td>{e(c["detail"])}</td></tr>'
+        f'{"PASS" if c["passed"] else ("n/a" if c["passed"] is None else "NOT YET")}</td><td>{e(c["id"])}</td><td>{e(c["description"])}</td><td>{e(c["detail"])}</td></tr>'
         for c in checks
     )
     return f"<table><tr><th></th><th>Check</th><th>Description</th><th>Detail</th></tr>{rows}</table>"

@@ -210,7 +210,7 @@ def cmd_doctor(service: WorkshopService) -> int:
 
         print("  info GUI extra installed: `uv run workshop gui` will work")
     except ImportError:
-        print("  info GUI extra not installed (optional): `uv sync --extra gui` to enable `workshop gui`")
+        print("  info GUI not installed (optional): `uv run --extra gui workshop gui` installs and launches it")
     print("Ready." if ok else "Problems found; see FAIL lines.")
     return 0 if ok else 1
 
@@ -266,7 +266,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--overwrite", action="store_true", help="Replace an existing session at --out")
     run.add_argument("--step", action="store_true", help="Pause after each scenario change for inspection")
 
-    chk = sub.add_parser("check", help="Run the exercise checks against your functions")
+    chk = sub.add_parser("check", help="Check your exercise functions and see what is left to do")
     chk.add_argument("--strategy", choices=["student", "reference"], default="student")
     chk.add_argument("--output", default="submissions/check-results.json")
     chk.add_argument("--json", action="store_true")
@@ -306,7 +306,7 @@ def build_parser() -> argparse.ArgumentParser:
     show.add_argument("--index", type=int, default=None, help="Snapshot index (state/diff) or model call index (model-input)")
     show.add_argument("--json", action="store_true")
 
-    gui = sub.add_parser("gui", help="Launch the optional local GUI (needs `uv sync --extra gui`)")
+    gui = sub.add_parser("gui", help="Launch the optional local GUI: uv run --extra gui workshop gui")
     gui.add_argument("--port", type=int, default=8765)
     return p
 
@@ -326,7 +326,8 @@ def main(argv: list[str] | None = None) -> int:
             report = result["report"]
             _print_json(report) if args.json else print(format_report(report))
             print(f"Saved {args.output}")
-            return 0 if report["overall"] == "pass" else 1
+            # Checks are feedback, not a gate: only a broken setup is a nonzero exit.
+            return 1 if report["overall"] == "infrastructure_error" else 0
         if args.command == "compare":
             result = service.compare(args.runs, args.output)
             print(f"Wrote {result['output']}")
@@ -335,7 +336,7 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 from .gui.app import serve
             except ImportError as exc:
-                print(f"The GUI needs the optional extra: uv sync --extra gui ({exc})")
+                print(f"The GUI is an optional extra. Launch it with: uv run --extra gui workshop gui ({exc})")
                 return 2
             serve(root=Path(args.root), port=args.port)
             return 0

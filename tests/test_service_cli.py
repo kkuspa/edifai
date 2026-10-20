@@ -224,7 +224,7 @@ def test_cli_check_and_compare_write_where_they_are_told(capsys, tmp_path):
     assert code == 0 and str(out_file) in out and "Run comparison" in out_file.read_text()
     check_file = tmp_path / "out" / "check.json"
     code, out, _ = cli(capsys, root, "check", "--strategy", "reference", "--output", str(check_file))
-    assert code == 0 and "Overall: PASS" in out
+    assert code == 0 and "18 pass, 0 not yet" in out and "Every check passes" in out
     assert json.loads(check_file.read_text())["overall"] == "pass"
     code, out, _ = cli(capsys, root, "check", "--strategy", "reference", "--output", str(check_file), "--json")
     assert json.loads(out.rsplit("Saved", 1)[0])["strategy"] == "reference"
@@ -545,8 +545,8 @@ def test_the_full_cli_exercise_runs_with_fastapi_and_uvicorn_unavailable(tmp_pat
     assert result["loaded"] == [], "no GUI package was ever imported"
     assert {label for label, _ in result["attempts"]} <= {"doctor", "gui"}, "only `doctor` (to report the extra) and `gui` even look for the GUI packages"
     assert result["gui_modules"] == [] or result["gui_modules"] == ["workshop.gui"], result["gui_modules"]
-    assert "GUI extra not installed" in proc.stdout and "Ready." in proc.stdout
-    assert "uv sync --extra gui" in proc.stdout
+    assert "GUI not installed" in proc.stdout and "Ready." in proc.stdout
+    assert "uv run --extra gui workshop gui" in proc.stdout
     assert (root / "check.json").exists() and (root / "cmp.html").exists() and (root / "a" / "report.html").exists()
 
 

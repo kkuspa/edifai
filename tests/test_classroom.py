@@ -140,28 +140,29 @@ def test_check_on_the_student_file_never_reports_an_infrastructure_error_for_the
 
 
 @needs_starter
-def test_check_classifies_every_starter_failure_as_a_failure(tmp_path):
+def test_check_reports_every_starter_gap_as_not_yet(tmp_path):
     report = run_checks("student", tmp_path / "out" / "check.json")
     by_id = {c["id"]: c for c in report["exercise_checks"]}
     statuses = {c["status"] for c in by_id.values()}
-    assert statuses == {"pass", "fail"}, statuses
-    assert report["overall"] == "fail" and report["counts"]["fail"] >= 10
+    assert statuses == {"pass", "not_yet"}, statuses
+    assert report["overall"] == "in_progress" and report["counts"]["not_yet"] >= 10
     assert by_id["child_preserves_requirements"]["status"] == "pass", "the starter does overwrite the party"
     assert by_id["duplicate_change_is_noop"]["status"] == "pass" and by_id["two_person_quote_cannot_validate"]["status"] == "pass"
     for c in by_id.values():
-        if c["status"] == "fail":
+        if c["status"] == "not_yet":
             assert c["detail"] and "Traceback" not in c["detail"], c["id"]
             assert c["detail"].startswith("AssertionError:"), (c["id"], c["detail"])
     assert "still current" in by_id["old_quotes_not_current"]["detail"] and "h11 not in unsuitable_items" in by_id["small_hotel_unsuitable_with_reason"]["detail"]
-    assert json.loads((tmp_path / "out" / "check.json").read_text())["overall"] == "fail"
+    assert json.loads((tmp_path / "out" / "check.json").read_text())["overall"] == "in_progress"
 
 
 @needs_starter
 def test_the_check_command_exit_code_and_message_for_the_starter(capsys, tmp_path):
     code = main(["--root", str(tmp_path), "check", "--strategy", "student", "--output", str(tmp_path / "c.json")])
     out = capsys.readouterr().out
-    assert code == 1 and "Overall: FAIL" in out and "FAIL " in out and "ERROR (infrastructure)" not in out and "Tell the instructor" not in out
-    assert "Some checks fail. Read the detail lines above" in out
+    assert code == 0, "unfinished work is feedback, not a failure"
+    assert "NOT YET" in out and "FAIL" not in out and "SETUP PROBLEM" not in out
+    assert "3 pass, 15 not yet" in out and "the runtime is working" in out
 
 
 def test_the_reference_implementation_passes_the_complete_suite(capsys, tmp_path):
@@ -173,7 +174,7 @@ def test_the_reference_implementation_passes_the_complete_suite(capsys, tmp_path
     ids = {c["id"] for r in report["scenario_runs"] for c in r["checks"] if c["passed"] is True}
     assert {"no_compliant_plan_asks", "price_change_flagged", "state_price_rise_reconfirm", "state_expiry_keeps_choice"} <= ids
     assert main(["--root", str(tmp_path), "check", "--strategy", "reference", "--output", str(tmp_path / "c.json")]) == 0
-    assert "All checks pass." in capsys.readouterr().out
+    assert "Every check passes." in capsys.readouterr().out
 
 
 def meaningful_lines(path: Path) -> list[str]:
@@ -229,8 +230,8 @@ def synthetic(exception: BaseException, filename: str) -> BaseException:
 @pytest.mark.parametrize(
     "exception, filename, expected",
     [
-        (AssertionError("total is wrong"), "/repo/tests/check.py", "fail"),
-        (AssertionError("total is wrong"), "/repo/workshop/exercises.py", "fail"),
+        (AssertionError("total is wrong"), "/repo/tests/check.py", "not_yet"),
+        (AssertionError("total is wrong"), "/repo/workshop/exercises.py", "not_yet"),
         (NotImplementedError("TODO"), "/repo/workshop/exercises.py", "todo"),
         (KeyError("typo"), "/repo/workshop/exercises.py", "student_error"),
         (ZeroDivisionError(), "/home/student/work/exercises.py", "student_error"),
@@ -264,9 +265,9 @@ def test_an_infrastructure_failure_outside_the_student_file_is_reported_as_infra
     assert report["overall"] == "infrastructure_error"
     assert {r["status"] for r in report["scenario_runs"]} == {"infrastructure_error"}
     text = format_report(report)
-    assert "ERROR (infrastructure)" in text and "Tell the instructor" in text
+    assert "SETUP PROBLEM" in text and "ask an instructor" in text
     assert main(["--root", str(tmp_path), "check", "--strategy", "reference", "--output", str(tmp_path / "c.json")]) == 1
-    assert "Infrastructure error" in capsys.readouterr().out
+    assert "This is a setup problem, not your code" in capsys.readouterr().out
 
 
 ALWAYS_RAISES = REFERENCE_IMPORTS + '''
@@ -320,7 +321,7 @@ def test_an_exception_in_the_students_functions_is_a_student_error_in_every_chec
     assert set(runs.values()) == {"student_error"}, f"the simulated runs hit the same exception: {runs}"
     assert report["overall"] != "infrastructure_error", "a student's exception must not tell them to call the instructor"
     text = format_report(report)
-    assert "Tell the instructor" not in text and "exercises.py" in text
+    assert "SETUP PROBLEM" not in text and "exercises.py" in text
 
 
 def test_unfinished_todo_stubs_are_reported_as_todo_not_as_an_infrastructure_error(monkeypatch, tmp_path):
@@ -346,7 +347,7 @@ def test_a_syntax_error_in_the_students_file_is_a_student_error(monkeypatch, tmp
     report = run_checks("student", None)
     assert "SyntaxError" in report["error"] and "exercises.py" in report["error"]
     assert report["overall"] == "student_error", f"got {report['overall']!r}: a typo in the student's file is not broken infrastructure"
-    assert "Tell the instructor" not in format_report(report)
+    assert "SETUP PROBLEM" not in format_report(report)
 
 
 def test_creating_a_session_with_a_student_file_that_does_not_import_gives_a_service_error(monkeypatch, service, tmp_path):

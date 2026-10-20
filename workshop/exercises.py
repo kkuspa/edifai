@@ -1,10 +1,10 @@
-"""Student exercise: the two functions you implement.
+"""The two functions you write in this exercise.
 
-    apply_change(state, change)  decide what a change affects, preserve what it does not
+    apply_change(state, change)  decide what a change affects, and keep what it does not
     build_context(state, step)   decide what the model sees before its next action
 
-Everything else is supplied. Run ``uv run workshop check`` after each edit; the GUI and
-the CLI both reload this file on every run, so there is nothing to restart.
+Everything else is supplied. Run ``uv run workshop check`` whenever you want feedback. The
+command line and the GUI both reload this file on every run, so you never restart anything.
 
 Useful helpers (see workshop/state.py and workshop/context.py):
 
@@ -19,8 +19,8 @@ Useful helpers (see workshop/state.py and workshop/context.py):
     note(state, change, text)               record a historical fact
     proposal_uses_quote(state, quote_id)
 
-Rules of thumb from the spec: do not clear everything on every change, and do not keep
-every old value as if it were current. Decide the scope of each update.
+Two designs fail here. One clears everything on every change. The other keeps every old
+value as if it were still current. Each change has a scope, and the work is deciding it.
 """
 
 from __future__ import annotations
@@ -70,8 +70,8 @@ from workshop.state import (
 def apply_change(state: TaskState, change: Change) -> TaskState:
     """Return the new task state after one normalized change. Do not mutate ``state``.
 
-    The starter version runs, but it is naive on purpose: it only overwrites the party.
-    Run the starter scenario first and look at what the agent receives and does.
+    The starter version runs, and it is naive on purpose. It only overwrites the party.
+    Run it once before you change anything, and look at what the agent receives and does.
     """
     s = state.model_copy(deep=True)
     ev = change.event
@@ -84,7 +84,7 @@ def apply_change(state: TaskState, change: Change) -> TaskState:
         #    walking preference must survive untouched.
         #  - Quotes are party-scoped. Any CURRENT quote that no longer matches the new
         #    party should become QuoteStatus.STALE (keep it on record; do not delete it).
-        #  - Hotels whose capacity is below the new occupancy are unsuitable: record why.
+        #  - Hotels whose capacity is below the new occupancy are unsuitable; record why.
         #  - If a hotel was already accepted, its decision may need a new status.
         #  - The current proposal's total no longer applies (flag_proposal), and work
         #    remains: TaskKind.REFRESH_FLIGHT_QUOTE, FIND_HOTEL_CAPACITY, REVALIDATE_PLAN.
@@ -114,8 +114,8 @@ def apply_change(state: TaskState, change: Change) -> TaskState:
         # Supplied: store the observation. Returns quotes this state has not seen before.
         new_quotes = record_tool_observation(s, change)
         # TODO 5: if a new quote prices the accepted hotel for the current party at a
-        # different total than the user accepted, the acceptance needs reconfirmation:
-        # set the decision status, flag the proposal, and open TaskKind.CONFIRM_WITH_USER.
+        # different total than the user accepted, the acceptance needs reconfirmation.
+        # Set the decision status, flag the proposal, and open TaskKind.CONFIRM_WITH_USER.
         for quote in new_quotes:
             pass
 
@@ -131,9 +131,9 @@ def apply_change(state: TaskState, change: Change) -> TaskState:
 def build_context(state: TaskState, next_step: PlanningStep) -> AgentContext:
     """Assemble what the model sees for its next action.
 
-    Section names the simulator and report understand: requirements, unknowns, decisions,
-    current_quotes, unsuitable_items, current_proposal, pending_work, historical.
-    Mark each section "current" or "historical".
+    The simulator and the report understand these section names: requirements, unknowns,
+    decisions, current_quotes, unsuitable_items, current_proposal, pending_work, and
+    historical. Mark each section "current" or "historical".
 
     The starter version sends the requirements and every quote ever observed, all
     labeled current.

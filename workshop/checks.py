@@ -1,4 +1,4 @@
-"""Grading checks.
+"""Progress checks.
 
 Two families, both independent of the code under test:
 
@@ -8,9 +8,10 @@ Two families, both independent of the code under test:
 * ``scenario checks`` read a recorded session (any implementation) and check outcomes
   against the world fixture and the change log.
 
-Every failure is classified so a student can tell their bug from broken infrastructure:
-``fail`` (an assertion about their result), ``todo`` (NotImplementedError), ``student_error``
-(an exception raised inside the exercise file), or ``infrastructure_error`` (anything else).
+Every result that is not a pass is classified, so a student can tell unfinished work from
+broken infrastructure: ``not_yet`` (the function's result differs from the expected behavior),
+``todo`` (NotImplementedError), ``student_error`` (an exception raised inside the exercise
+file), or ``infrastructure_error`` (anything else).
 """
 
 from __future__ import annotations
@@ -233,7 +234,7 @@ def _classify(exc: BaseException) -> str:
     if isinstance(exc, NotImplementedError):
         return "todo"
     if isinstance(exc, AssertionError):
-        return "fail"
+        return "not_yet"
     if student_location(exc):
         return "student_error"
     return "infrastructure_error"
@@ -538,6 +539,7 @@ def run_checks(strategy_name: str = "student", output: Path | None = None) -> di
     except Exception as exc:  # noqa: BLE001
         report = {"strategy": strategy_name, "overall": _classify(exc),
                   "error": f"Could not import the {strategy_name} functions: {type(exc).__name__}: {exc}", "exercise_checks": [], "scenario_runs": []}
+        report.update(progress_text(report))
         if output:
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(json.dumps(report, indent=2))
@@ -571,7 +573,7 @@ def run_checks(strategy_name: str = "student", output: Path | None = None) -> di
     elif all(st == "pass" for st in statuses) and not run_fail:
         overall = "pass"
     else:
-        overall = "fail"
+        overall = "in_progress"
     report = {
         "strategy": strategy_name,
         "module": strategy.module_file,
@@ -580,32 +582,59 @@ def run_checks(strategy_name: str = "student", output: Path | None = None) -> di
         "exercise_checks": exercise,
         "scenario_runs": runs,
     }
+    report.update(progress_text(report))
     if output:
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(report, indent=2))
     return report
 
 
+LABELS = {
+    "pass": "PASS",
+    "not_yet": "NOT YET",
+    "todo": "TODO",
+    "student_error": "ERROR in exercises.py",
+    "infrastructure_error": "SETUP PROBLEM",
+}
+
+
+def progress_text(report: dict[str, Any]) -> dict[str, str]:
+    """The summary line and next step that both the CLI and the GUI show."""
+    statuses = [c["status"] for c in report["exercise_checks"]]
+    counts = {k: statuses.count(k) for k in LABELS}
+    parts = [f"{counts['pass']} pass", f"{counts['not_yet'] + counts['todo']} not yet"]
+    errors = counts["student_error"] + counts["infrastructure_error"]
+    if errors:
+        parts.append(f"{errors} errors")
+    summary = ", ".join(parts) + f" (strategy={report['strategy']})"
+    next_step = {
+        "pass": "Every check passes. Run your state agent again and compare it with the transcript agent.",
+        "in_progress": ("Checks that do not pass yet are expected until you finish workshop/exercises.py; the runtime is working. "
+                        "Start with the first NOT YET line. Its detail says what your function produced."),
+        "todo": ("A branch in workshop/exercises.py still raises NotImplementedError; the runtime is working. "
+                 "The TODO lines name the unfinished steps."),
+        "student_error": "Your code in workshop/exercises.py raised an exception. The ERROR line names the file and line.",
+        "infrastructure_error": ("Something outside workshop/exercises.py failed. This is a setup problem, not your code. "
+                                 "Run `uv run workshop doctor`, and ask an instructor if it does not explain the problem."),
+    }[report["overall"]]
+    return {"summary": summary, "next_step": next_step}
+
+
 def format_report(report: dict[str, Any]) -> str:
-    symbols = {"pass": "PASS", "fail": "FAIL", "todo": "TODO", "student_error": "ERROR (your code)", "infrastructure_error": "ERROR (infrastructure)"}
-    lines = [f"Exercise checks for strategy={report['strategy']}"]
+    lines = [f"Exercise checks (strategy={report['strategy']})"]
     if report.get("error"):
         lines.append(f"  {report['error']}")
     for c in report["exercise_checks"]:
-        lines.append(f"  {symbols.get(c['status'], c['status']):<24} {c['id']}: {c['detail']}")
+        lines.append(f"  {LABELS.get(c['status'], c['status']):<22} {c['id']}: {c['detail']}")
     for r in report["scenario_runs"]:
-        lines.append(f"Simulated state-agent run, scenario={r['scenario']}: {r['status']}")
+        status = "ran" if r["status"] == "ran" else LABELS.get(r["status"], r["status"])
+        lines.append(f"Simulated state-agent run, scenario={r['scenario']}: {status}")
         if r.get("error"):
             lines.append(f"  {r['error']}")
         for c in r["checks"]:
-            mark = "PASS" if c["passed"] else ("n/a " if c["passed"] is None else "FAIL")
-            lines.append(f"  {mark:<24} {c['id']}: {c['detail']}")
-    verdict = {
-        "pass": "All checks pass.",
-        "todo": "Some TODOs are not implemented yet (NotImplementedError).",
-        "fail": "Some checks fail. Read the detail lines above; they describe your function's result.",
-        "infrastructure_error": "Infrastructure error: something outside workshop/exercises.py broke. Tell the instructor.",
-        "student_error": "Your code raised an exception; see the detail above.",
-    }[report["overall"]]
-    lines.append(f"Overall: {report['overall'].upper()}. {verdict}")
+            mark = "PASS" if c["passed"] else ("n/a" if c["passed"] is None else "NOT YET")
+            lines.append(f"  {mark:<22} {c['id']}: {c['detail']}")
+    lines.append("")
+    lines.append(report["summary"])
+    lines.append(report["next_step"])
     return "\n".join(lines)
