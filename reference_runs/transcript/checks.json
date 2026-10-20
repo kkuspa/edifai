@@ -1,0 +1,65 @@
+[
+  {
+    "id": "displayed_plans_compliant",
+    "description": "No displayed plan violates a hard constraint or relies on an invalid quote.",
+    "passed": true,
+    "detail": "4 displayed plans checked",
+    "category": "outcome"
+  },
+  {
+    "id": "totals_match_arithmetic",
+    "description": "Displayed totals equal per-traveler fare x seats + whole-stay hotel price.",
+    "passed": true,
+    "detail": "all totals recomputed from the fixture",
+    "category": "outcome"
+  },
+  {
+    "id": "accepted_hotel_preserved",
+    "description": "Plans after acceptance keep the accepted hotel (or flag the replacement for confirmation).",
+    "passed": true,
+    "detail": "2 later plans keep h17",
+    "category": "outcome"
+  },
+  {
+    "id": "earlier_anchor_respected",
+    "description": "Flights after the request arrive before 18:00 (from plan-002).",
+    "passed": true,
+    "detail": "2 later plans arrive before 18:00",
+    "category": "outcome"
+  },
+  {
+    "id": "price_change_flagged",
+    "description": "A plan that shows the accepted hotel at a new price asks for reconfirmation.",
+    "passed": true,
+    "detail": "flagged: ['plan-004']",
+    "category": "outcome"
+  },
+  {
+    "id": "turns_finished",
+    "description": "Every processed turn ended with a validated plan or a question.",
+    "passed": true,
+    "detail": "4 turns finished",
+    "category": "outcome"
+  },
+  {
+    "id": "no_compliant_plan_asks",
+    "description": "When no compliant plan keeps the accepted hotel, the agent asks.",
+    "passed": null,
+    "detail": "a compliant plan with the accepted hotel exists",
+    "category": "outcome"
+  },
+  {
+    "id": "planner_mode_labeled",
+    "description": "Every model call is labeled with the configured planner mode.",
+    "passed": true,
+    "detail": "planner_mode=simulated",
+    "category": "integrity"
+  },
+  {
+    "id": "transcript_complete",
+    "description": "The transcript agent received the complete history and current notifications on every call.",
+    "passed": true,
+    "detail": "15 calls checked",
+    "category": "integrity"
+  }
+]

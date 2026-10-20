@@ -1,0 +1,51 @@
+[
+  {
+    "id": "displayed_plans_compliant",
+    "description": "No displayed plan violates a hard constraint or relies on an invalid quote.",
+    "passed": true,
+    "detail": "1 displayed plans checked",
+    "category": "outcome"
+  },
+  {
+    "id": "totals_match_arithmetic",
+    "description": "Displayed totals equal per-traveler fare x seats + whole-stay hotel price.",
+    "passed": true,
+    "detail": "all totals recomputed from the fixture",
+    "category": "outcome"
+  },
+  {
+    "id": "accepted_hotel_preserved",
+    "description": "Plans after acceptance keep the accepted hotel.",
+    "passed": null,
+    "detail": "no hotel was accepted in this run",
+    "category": "outcome"
+  },
+  {
+    "id": "earlier_anchor_respected",
+    "description": "Flights after the request arrive before the original reference.",
+    "passed": null,
+    "detail": "no earlier flight was requested",
+    "category": "outcome"
+  },
+  {
+    "id": "price_change_flagged",
+    "description": "A plan that shows the accepted hotel at a new price asks for reconfirmation.",
+    "passed": null,
+    "detail": "no repriced plan was displayed",
+    "category": "outcome"
+  },
+  {
+    "id": "turns_finished",
+    "description": "Every processed turn ended with a validated plan or a question.",
+    "passed": true,
+    "detail": "1 turns finished",
+    "category": "outcome"
+  },
+  {
+    "id": "planner_mode_labeled",
+    "description": "Every model call is labeled with the configured planner mode.",
+    "passed": true,
+    "detail": "planner_mode=simulated",
+    "category": "integrity"
+  }
+]

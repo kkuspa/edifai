@@ -1,0 +1,339 @@
+[
+  {
+    "index": 0,
+    "turn": 0,
+    "role": "user",
+    "content": "Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.\n\n{\n  \"requirements\": {\n    \"origin\": \"RDU\",\n    \"destination\": \"CHI\",\n    \"depart_date\": \"2027-04-12\",\n    \"return_date\": \"2027-04-15\",\n    \"nights\": 3,\n    \"party\": {\n      \"adults\": 2,\n      \"children\": 0\n    },\n    \"budget\": {\n      \"max_total_cents\": 180000,\n      \"currency\": \"USD\"\n    },\n    \"walk_preference\": {\n      \"max_minutes\": 15,\n      \"venue\": \"Lakeside Conference Center (synthetic)\"\n    }\n  },\n  \"inventory_snapshot\": {\n    \"quotes\": [\n      {\n        \"quote_id\": \"quote-f1-r1-2a0c\",\n        \"item_id\": \"f1\",\n        \"item_kind\": \"flight\",\n        \"label\": \"Synthetic Air 410, RDU-ORD nonstop\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"per_traveler\",\n        \"unit_amount_cents\": 30000,\n        \"total_cents\": 60000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": \"18:00\",\n        \"stops\": 0,\n        \"connection\": null,\n        \"seats_available\": 9,\n        \"capacity\": null,\n        \"walk_minutes\": null\n      },\n      {\n        \"quote_id\": \"quote-f2-r1-2a0c\",\n        \"item_id\": \"f2\",\n        \"item_kind\": \"flight\",\n        \"label\": \"Synthetic Air 118, RDU-ORD nonstop\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"per_traveler\",\n        \"unit_amount_cents\": 32000,\n        \"total_cents\": 64000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": \"12:00\",\n        \"stops\": 0,\n        \"connection\": null,\n        \"seats_available\": 9,\n        \"capacity\": null,\n        \"walk_minutes\": null\n      },\n      {\n        \"quote_id\": \"quote-f3-r1-2a0c\",\n        \"item_id\": \"f3\",\n        \"item_kind\": \"flight\",\n        \"label\": \"Pretend Airlines 77/203, RDU-CLT-MDW\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"per_traveler\",\n        \"unit_amount_cents\": 28000,\n        \"total_cents\": 56000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": \"15:00\",\n        \"stops\": 1,\n        \"connection\": \"CLT, 55-minute layover\",\n        \"seats_available\": 9,\n        \"capacity\": null,\n        \"walk_minutes\": null\n      },\n      {\n        \"quote_id\": \"quote-f4-r1-2a0c\",\n        \"item_id\": \"f4\",\n        \"item_kind\": \"flight\",\n        \"label\": \"Synthetic Air 102, RDU-ORD nonstop (early)\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"per_traveler\",\n        \"unit_amount_cents\": 54000,\n        \"total_cents\": 108000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": \"08:45\",\n        \"stops\": 0,\n        \"connection\": null,\n        \"seats_available\": 9,\n        \"capacity\": null,\n        \"walk_minutes\": null\n      },\n      {\n        \"quote_id\": \"quote-f5-r1-2a0c\",\n        \"item_id\": \"f5\",\n        \"item_kind\": \"flight\",\n        \"label\": \"Pretend Airlines 15, RDU-ORD nonstop (nearly full)\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"per_traveler\",\n        \"unit_amount_cents\": 31000,\n        \"total_cents\": 62000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": \"13:30\",\n        \"stops\": 0,\n        \"connection\": null,\n        \"seats_available\": 2,\n        \"capacity\": null,\n        \"walk_minutes\": null\n      },\n      {\n        \"quote_id\": \"quote-h11-r1-2a0c\",\n        \"item_id\": \"h11\",\n        \"item_kind\": \"hotel\",\n        \"label\": \"Harbor Row Inn, king room\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"whole_stay\",\n        \"unit_amount_cents\": 60000,\n        \"total_cents\": 60000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": null,\n        \"stops\": null,\n        \"connection\": null,\n        \"seats_available\": null,\n        \"capacity\": 2,\n        \"walk_minutes\": 8\n      },\n      {\n        \"quote_id\": \"quote-h17-r1-2a0c\",\n        \"item_id\": \"h17\",\n        \"item_kind\": \"hotel\",\n        \"label\": \"Lakeview Suites, queen suite with sofa bed\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"whole_stay\",\n        \"unit_amount_cents\": 66000,\n        \"total_cents\": 66000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": null,\n        \"stops\": null,\n        \"connection\": null,\n        \"seats_available\": null,\n        \"capacity\": 3,\n        \"walk_minutes\": 10\n      },\n      {\n        \"quote_id\": \"quote-h22-r1-2a0c\",\n        \"item_id\": \"h22\",\n        \"item_kind\": \"hotel\",\n        \"label\": \"Westgate Lodge, family room\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"whole_stay\",\n        \"unit_amount_cents\": 50000,\n        \"total_cents\": 50000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": null,\n        \"stops\": null,\n        \"connection\": null,\n        \"seats_available\": null,\n        \"capacity\": 4,\n        \"walk_minutes\": 25\n      },\n      {\n        \"quote_id\": \"quote-h30-r1-2a0c\",\n        \"item_id\": \"h30\",\n        \"item_kind\": \"hotel\",\n        \"label\": \"The Meridian Tower, deluxe double\",\n        \"inventory_revision\": 1,\n        \"scope\": {\n          \"adults\": 2,\n          \"children\": 0,\n          \"depart_date\": \"2027-04-12\",\n          \"return_date\": \"2027-04-15\"\n        },\n        \"pricing_basis\": \"whole_stay\",\n        \"unit_amount_cents\": 115000,\n        \"total_cents\": 115000,\n        \"currency\": \"USD\",\n        \"observed_at\": \"2027-03-15T14:00:00Z\",\n        \"expires_at\": \"2027-03-15T16:00:00Z\",\n        \"tool_call_id\": \"app-0001\",\n        \"arrive_local\": null,\n        \"stops\": null,\n        \"connection\": null,\n        \"seats_available\": null,\n        \"capacity\": 3,\n        \"walk_minutes\": 6\n      }\n    ],\n    \"excluded\": [\n      {\n        \"item_id\": \"f6\",\n        \"reason\": \"dates 2027-04-13..2027-04-16 do not match\"\n      },\n      {\n        \"item_id\": \"h41\",\n        \"reason\": \"sold out for these dates\"\n      }\n    ]\n  }\n}",
+    "tool_call": null,
+    "tool_call_id": null,
+    "normalized": {
+      "kind": "one_shot_request",
+      "requirements": {
+        "origin": "RDU",
+        "destination": "CHI",
+        "depart_date": "2027-04-12",
+        "return_date": "2027-04-15",
+        "nights": 3,
+        "party": {
+          "adults": 2,
+          "children": 0
+        },
+        "budget": {
+          "max_total_cents": 180000,
+          "currency": "USD"
+        },
+        "walk_preference": {
+          "max_minutes": 15,
+          "venue": "Lakeside Conference Center (synthetic)"
+        }
+      },
+      "display": "Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.",
+      "inventory_snapshot": {
+        "quotes": [
+          {
+            "quote_id": "quote-f1-r1-2a0c",
+            "item_id": "f1",
+            "item_kind": "flight",
+            "label": "Synthetic Air 410, RDU-ORD nonstop",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "per_traveler",
+            "unit_amount_cents": 30000,
+            "total_cents": 60000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": "18:00",
+            "stops": 0,
+            "connection": null,
+            "seats_available": 9,
+            "capacity": null,
+            "walk_minutes": null
+          },
+          {
+            "quote_id": "quote-f2-r1-2a0c",
+            "item_id": "f2",
+            "item_kind": "flight",
+            "label": "Synthetic Air 118, RDU-ORD nonstop",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "per_traveler",
+            "unit_amount_cents": 32000,
+            "total_cents": 64000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": "12:00",
+            "stops": 0,
+            "connection": null,
+            "seats_available": 9,
+            "capacity": null,
+            "walk_minutes": null
+          },
+          {
+            "quote_id": "quote-f3-r1-2a0c",
+            "item_id": "f3",
+            "item_kind": "flight",
+            "label": "Pretend Airlines 77/203, RDU-CLT-MDW",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "per_traveler",
+            "unit_amount_cents": 28000,
+            "total_cents": 56000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": "15:00",
+            "stops": 1,
+            "connection": "CLT, 55-minute layover",
+            "seats_available": 9,
+            "capacity": null,
+            "walk_minutes": null
+          },
+          {
+            "quote_id": "quote-f4-r1-2a0c",
+            "item_id": "f4",
+            "item_kind": "flight",
+            "label": "Synthetic Air 102, RDU-ORD nonstop (early)",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "per_traveler",
+            "unit_amount_cents": 54000,
+            "total_cents": 108000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": "08:45",
+            "stops": 0,
+            "connection": null,
+            "seats_available": 9,
+            "capacity": null,
+            "walk_minutes": null
+          },
+          {
+            "quote_id": "quote-f5-r1-2a0c",
+            "item_id": "f5",
+            "item_kind": "flight",
+            "label": "Pretend Airlines 15, RDU-ORD nonstop (nearly full)",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "per_traveler",
+            "unit_amount_cents": 31000,
+            "total_cents": 62000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": "13:30",
+            "stops": 0,
+            "connection": null,
+            "seats_available": 2,
+            "capacity": null,
+            "walk_minutes": null
+          },
+          {
+            "quote_id": "quote-h11-r1-2a0c",
+            "item_id": "h11",
+            "item_kind": "hotel",
+            "label": "Harbor Row Inn, king room",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "whole_stay",
+            "unit_amount_cents": 60000,
+            "total_cents": 60000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": null,
+            "stops": null,
+            "connection": null,
+            "seats_available": null,
+            "capacity": 2,
+            "walk_minutes": 8
+          },
+          {
+            "quote_id": "quote-h17-r1-2a0c",
+            "item_id": "h17",
+            "item_kind": "hotel",
+            "label": "Lakeview Suites, queen suite with sofa bed",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "whole_stay",
+            "unit_amount_cents": 66000,
+            "total_cents": 66000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": null,
+            "stops": null,
+            "connection": null,
+            "seats_available": null,
+            "capacity": 3,
+            "walk_minutes": 10
+          },
+          {
+            "quote_id": "quote-h22-r1-2a0c",
+            "item_id": "h22",
+            "item_kind": "hotel",
+            "label": "Westgate Lodge, family room",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "whole_stay",
+            "unit_amount_cents": 50000,
+            "total_cents": 50000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": null,
+            "stops": null,
+            "connection": null,
+            "seats_available": null,
+            "capacity": 4,
+            "walk_minutes": 25
+          },
+          {
+            "quote_id": "quote-h30-r1-2a0c",
+            "item_id": "h30",
+            "item_kind": "hotel",
+            "label": "The Meridian Tower, deluxe double",
+            "inventory_revision": 1,
+            "scope": {
+              "adults": 2,
+              "children": 0,
+              "depart_date": "2027-04-12",
+              "return_date": "2027-04-15"
+            },
+            "pricing_basis": "whole_stay",
+            "unit_amount_cents": 115000,
+            "total_cents": 115000,
+            "currency": "USD",
+            "observed_at": "2027-03-15T14:00:00Z",
+            "expires_at": "2027-03-15T16:00:00Z",
+            "tool_call_id": "app-0001",
+            "arrive_local": null,
+            "stops": null,
+            "connection": null,
+            "seats_available": null,
+            "capacity": 3,
+            "walk_minutes": 6
+          }
+        ],
+        "excluded": [
+          {
+            "item_id": "f6",
+            "reason": "dates 2027-04-13..2027-04-16 do not match"
+          },
+          {
+            "item_id": "h41",
+            "reason": "sold out for these dates"
+          }
+        ]
+      }
+    },
+    "provider_raw": null
+  },
+  {
+    "index": 1,
+    "turn": 0,
+    "role": "assistant",
+    "content": "[simulated] best validated candidate",
+    "tool_call": {
+      "id": "tc-0002",
+      "name": "present_plan",
+      "arguments": {
+        "flight_quote_id": "quote-f1-r1-2a0c",
+        "hotel_quote_id": "quote-h11-r1-2a0c",
+        "claimed_total_cents": 120000,
+        "explanation": "Flight f1, Synthetic Air 410, RDU-ORD nonstop: outbound arrives 18:00 Chicago time, nonstop, $300 per traveler x 2 = $600. Hotel h11, Harbor Row Inn, king room: 8-minute walk to the venue, sleeps 2, $600 for the full stay. Total $1,200 against the $1,800 budget. This is a proposal only; nothing has been booked."
+      }
+    },
+    "tool_call_id": null,
+    "normalized": null,
+    "provider_raw": null
+  },
+  {
+    "index": 2,
+    "turn": 0,
+    "role": "tool",
+    "content": "Displayed to the user as plan-001. Computed total $1,200. Confirmation status: pending_user_review. Reason codes: none.",
+    "tool_call": null,
+    "tool_call_id": "tc-0002",
+    "normalized": {
+      "displayed_proposal": {
+        "proposal_id": "plan-001",
+        "status": "current",
+        "status_reason": null,
+        "flight_id": "f1",
+        "hotel_id": "h11",
+        "flight_quote_id": "quote-f1-r1-2a0c",
+        "hotel_quote_id": "quote-h11-r1-2a0c",
+        "total_cents_when_presented": 120000,
+        "requirement_revision": 1,
+        "confirmation_status": "pending_user_review"
+      },
+      "validation": {
+        "flight_quote_id": "quote-f1-r1-2a0c",
+        "hotel_quote_id": "quote-h11-r1-2a0c",
+        "flight_id": "f1",
+        "hotel_id": "h11",
+        "computed_total_cents": 120000,
+        "claimed_total_cents": 120000,
+        "hard_constraints_ok": true,
+        "quotes_fresh": true,
+        "preferences_met": true,
+        "confirmation_required": false,
+        "reasons": [],
+        "checked_at": "2027-03-15T14:00:00Z",
+        "requirement_revision": 1
+      }
+    },
+    "provider_raw": null
+  }
+]

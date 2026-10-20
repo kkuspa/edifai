@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context to State Workshop</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>Context to State Workshop</h1>
+  <span id="mode-badge" class="badge"></span>
+  <span id="status-line" class="muted"></span>
+</header>
+<main>
+  <section id="controls" class="pane" aria-label="Scenario and execution controls">
+    <h2>Session</h2>
+    <label>Open session <select id="session-select"></select></label>
+    <details id="new-session" open>
+      <summary>New session</summary>
+      <form id="create-form">
+        <label>Name <input id="f-name" required pattern="[A-Za-z0-9][A-Za-z0-9_.\-]{0,63}" value="state"></label>
+        <fieldset><legend>Implementation</legend>
+          <label><input type="radio" name="impl" value="one-shot"> One-shot</label>
+          <label><input type="radio" name="impl" value="transcript"> Transcript-driven</label>
+          <label><input type="radio" name="impl" value="state" checked> Structured state</label>
+        </fieldset>
+        <label>Planner
+          <select id="f-planner"><option value="simulated">simulated</option><option value="live">live model</option></select>
+        </label>
+        <label id="provider-wrap" hidden>Provider <select id="f-provider"><option value="">(from .env)</option><option value="anthropic">anthropic</option><option value="openai">openai</option></select></label>
+        <label>Strategy <select id="f-strategy"><option value="student">student (workshop/exercises.py)</option><option value="reference">reference</option></select></label>
+        <label>Scenario <select id="f-scenario"></select></label>
+        <label id="restated-wrap" hidden><input type="checkbox" id="f-restated"> Caller restates the full brief (one-shot)</label>
+        <button type="submit">Create session</button>
+      </form>
+    </details>
+    <button id="btn-reset" class="danger" disabled>Reset this session</button>
+
+    <h2>Scenario changes</h2>
+    <p class="muted small">Applied in order. Each applies one fixture turn without planning.</p>
+    <div id="change-buttons"></div>
+
+    <h2>Agent</h2>
+    <div class="row">
+      <button id="btn-step" disabled title="One planner decision and its effect">Step</button>
+      <button id="btn-turn" disabled>Run turn</button>
+      <button id="btn-run" disabled>Run to completion</button>
+    </div>
+
+    <h2>Checks and evidence</h2>
+    <label>Strategy <select id="c-strategy"><option value="student">student</option><option value="reference">reference</option></select></label>
+    <button id="btn-check">Run exercise checks</button>
+    <label>Compare with <select id="compare-select"></select></label>
+    <div class="row">
+      <button id="btn-compare">Compare side by side</button>
+      <button id="btn-compare-export">Export comparison HTML</button>
+    </div>
+    <div class="row">
+      <button id="btn-export" disabled>Export artifacts</button>
+      <a id="report-link" target="_blank" rel="noopener" hidden>Open report.html</a>
+    </div>
+    <p id="op-status" class="small" role="status"></p>
+  </section>
+
+  <section id="center" class="pane" aria-label="Conversation and plan">
+    <nav class="tabs" data-group="center">
+      <button data-tab="conversation" class="active">Conversation</button>
+      <button data-tab="compare">Comparison</button>
+      <button data-tab="checks">Check results</button>
+    </nav>
+    <div data-panel="conversation" class="panel active">
+      <div id="conversation"></div>
+      <h3>Proposed plan</h3>
+      <div id="plan-card"></div>
+    </div>
+    <div data-panel="compare" class="panel"><div id="compare-view"><p class="muted">Choose a second session and press Compare.</p></div></div>
+    <div data-panel="checks" class="panel"><div id="check-view"><p class="muted">Run the exercise checks to see results here.</p></div></div>
+  </section>
+
+  <section id="inspector" class="pane" aria-label="Inspector">
+    <nav class="tabs" data-group="inspector">
+      <button data-tab="state" class="active">State</button>
+      <button data-tab="model">Model input</button>
+      <button data-tab="tools">Tool calls</button>
+      <button data-tab="validation">Validation</button>
+    </nav>
+    <div data-panel="state" class="panel active"><div id="state-view"></div></div>
+    <div data-panel="model" class="panel"><div id="model-view"></div></div>
+    <div data-panel="tools" class="panel"><div id="tools-view"></div></div>
+    <div data-panel="validation" class="panel"><div id="validation-view"></div></div>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

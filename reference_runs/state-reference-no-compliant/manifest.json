@@ -1,0 +1,27 @@
+{
+  "implementation": "state",
+  "planner_mode": "simulated",
+  "provider": null,
+  "model_settings": {
+    "planner_mode": "simulated",
+    "model": null,
+    "note": "Deterministic rule-based planner. Results do not measure LLM capability."
+  },
+  "strategy": "reference",
+  "scenario": "no-compliant",
+  "restated_brief": false,
+  "fixture_revision": "inventory-2027-04-v1",
+  "clock": {
+    "start": "2027-03-15T14:00:00+00:00",
+    "now": "2027-03-15T14:40:00+00:00",
+    "time_zone": "America/Chicago"
+  },
+  "run_id": "run-a92811af",
+  "session": "state-reference-no-compliant",
+  "phase": "complete",
+  "version": 2,
+  "limits": {
+    "max_tool_calls_per_turn": 8,
+    "max_steps_per_turn": 12
+  }
+}

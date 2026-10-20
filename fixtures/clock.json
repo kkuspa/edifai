@@ -1,0 +1,4 @@
+{
+  "start": "2027-03-15T14:00:00+00:00",
+  "notes": "Fixture clock. Every run starts here, independent of the computer's time. Scenario turns advance it by explicit offsets; nothing sleeps."
+}

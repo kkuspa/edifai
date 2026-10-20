@@ -1,0 +1,18 @@
+{
+  "name": "initial",
+  "description": "The bounded initial request only. Use it to look at what a single, well-scoped model input can do.",
+  "initial_request": {
+    "text": "Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.",
+    "requirements": {
+      "origin": "RDU",
+      "destination": "CHI",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "nights": 3,
+      "party": {"adults": 2, "children": 0},
+      "budget": {"max_total_cents": 180000, "currency": "USD"},
+      "walk_preference": {"max_minutes": 15, "venue": "Lakeside Conference Center (synthetic)"}
+    }
+  },
+  "turns": []
+}

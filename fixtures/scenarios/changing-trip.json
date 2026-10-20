@@ -1,0 +1,50 @@
+{
+  "name": "changing-trip",
+  "description": "The canonical workshop scenario: party grows, the user accepts the hotel and asks for an earlier flight, then the accepted hotel's quote expires and reprices.",
+  "initial_request": {
+    "text": "Plan a three-night trip from RDU to Chicago for two adults. Keep round-trip flights and the hotel under $1,800 total. Prefer a hotel within a 15-minute walk of the conference venue.",
+    "requirements": {
+      "origin": "RDU",
+      "destination": "CHI",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "nights": 3,
+      "party": {"adults": 2, "children": 0},
+      "budget": {"max_total_cents": 180000, "currency": "USD"},
+      "walk_preference": {"max_minutes": 15, "venue": "Lakeside Conference Center (synthetic)"}
+    }
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "clock_offset_minutes": 10,
+      "source": "user",
+      "text": "Actually, we're bringing our child. We need a room that accommodates three.",
+      "changes": [
+        {"type": "PartySizeChanged", "adults": 2, "children": 1}
+      ]
+    },
+    {
+      "turn": 2,
+      "clock_offset_minutes": 20,
+      "source": "user",
+      "text": "That hotel looks good, but can you find an earlier flight?",
+      "changes": [
+        {"type": "HotelAccepted", "resolve_from": "displayed_proposal", "expected_hotel_id": "h17"},
+        {"type": "EarlierFlightRequested", "resolve_from": "displayed_proposal"}
+      ]
+    },
+    {
+      "turn": 3,
+      "clock_offset_minutes": 40,
+      "source": "world",
+      "text": "Inventory notice: the quote for Lakeview Suites (h17) has expired. A refreshed quote may differ.",
+      "world_events": [
+        {"type": "reprice", "item_id": "h17", "new_revision": 2}
+      ],
+      "changes": [
+        {"type": "QuoteExpired", "resolve_from": "observed_quotes", "item_id": "h17"}
+      ]
+    }
+  ]
+}

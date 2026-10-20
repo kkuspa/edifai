@@ -1,0 +1,61 @@
+:root {
+  --fg: #1d1d1f; --muted: #5f6368; --line: #d9dce1; --bg: #ffffff; --panel: #f6f7f9;
+  --ok: #1e7d32; --bad: #b3261e; --warn: #8a5a00; --accent: #1a4f8b; --user: #eef3fa;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #e8eaed; --muted: #a0a4aa; --line: #3a3d42; --bg: #16181b; --panel: #1f2226;
+          --ok: #7cc48a; --bad: #f28b82; --warn: #e6b85c; --accent: #8ab4f8; --user: #1d2733; }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: var(--fg); background: var(--bg); line-height: 1.4; }
+header { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+h1 { font-size: 17px; margin: 0; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 18px 0 6px; }
+h3 { font-size: 14px; margin: 14px 0 6px; }
+main { display: grid; grid-template-columns: 280px minmax(0, 1fr) minmax(0, 1fr); gap: 0; height: calc(100vh - 46px); }
+.pane { overflow: auto; padding: 8px 16px 32px; border-right: 1px solid var(--line); }
+.pane:last-child { border-right: none; }
+@media (max-width: 1000px) { main { grid-template-columns: 1fr; height: auto; } .pane { border-right: none; border-bottom: 1px solid var(--line); } }
+label { display: block; margin: 6px 0; }
+input[type=text], input:not([type]), select { width: 100%; padding: 4px 6px; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); }
+fieldset { border: 1px solid var(--line); margin: 6px 0; padding: 4px 8px; }
+fieldset label { margin: 2px 0; }
+button { font: inherit; padding: 5px 10px; margin: 3px 4px 3px 0; border: 1px solid var(--line); background: var(--panel); color: var(--fg); cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .45; cursor: default; }
+button.primary { border-color: var(--accent); color: var(--accent); }
+button.danger { color: var(--bad); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
+.muted { color: var(--muted); } .small { font-size: 12px; }
+.ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+.badge { display: inline-block; padding: 1px 7px; border: 1px solid currentColor; font-size: 11px; font-weight: bold; letter-spacing: .04em; }
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin: 4px 0 10px; position: sticky; top: 0; background: var(--bg); z-index: 1; }
+.tabs button { border: none; border-bottom: 2px solid transparent; background: none; margin: 0; padding: 6px 10px; }
+.tabs button.active { border-bottom-color: var(--accent); color: var(--accent); }
+.panel { display: none; } .panel.active { display: block; }
+.msg { padding: 8px 10px; margin: 6px 0; border-left: 3px solid var(--line); background: var(--panel); }
+.msg.user { background: var(--user); border-left-color: var(--accent); }
+.msg.notification { border-left-color: var(--warn); }
+.msg .who { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.card { border: 1px solid var(--line); padding: 8px 10px; background: var(--panel); margin: 6px 0; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; margin: 4px 0 10px; }
+th, td { text-align: left; vertical-align: top; padding: 3px 6px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: normal; }
+pre { white-space: pre-wrap; word-break: break-word; background: var(--panel); padding: 8px; font-size: 12px; max-height: 420px; overflow: auto; margin: 4px 0; }
+details > summary { cursor: pointer; color: var(--accent); margin: 3px 0; }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.change-btn { display: block; width: 100%; text-align: left; }
+.change-btn .done { color: var(--ok); }
+
+/* Additional states used by app.js */
+.msg.plan { border-left-color: var(--ok); }
+.msg.question { border-left-color: var(--warn); }
+.msg.incomplete { border-left-color: var(--bad); }
+.card.reconfirm { border-left: 4px solid var(--warn); }
+.callout { border-left: 3px solid var(--warn); padding: 4px 8px; margin: 6px 0; background: var(--panel); }
+.call-list button { display: block; width: 100%; text-align: left; margin: 2px 0; }
+.call-list button.selected { border-color: var(--accent); color: var(--accent); }
+.compare-grid .card { margin: 0; }
+td, th { overflow-wrap: anywhere; }

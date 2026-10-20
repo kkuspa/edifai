@@ -1,0 +1,155 @@
+{
+  "fixture_revision": "inventory-2027-04-v1",
+  "notice": "Synthetic inventory for a classroom exercise. Not travel advice and not a source of real prices.",
+  "currency": "USD",
+  "destination_time_zone": "America/Chicago",
+  "venue": "Lakeside Conference Center (synthetic)",
+  "quote_ttl_minutes": 120,
+  "pricing_rules": {
+    "flight": "per_traveler: total = amount_cents x seats. Every traveler, child included, needs a seat and pays the same round-trip fare.",
+    "hotel": "whole_stay: total = base_cents + extra_guest_cents x max(0, occupancy - base_occupancy). The price covers all three nights. Occupancy above capacity cannot be quoted.",
+    "scope": "A quote is valid only for the party (adults, children) and dates it was issued for. A quote for two adults never substantiates a price for two adults and a child, even for the same item ID."
+  },
+  "flights": [
+    {
+      "flight_id": "f1",
+      "label": "Synthetic Air 410, RDU-ORD nonstop",
+      "origin": "RDU",
+      "destination": "ORD",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "outbound_depart_local": "16:55",
+      "outbound_arrive_local": "18:00",
+      "stops": 0,
+      "connection": null,
+      "seats_available": 9,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 30000}}}
+    },
+    {
+      "flight_id": "f2",
+      "label": "Synthetic Air 118, RDU-ORD nonstop",
+      "origin": "RDU",
+      "destination": "ORD",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "outbound_depart_local": "10:50",
+      "outbound_arrive_local": "12:00",
+      "stops": 0,
+      "connection": null,
+      "seats_available": 9,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 32000}}}
+    },
+    {
+      "flight_id": "f3",
+      "label": "Pretend Airlines 77/203, RDU-CLT-MDW",
+      "origin": "RDU",
+      "destination": "MDW",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "outbound_depart_local": "11:15",
+      "outbound_arrive_local": "15:00",
+      "stops": 1,
+      "connection": "CLT, 55-minute layover",
+      "seats_available": 9,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 28000}}}
+    },
+    {
+      "flight_id": "f4",
+      "label": "Synthetic Air 102, RDU-ORD nonstop (early)",
+      "origin": "RDU",
+      "destination": "ORD",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "outbound_depart_local": "07:35",
+      "outbound_arrive_local": "08:45",
+      "stops": 0,
+      "connection": null,
+      "seats_available": 9,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 54000}}}
+    },
+    {
+      "flight_id": "f5",
+      "label": "Pretend Airlines 15, RDU-ORD nonstop (nearly full)",
+      "origin": "RDU",
+      "destination": "ORD",
+      "depart_date": "2027-04-12",
+      "return_date": "2027-04-15",
+      "outbound_depart_local": "12:20",
+      "outbound_arrive_local": "13:30",
+      "stops": 0,
+      "connection": null,
+      "seats_available": 2,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 31000}}}
+    },
+    {
+      "flight_id": "f6",
+      "label": "Synthetic Air 940, RDU-ORD nonstop (wrong day)",
+      "origin": "RDU",
+      "destination": "ORD",
+      "depart_date": "2027-04-13",
+      "return_date": "2027-04-16",
+      "outbound_depart_local": "08:50",
+      "outbound_arrive_local": "10:00",
+      "stops": 0,
+      "connection": null,
+      "seats_available": 9,
+      "pricing": {"basis": "per_traveler", "revisions": {"1": {"amount_cents": 25000}}}
+    }
+  ],
+  "hotels": [
+    {
+      "hotel_id": "h11",
+      "label": "Harbor Row Inn, king room",
+      "check_in": "2027-04-12",
+      "check_out": "2027-04-15",
+      "capacity": 2,
+      "walk_minutes_to_venue": 8,
+      "available": true,
+      "pricing": {"basis": "whole_stay", "revisions": {"1": {"base_cents": 60000, "base_occupancy": 2, "extra_guest_cents": 0}}}
+    },
+    {
+      "hotel_id": "h17",
+      "label": "Lakeview Suites, queen suite with sofa bed",
+      "check_in": "2027-04-12",
+      "check_out": "2027-04-15",
+      "capacity": 3,
+      "walk_minutes_to_venue": 10,
+      "available": true,
+      "pricing": {"basis": "whole_stay", "revisions": {
+        "1": {"base_cents": 66000, "base_occupancy": 2, "extra_guest_cents": 6000},
+        "2": {"base_cents": 84000, "base_occupancy": 2, "extra_guest_cents": 6000},
+        "3": {"base_cents": 114000, "base_occupancy": 2, "extra_guest_cents": 6000}
+      }}
+    },
+    {
+      "hotel_id": "h22",
+      "label": "Westgate Lodge, family room",
+      "check_in": "2027-04-12",
+      "check_out": "2027-04-15",
+      "capacity": 4,
+      "walk_minutes_to_venue": 25,
+      "available": true,
+      "pricing": {"basis": "whole_stay", "revisions": {"1": {"base_cents": 50000, "base_occupancy": 4, "extra_guest_cents": 0}}}
+    },
+    {
+      "hotel_id": "h30",
+      "label": "The Meridian Tower, deluxe double",
+      "check_in": "2027-04-12",
+      "check_out": "2027-04-15",
+      "capacity": 3,
+      "walk_minutes_to_venue": 6,
+      "available": true,
+      "pricing": {"basis": "whole_stay", "revisions": {"1": {"base_cents": 115000, "base_occupancy": 3, "extra_guest_cents": 0}}}
+    },
+    {
+      "hotel_id": "h41",
+      "label": "Canal Street Hotel, double queen (sold out)",
+      "check_in": "2027-04-12",
+      "check_out": "2027-04-15",
+      "capacity": 3,
+      "walk_minutes_to_venue": 12,
+      "available": false,
+      "pricing": {"basis": "whole_stay", "revisions": {"1": {"base_cents": 64000, "base_occupancy": 3, "extra_guest_cents": 0}}}
+    }
+  ]
+}
