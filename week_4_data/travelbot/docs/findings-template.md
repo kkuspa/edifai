@@ -1,6 +1,6 @@
 # Notes
 
-A place to jot down what you noticed. Nobody collects this; use it to think, and bring it to the discussion if it helps. `uv run workshop session show NAME diff --index N` and `session show NAME model-input --index N` find the details again if you want to look something up.
+A place to jot down what you noticed. Use it to think, and bring it to the discussion if it helps. `uv run workshop session show NAME diff --index N` and `session show NAME model-input --index N` find the details again if you want to look something up.
 
 ## One request at a time
 

@@ -1,6 +1,6 @@
 # Workshop reference
 
-The [README](../README.md) walks through the exercise step by step. This page collects the background you may want beside it: the scenario's facts and numbers, the rules a complete solution follows, and fixes for common snags. Work at your own pace; nothing here is timed or graded.
+The [README](../README.md) walks through the exercise step by step. This page collects the background you may want beside it: the scenario's facts and numbers, the rules a complete solution follows, and fixes for common snags.
 
 ## The scenario's facts
 
