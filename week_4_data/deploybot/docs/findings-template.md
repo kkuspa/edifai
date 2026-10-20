@@ -1,25 +1,35 @@
-# Findings
+# Notes
 
-Name:
-Interface used (CLI, GUI, or both):
-Planner mode (simulated or live; if live, provider and model):
+A place to jot down what you noticed. Nobody collects this; use it to think, and bring it to the discussion if it helps. `submissions/evidence.md` lists the span IDs, event IDs, and trace trees from your runs if you want to look something up.
 
-Cite IDs from your own runs. `submissions/evidence.md` lists them. A trace shows what data the application supplied, what was proposed, and what was executed; it does not show a model's internal reasoning.
+## Before and after
 
-| Question | Your answer | Evidence (span IDs, event IDs, artifact) |
-|---|---|---|
-| What did the baseline incorrectly assume? | | context.json of runs/before; context.build span ID |
-| Which event establishes the current commit? | | event ID |
-| Why doesn't the earlier test result establish readiness? | | commit of that test; current test event ID |
-| Why doesn't the earlier approval authorize this deployment? | | approval commit and environment; event ID |
-| What changed in the repaired proposal? | | planner.propose span ID, before and after |
-| Did the deployment tool actually execute? | | tool.deploy span ID and receipt, or its absence and the gate outcome |
-| Why are passing b2 tests insufficient by themselves? | | follow-up context; approval evidence |
+What did the baseline assume, and where in its context could you see the assumption?
 
-## Which historical facts are still true?
+Which event establishes the current commit?
 
-After the head moved to b2, which facts about a1 remain true, and why do they no longer decide the next action?
+Why does the earlier passing test fail to show that `b2` is ready?
 
-## Observed versus intended
+Why does the earlier approval fail to authorize this deployment?
 
-If you used the live planner, did the model reproduce the baseline mistake? Separate what you observed from what the deterministic fixture is designed to show.
+What changed between the baseline's proposal and the repaired one?
+
+Did the deployment tool run in either case? How did the trace show it?
+
+## The follow-ups
+
+Once the tests passed for `b2`, why was that still not enough to deploy?
+
+What did the approval for staging cover, and what did it leave out?
+
+## What still holds
+
+After the head moved to `b2`, which facts about `a1` remained true? Why did they stop deciding the next action?
+
+## If you tried a live model
+
+Did the model repeat the baseline's mistake? How did what you observed differ from what the simulator showed, and why might that be?
+
+## For your own agent
+
+What does the agent you are building for the final project remember between sessions? Where does that memory come from, and how would you rebuild it if it went stale?

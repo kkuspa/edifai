@@ -301,7 +301,7 @@ def run_checks(strategy_name: str) -> list[CheckResult]:
     strategy = load_strategy(strategy_name)
     if not isinstance(strategy, StructuredStrategy):
         return [CheckResult("-", "strategy", "error",
-                            "The baseline is intentionally flawed and is not graded. Check student or reference.")]
+                            "The baseline is intentionally flawed, so there is nothing to check. Use student or reference.")]
     results = []
     for exercise, name, fn in CHECKS:
         try:

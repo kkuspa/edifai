@@ -43,7 +43,7 @@ Running the approved deployment twice returns the existing receipt (`reused_exis
 
 The full description is the module docstring of `src/agent_state_workshop/baseline.py`. In short: at the pause the checkpoint process sets `tests_passed` if any test passed and `deployment_approved` if any approval exists, writes one templated sentence, and saves it. On resume the baseline reads only that summary, asks the read-only head tool for the current commit, and pairs b2 with the unscoped flags. The simulated planner turns "passed + approved" into a deploy proposal. This shows one way an implementation can fail; it does not claim every summary or every LLM fails this way.
 
-## Answer key for the findings
+## Discussion notes for instructors
 
 Span and event IDs differ per run; event IDs below are fixed by the fixture.
 
@@ -103,7 +103,7 @@ uv run workshop examples
 
 ## Pilot status
 
-The 20-minute timing has not been piloted yet. The reference solution changes about 60 lines of `exercises.py`, at the top of the specification's 30 to 60 line target. If a pilot runs long, provide more of `build_context` (for example the `TestEvidence` construction) rather than dropping the trace comparison.
+The exercise is untimed and has not been piloted yet. The reference solution changes about 60 lines of `exercises.py`. If people get stuck on the mechanics rather than the ideas, provide more of `build_context` (for example the `TestEvidence` construction) rather than dropping the trace comparison.
 
 ## Optional extensions
 

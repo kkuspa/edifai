@@ -174,7 +174,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             line("info", f"OTLP endpoint {endpoint} not reachable. Runs still write local traces. "
                          "Start Jaeger with `docker compose up -d jaeger` or unset the variable.")
     else:
-        line("info", "OTLP export off (optional). Local spans.jsonl and HTML comparison cover the assignment.")
+        line("info", "OTLP export off (optional). The local spans.jsonl and the HTML comparison show everything the exercise uses.")
     for provider, st in provider_status().items():
         state = "configured" if st["key_configured"] else "not configured"
         line("info", f"live planner {provider}: key {state}, model {st['model']} (optional)")
@@ -547,7 +547,7 @@ def build_parser() -> argparse.ArgumentParser:
     op_id(p)
     p.set_defaults(func=cmd_visualize)
 
-    p = sub.add_parser("export", help="write the submission evidence bundle")
+    p = sub.add_parser("export", help="save a record of your runs: comparison page, evidence index, notes")
     p.add_argument("--before", required=True)
     p.add_argument("--after", required=True)
     p.add_argument("--followup", action="append", help="additional run directories (repeatable)")

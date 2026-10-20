@@ -90,6 +90,6 @@ def test_export_bundle(ws):
     before, after = _two_runs(ws)
     r = ok(ws.execute("export", {"before": str(before), "after": str(after)}))
     names = {p.split("/")[-1] for p in r["files"]}
-    assert {"comparison.html", "evidence.json", "evidence.md", "findings.md"} <= names
+    assert {"comparison.html", "evidence.json", "evidence.md", "notes.md"} <= names
     bundle = json.loads((ws.root / "submissions/evidence.json").read_text())
     assert [run["strategy"] for run in bundle["runs"]] == ["baseline", "reference"]
