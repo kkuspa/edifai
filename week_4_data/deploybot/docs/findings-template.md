@@ -1,6 +1,6 @@
 # Notes
 
-A place to jot down what you noticed. Nobody collects this; use it to think, and bring it to the discussion if it helps. `submissions/evidence.md` lists the span IDs, event IDs, and trace trees from your runs if you want to look something up.
+A place to jot down what you noticed. Use it to think, and bring it to the discussion if it helps. `submissions/evidence.md` lists the span IDs, event IDs, and trace trees from your runs if you want to look something up.
 
 ## Before and after
 

@@ -1,6 +1,6 @@
 # Workshop reference
 
-The [README](../README.md) walks through the exercise step by step. This page collects the background you may want beside it: the events that matter, the rules the repaired code follows, the commands for looking around, and fixes for common snags. Work at your own pace; nothing here is timed or graded.
+The [README](../README.md) walks through the exercise step by step. This page collects the background you may want beside it: the events that matter, the rules the repaired code follows, the commands for looking around, and fixes for common snags.
 
 ## The events that matter
 

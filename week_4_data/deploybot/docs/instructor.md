@@ -103,7 +103,7 @@ uv run workshop examples
 
 ## Pilot status
 
-The exercise is untimed and has not been piloted yet. The reference solution changes about 60 lines of `exercises.py`. If people get stuck on the mechanics rather than the ideas, provide more of `build_context` (for example the `TestEvidence` construction) rather than dropping the trace comparison.
+The exercise has not been piloted yet. The reference solution changes about 60 lines of `exercises.py`. If people get stuck on the mechanics rather than the ideas, provide more of `build_context` (for example the `TestEvidence` construction) rather than dropping the trace comparison.
 
 ## Optional extensions
 

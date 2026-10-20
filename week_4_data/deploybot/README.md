@@ -9,7 +9,7 @@ You will learn to:
 - rebuild an agent's working state after a restart instead of trusting a stale copy;
 - read OpenTelemetry traces to see what data an agent received, what it proposed, and what actually ran.
 
-You will run the flawed assistant, repair three functions in one Python file, and compare traces of the old and new behavior. Then you will feed the assistant new events and watch its decision change. Take the time you need. Nothing is graded or handed in.
+You will run the flawed assistant, repair three functions in one Python file, and compare traces of the old and new behavior. Then you will feed the assistant new events and watch its decision change.
 
 ## The story
 
