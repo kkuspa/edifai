@@ -1,0 +1,24 @@
+{
+  "changes": [
+    {
+      "after": {
+        "approval_id": "approval-b2-staging",
+        "approved_by": "user:release-lead",
+        "commit": "b2",
+        "environment": "staging",
+        "source_event_id": "evt-042"
+      },
+      "before": null,
+      "change": "added",
+      "path": "$.approvals[1]"
+    },
+    {
+      "after": 42,
+      "before": 41,
+      "change": "changed",
+      "path": "$.through_sequence"
+    }
+  ],
+  "from": "snapshot-before.json",
+  "to": "state.json"
+}

@@ -1,0 +1,61 @@
+{
+  "context": {
+    "blockers": [
+      "approval_missing_for_target"
+    ],
+    "context_version": 1,
+    "current_test": {
+      "commit": "b2",
+      "run_number": 2,
+      "source_event_id": "evt-041",
+      "status": "passed",
+      "suite": "required"
+    },
+    "evidence_event_ids": [
+      "evt-021",
+      "evt-041",
+      "evt-012"
+    ],
+    "historical_approvals": [
+      {
+        "approval_id": "approval-a1-staging",
+        "approved_by": "user:release-lead",
+        "commit": "a1",
+        "environment": "staging",
+        "source_event_id": "evt-012"
+      }
+    ],
+    "historical_tests": [
+      {
+        "commit": "a1",
+        "result": "passed",
+        "run_number": 1,
+        "source_event_id": "evt-010",
+        "suite": "required"
+      }
+    ],
+    "matching_approval": {
+      "approval_id": null,
+      "approved_by": null,
+      "commit": "b2",
+      "environment": "staging",
+      "source_event_id": null,
+      "status": "missing"
+    },
+    "narrative_memory": null,
+    "session_id": "release-demo",
+    "strategy": "reference",
+    "target": {
+      "commit": "b2",
+      "environment": "staging",
+      "source_event_id": "evt-021"
+    },
+    "through_sequence": 41,
+    "user_request": "Can you finish the deployment?"
+  },
+  "model": null,
+  "note": "No LLM request. The simulator read only this context.",
+  "planner": "simulator-v1",
+  "planner_mode": "simulated",
+  "provider": null
+}

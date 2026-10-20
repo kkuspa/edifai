@@ -1,0 +1,23 @@
+{
+  "action": "request_approval",
+  "authoritative": {
+    "approval_id": null,
+    "approval_source_event_id": null,
+    "checked_through_sequence": 41,
+    "head_commit": "b2",
+    "head_source_event_id": "evt-021",
+    "test_result": "passed",
+    "test_run_number": 2,
+    "test_source_event_id": "evt-041"
+  },
+  "authoritative_blockers": [
+    "approval_missing_for_target"
+  ],
+  "commit": "b2",
+  "environment": "staging",
+  "gate_version": 1,
+  "outcome": "allowed",
+  "reason_codes": [
+    "no_side_effect"
+  ]
+}

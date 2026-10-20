@@ -1,0 +1,52 @@
+{
+  "approvals": [
+    {
+      "approval_id": "approval-a1-staging",
+      "approved_by": "user:release-lead",
+      "commit": "a1",
+      "environment": "staging",
+      "source_event_id": "evt-012"
+    },
+    {
+      "approval_id": "approval-b2-staging",
+      "approved_by": "user:release-lead",
+      "commit": "b2",
+      "environment": "staging",
+      "source_event_id": "evt-042"
+    }
+  ],
+  "head": {
+    "commit": "b2",
+    "source_event_id": "evt-021"
+  },
+  "last_user_request": {
+    "message": "Can you finish the deployment?",
+    "source_event_id": "evt-040"
+  },
+  "projection_version": 1,
+  "session_id": "release-demo",
+  "tests": [
+    {
+      "commit": "a1",
+      "result": "passed",
+      "run_number": 1,
+      "source_event_id": "evt-010",
+      "suite": "required"
+    },
+    {
+      "commit": "b2",
+      "result": "passed",
+      "run_number": 1,
+      "source_event_id": "evt-027",
+      "suite": "lint"
+    },
+    {
+      "commit": "b2",
+      "result": "passed",
+      "run_number": 2,
+      "source_event_id": "evt-041",
+      "suite": "required"
+    }
+  ],
+  "through_sequence": 42
+}

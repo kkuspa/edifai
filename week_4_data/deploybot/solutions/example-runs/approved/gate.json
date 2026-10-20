@@ -1,0 +1,21 @@
+{
+  "action": "deploy",
+  "authoritative": {
+    "approval_id": "approval-b2-staging",
+    "approval_source_event_id": "evt-042",
+    "checked_through_sequence": 42,
+    "head_commit": "b2",
+    "head_source_event_id": "evt-021",
+    "test_result": "passed",
+    "test_run_number": 2,
+    "test_source_event_id": "evt-041"
+  },
+  "authoritative_blockers": [],
+  "commit": "b2",
+  "environment": "staging",
+  "gate_version": 1,
+  "outcome": "allowed",
+  "reason_codes": [
+    "all_checks_passed"
+  ]
+}

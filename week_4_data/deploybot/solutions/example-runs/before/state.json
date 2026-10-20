@@ -1,0 +1,17 @@
+{
+  "session_id": "release-demo",
+  "strategy": "baseline",
+  "summary": {
+    "facts": {
+      "deployment_approved": true,
+      "environment": "staging",
+      "tests_passed": true
+    },
+    "kind": "narrative-summary",
+    "summary_version": 1,
+    "text": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+    "through_sequence": 20
+  },
+  "summary_writer_pid": 42713,
+  "through_sequence": 20
+}

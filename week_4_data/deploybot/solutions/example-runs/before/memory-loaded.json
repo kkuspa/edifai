@@ -1,0 +1,17 @@
+{
+  "body": {
+    "facts": {
+      "deployment_approved": true,
+      "environment": "staging",
+      "tests_passed": true
+    },
+    "kind": "narrative-summary",
+    "summary_version": 1,
+    "text": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+    "through_sequence": 20
+  },
+  "kind": "narrative-summary",
+  "saved_at": "2026-10-20T07:14:45.088161Z",
+  "through_sequence": 20,
+  "writer_pid": 42713
+}

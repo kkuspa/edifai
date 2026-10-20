@@ -1,0 +1,99 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "artifacts": {
+    "context.json": {
+      "path": "context.json",
+      "sha256": "2e962213e127913ec636e068561fe82e3dfba149b6e1bbcec9f4457f7330b2ad"
+    },
+    "events.json": {
+      "path": "events.json",
+      "sha256": "b1f7694340557d1de37f266296b7e16f4188c0fe7216e96f26aeebdffd58f7cc"
+    },
+    "gate.json": {
+      "path": "gate.json",
+      "sha256": "19c8e2f48b6df30b9b7e03420d366f1870c8d2c2ec94a1e2150426cef42ede24"
+    },
+    "planner-input.json": {
+      "path": "planner-input.json",
+      "sha256": "d798210b6e7c0091dd3ae9b81a78c27b87e55b5cbdd5b80cdec6eb947c43bd0f"
+    },
+    "progress.json": {
+      "path": "progress.json",
+      "sha256": "b7b8d0bd6d286378829b93958288deb585b2a5c858834d3f6258c7e6b9f1ad1e"
+    },
+    "proposal.json": {
+      "path": "proposal.json",
+      "sha256": "f565c1c52f456b8614260640f55862cb750ae93527aa65fb5a9b12e28ea6a17e"
+    },
+    "spans.jsonl": {
+      "path": "spans.jsonl",
+      "sha256": "f2108eb340b13816b6a0fd115ff6677af12b6ff3f5f8e8a096478d7ba42431ba"
+    },
+    "state.json": {
+      "path": "state.json",
+      "sha256": "ebc520373fcd3508a017f5dd70fb8b1f53646542da946c351c8b37e012a7da05"
+    }
+  },
+  "checkpoint": {
+    "prepared_at": "2026-10-20T07:14:45.228192Z",
+    "writer_pid": "42714"
+  },
+  "code_version": "0.1.0",
+  "configuration": {
+    "db_path": "../_work/fixed.sqlite",
+    "execution_mode": "continuous",
+    "otlp_endpoint": null,
+    "process_ids": [
+      42712
+    ],
+    "target_environment": "staging"
+  },
+  "error": null,
+  "exercise_incomplete": false,
+  "failed_stage": null,
+  "finished_at": "2026-10-20T07:14:45.257748Z",
+  "manifest_version": 1,
+  "otlp": {
+    "endpoint": null,
+    "errors": []
+  },
+  "outcome": {
+    "executed_action": "none",
+    "gate": "allowed",
+    "gate_reasons": [
+      "no_side_effect"
+    ],
+    "proposed_action": "report_test_failure",
+    "proposed_commit": "b2",
+    "proposed_environment": "staging",
+    "receipt_id": null
+  },
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "projection_version": 1,
+  "root_span_id": "f576a487c7827731",
+  "run_id": "run-20261020T071445-3a7d",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 40,
+    "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+    "first_sequence": 1,
+    "through_sequence": 40
+  },
+  "started_at": "2026-10-20T07:14:45.248548Z",
+  "status": "completed",
+  "strategy": "reference",
+  "strategy_kind": "structured",
+  "strategy_source": "reference.py",
+  "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+  "trace_id": "fbd57430a4f9e76498706ff67ba9823a"
+}

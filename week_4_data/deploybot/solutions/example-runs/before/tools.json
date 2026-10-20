@@ -1,0 +1,29 @@
+[
+  {
+    "at": "2026-10-20T07:14:45.237478Z",
+    "input": {
+      "session_id": "release-demo"
+    },
+    "output": {
+      "commit": "b2",
+      "sequence": 21,
+      "source_event_id": "evt-021"
+    },
+    "read_only": true,
+    "stage": "context.build",
+    "tool": "inspect_head"
+  },
+  {
+    "at": "2026-10-20T07:14:45.237754Z",
+    "input": {
+      "session_id": "release-demo"
+    },
+    "output": {
+      "message": "Can you finish the deployment?",
+      "source_event_id": "evt-040"
+    },
+    "read_only": true,
+    "stage": "context.build",
+    "tool": "latest_user_request"
+  }
+]

@@ -1,0 +1,149 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "db_path": "../_work/base.sqlite",
+  "finished_at": "2026-10-20T07:14:45.243702Z",
+  "model": null,
+  "next_stage": null,
+  "otlp_endpoint": null,
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "progress_version": 1,
+  "provider": null,
+  "root_span_id": "55a7794efe3f7f29",
+  "run_dir": "solutions/example-runs/before",
+  "run_id": "run-20261020T071445-6979",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 40,
+    "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+    "first_sequence": 1,
+    "through_sequence": 40
+  },
+  "stages": [
+    {
+      "duration_ms": 1.628,
+      "pid": 42712,
+      "span_id": "de85e9c11893e0f9",
+      "stage": "state.load",
+      "started_at": "2026-10-20T07:14:45.233580Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "memory_through_sequence": 20,
+        "source": {
+          "event_count": 40,
+          "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+          "first_sequence": 1,
+          "through_sequence": 40
+        }
+      }
+    },
+    {
+      "duration_ms": 0.877,
+      "pid": 42712,
+      "span_id": "1daad9aad21e4594",
+      "stage": "memory.project",
+      "started_at": "2026-10-20T07:14:45.235716Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "events_not_incorporated": 20,
+        "through_sequence": 20
+      }
+    },
+    {
+      "duration_ms": 1.346,
+      "pid": 42712,
+      "span_id": "4d4992fbbe9d443b",
+      "stage": "context.build",
+      "started_at": "2026-10-20T07:14:45.237165Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "annotation_complete": true,
+        "approval_status": "approved",
+        "blockers": [],
+        "commit": "b2",
+        "test_status": "passed",
+        "unsourced_facts": [
+          "current_test",
+          "matching_approval"
+        ]
+      }
+    },
+    {
+      "duration_ms": 2.317,
+      "pid": 42712,
+      "span_id": "191aa667d9bcab29",
+      "stage": "planner.propose",
+      "started_at": "2026-10-20T07:14:45.238984Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "action": "deploy",
+        "blockers": [],
+        "commit": "b2",
+        "environment": "staging",
+        "explanation": "Tests passed and deployment is approved, so I will deploy b2 to staging."
+      }
+    },
+    {
+      "duration_ms": 0.593,
+      "pid": 42712,
+      "span_id": "7cac3be1042184e6",
+      "stage": "policy.validate",
+      "started_at": "2026-10-20T07:14:45.241741Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "authoritative_blockers": [
+          "tests_failed",
+          "approval_missing_for_target"
+        ],
+        "outcome": "blocked",
+        "reason_codes": [
+          "tests_failed",
+          "approval_missing_for_target"
+        ]
+      }
+    },
+    {
+      "duration_ms": null,
+      "pid": 42712,
+      "span_id": null,
+      "stage": "tool.deploy",
+      "started_at": "2026-10-20T07:14:45.242774Z",
+      "status": "skipped",
+      "summary": {
+        "reason": "no tool call: the gate blocked the deploy proposal"
+      }
+    },
+    {
+      "duration_ms": 0.2,
+      "pid": 42712,
+      "span_id": "b023e33ca3a281c0",
+      "stage": "state.save",
+      "started_at": "2026-10-20T07:14:45.243299Z",
+      "status": "done",
+      "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+      "summary": {
+        "saved": false
+      }
+    }
+  ],
+  "started_at": "2026-10-20T07:14:45.231047Z",
+  "started_at_ns": 1792480485231052000,
+  "status": "completed",
+  "strategy": "baseline",
+  "target_environment": "staging",
+  "trace_id": "b7a0d428aafb6c60c9b35491ec97e7f1"
+}

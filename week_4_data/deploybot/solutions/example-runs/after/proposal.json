@@ -1,0 +1,15 @@
+{
+  "action": "report_test_failure",
+  "blockers": [
+    "tests_failed",
+    "approval_missing_for_target"
+  ],
+  "commit": "b2",
+  "environment": "staging",
+  "evidence_event_ids": [
+    "evt-021",
+    "evt-032",
+    "evt-012"
+  ],
+  "explanation": "The required tests failed for b2, so I will not deploy it to staging. The existing approval applies to a1 in staging."
+}

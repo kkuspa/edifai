@@ -1,0 +1,154 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "db_path": "../_work/fixed.sqlite",
+  "finished_at": "2026-10-20T07:14:45.257748Z",
+  "model": null,
+  "next_stage": null,
+  "otlp_endpoint": null,
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "progress_version": 1,
+  "provider": null,
+  "root_span_id": "f576a487c7827731",
+  "run_dir": "solutions/example-runs/after",
+  "run_id": "run-20261020T071445-3a7d",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 40,
+    "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+    "first_sequence": 1,
+    "through_sequence": 40
+  },
+  "stages": [
+    {
+      "duration_ms": 1.435,
+      "pid": 42712,
+      "span_id": "cdd179b87146beac",
+      "stage": "state.load",
+      "started_at": "2026-10-20T07:14:45.249723Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "snapshot_status": "missing",
+        "source": {
+          "event_count": 40,
+          "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+          "first_sequence": 1,
+          "through_sequence": 40
+        }
+      }
+    },
+    {
+      "duration_ms": 0.695,
+      "pid": 42712,
+      "span_id": "50c5344e1649c1a9",
+      "stage": "memory.project",
+      "started_at": "2026-10-20T07:14:45.251617Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "approvals": 1,
+        "tests": 3,
+        "through_sequence": 40
+      }
+    },
+    {
+      "duration_ms": 0.447,
+      "pid": 42712,
+      "span_id": "b6647ffa4a19a644",
+      "stage": "context.build",
+      "started_at": "2026-10-20T07:14:45.252713Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "annotation_complete": true,
+        "approval_status": "missing",
+        "blockers": [
+          "tests_failed",
+          "approval_missing_for_target"
+        ],
+        "commit": "b2",
+        "test_status": "failed",
+        "unsourced_facts": []
+      }
+    },
+    {
+      "duration_ms": 0.785,
+      "pid": 42712,
+      "span_id": "ec24fedb61872e6c",
+      "stage": "planner.propose",
+      "started_at": "2026-10-20T07:14:45.253705Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "action": "report_test_failure",
+        "blockers": [
+          "tests_failed",
+          "approval_missing_for_target"
+        ],
+        "commit": "b2",
+        "environment": "staging",
+        "explanation": "The required tests failed for b2, so I will not deploy it to staging. The existing approval applies to a1 in staging."
+      }
+    },
+    {
+      "duration_ms": 0.626,
+      "pid": 42712,
+      "span_id": "52f6ee185bb4f02c",
+      "stage": "policy.validate",
+      "started_at": "2026-10-20T07:14:45.255049Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "authoritative_blockers": [
+          "tests_failed",
+          "approval_missing_for_target"
+        ],
+        "outcome": "allowed",
+        "reason_codes": [
+          "no_side_effect"
+        ]
+      }
+    },
+    {
+      "duration_ms": null,
+      "pid": 42712,
+      "span_id": null,
+      "stage": "tool.deploy",
+      "started_at": "2026-10-20T07:14:45.256226Z",
+      "status": "skipped",
+      "summary": {
+        "reason": "no tool call: proposal action is report_test_failure"
+      }
+    },
+    {
+      "duration_ms": 0.645,
+      "pid": 42712,
+      "span_id": "740c4d32d9a5f5d9",
+      "stage": "state.save",
+      "started_at": "2026-10-20T07:14:45.256837Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "saved": true,
+        "state_hash": "a3a7e16c48684a7b2170b9ee8feb529620e22349495f416753cbe06e833b3402",
+        "through_sequence": 40
+      }
+    }
+  ],
+  "started_at": "2026-10-20T07:14:45.248548Z",
+  "started_at_ns": 1792480485248553000,
+  "status": "completed",
+  "strategy": "reference",
+  "target_environment": "staging",
+  "trace_id": "fbd57430a4f9e76498706ff67ba9823a"
+}

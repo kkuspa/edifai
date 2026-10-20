@@ -1,0 +1,22 @@
+[
+  {
+    "at": "2026-10-20T07:14:45.287625Z",
+    "input": {
+      "commit": "b2",
+      "environment": "staging"
+    },
+    "output": {
+      "commit": "b2",
+      "deployed_at": "2026-10-20T07:14:45.287168Z",
+      "environment": "staging",
+      "gate_checked_through_sequence": 42,
+      "receipt_id": "rcpt-132fc1181d3f",
+      "reused_existing": false,
+      "run_id": "run-20261020T071445-cc74",
+      "session_id": "release-demo"
+    },
+    "read_only": false,
+    "stage": "tool.deploy",
+    "tool": "mock_deploy"
+  }
+]

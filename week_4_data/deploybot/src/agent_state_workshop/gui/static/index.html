@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent State Workshop</title>
+<link rel="stylesheet" href="/static/shared/traceview.css">
+<link rel="stylesheet" href="/static/gui/app.css">
+</head>
+<body>
+<header class="topbar">
+  <strong>Agent State Workshop</strong>
+  <span class="muted" id="root-path"></span>
+  <span class="spacer"></span>
+  <span class="muted">Every control here has a CLI equivalent (see README).</span>
+</header>
+
+<div class="layout">
+  <!-- Area 1: scenario and execution controls -->
+  <aside class="panel controls" aria-label="Scenario and execution controls">
+    <h2>Session</h2>
+    <label>Session <select id="session-select"></select></label>
+    <div class="row">
+      <input id="new-session" placeholder="new session name, e.g. fixed" autocomplete="off">
+      <button data-action="prepare">Prepare</button>
+    </div>
+    <div id="session-info" class="muted small"></div>
+    <div class="row"><button data-action="reset" class="danger">Reset session</button></div>
+
+    <h3>Fixture changes</h3>
+    <div id="fixtures" class="row wrap"></div>
+
+    <h2>Execution</h2>
+    <label>Implementation <select id="strategy"></select></label>
+    <label>Planner mode <select id="planner"></select></label>
+    <label id="provider-row">Provider <select id="provider"></select></label>
+    <label>Target environment <input id="target-env" value="staging"></label>
+    <div class="row wrap">
+      <button data-action="step" class="primary">Step one stage</button>
+      <button data-action="run">Run to completion</button>
+      <button data-action="finish">Finish active run</button>
+      <button data-action="abandon">Abandon active run</button>
+    </div>
+    <ol id="stage-list" class="stages"></ol>
+
+    <h2>Checks</h2>
+    <div class="row">
+      <select id="check-strategy"><option>student</option><option>reference</option></select>
+      <button data-action="check">Run exercise checks</button>
+    </div>
+
+    <h3>Operations</h3>
+    <ul id="ops" class="ops small"></ul>
+  </aside>
+
+  <!-- Area 2: conversation and proposed plan/action -->
+  <section class="panel conversation" aria-label="Conversation and proposed action">
+    <h2>Conversation</h2>
+    <div id="chat"></div>
+    <h3>Runs</h3>
+    <table class="runs small" id="runs"></table>
+    <p class="muted small">Select a run to inspect it. Use B / A to choose the before and after runs for comparison.</p>
+  </section>
+
+  <!-- Area 3: inspector -->
+  <section class="panel inspector" aria-label="Inspector">
+    <div class="tabs" role="tablist" id="tabs">
+      <button data-tab="state" class="active">State</button>
+      <button data-tab="model">Model input</button>
+      <button data-tab="tools">Tools</button>
+      <button data-tab="validation">Validation</button>
+      <button data-tab="trace">Trace</button>
+      <button data-tab="events">Events</button>
+      <button data-tab="checks">Checks</button>
+    </div>
+    <div id="inspector-body"></div>
+  </section>
+</div>
+
+<section class="panel compare" aria-label="Run comparison">
+  <div class="row wrap">
+    <h2 style="margin:0 12px 0 0">Compare runs</h2>
+    <label class="inline">Before <select id="cmp-before"></select></label>
+    <label class="inline">After <select id="cmp-after"></select></label>
+    <button id="cmp-show">Show comparison</button>
+    <button data-action="export">Export evidence</button>
+    <span id="export-links" class="small"></span>
+  </div>
+  <div id="comparison"></div>
+</section>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="/static/shared/traceview.js"></script>
+<script src="/static/gui/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Optional Jaeger for viewing the same traces in a waterfall UI.
+#   docker compose up -d jaeger
+#   UI:   http://localhost:16686
+#   OTLP: http://localhost:4318/v1/traces (host)  or  http://jaeger:4318/v1/traces (containers)
+# Ports bind to 127.0.0.1 only. Traces are kept in memory and vanish on restart.
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.22.0
+    ports:
+      - "127.0.0.1:16686:16686"
+      - "127.0.0.1:4318:4318"
+    restart: "no"

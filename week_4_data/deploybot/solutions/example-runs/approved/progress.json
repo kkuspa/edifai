@@ -1,0 +1,148 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "db_path": "../_work/fixed.sqlite",
+  "finished_at": "2026-10-20T07:14:45.289253Z",
+  "model": null,
+  "next_stage": null,
+  "otlp_endpoint": null,
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "progress_version": 1,
+  "provider": null,
+  "root_span_id": "01ec0602beb1064f",
+  "run_dir": "solutions/example-runs/approved",
+  "run_id": "run-20261020T071445-cc74",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 42,
+    "events_sha256": "d8764353bfca4d7700f61c9131bfab6e975dbf703a23074922360c5e5a4088cd",
+    "first_sequence": 1,
+    "through_sequence": 42
+  },
+  "stages": [
+    {
+      "duration_ms": 1.734,
+      "pid": 42712,
+      "span_id": "195565dd149fb247",
+      "stage": "state.load",
+      "started_at": "2026-10-20T07:14:45.280435Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "snapshot_status": "stale_position",
+        "source": {
+          "event_count": 42,
+          "events_sha256": "d8764353bfca4d7700f61c9131bfab6e975dbf703a23074922360c5e5a4088cd",
+          "first_sequence": 1,
+          "through_sequence": 42
+        }
+      }
+    },
+    {
+      "duration_ms": 0.841,
+      "pid": 42712,
+      "span_id": "9eaff65b279267e7",
+      "stage": "memory.project",
+      "started_at": "2026-10-20T07:14:45.282632Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "approvals": 2,
+        "changes_since_snapshot": 2,
+        "tests": 3,
+        "through_sequence": 42
+      }
+    },
+    {
+      "duration_ms": 0.443,
+      "pid": 42712,
+      "span_id": "895fe20fe5735fcf",
+      "stage": "context.build",
+      "started_at": "2026-10-20T07:14:45.283925Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "annotation_complete": true,
+        "approval_status": "approved",
+        "blockers": [],
+        "commit": "b2",
+        "test_status": "passed",
+        "unsourced_facts": []
+      }
+    },
+    {
+      "duration_ms": 0.495,
+      "pid": 42712,
+      "span_id": "f427e98d80bcc349",
+      "stage": "planner.propose",
+      "started_at": "2026-10-20T07:14:45.284834Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "action": "deploy",
+        "blockers": [],
+        "commit": "b2",
+        "environment": "staging",
+        "explanation": "Tests passed and deployment is approved, so I will deploy b2 to staging."
+      }
+    },
+    {
+      "duration_ms": 0.576,
+      "pid": 42712,
+      "span_id": "d30b2512fa7de23b",
+      "stage": "policy.validate",
+      "started_at": "2026-10-20T07:14:45.285848Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "authoritative_blockers": [],
+        "outcome": "allowed",
+        "reason_codes": [
+          "all_checks_passed"
+        ]
+      }
+    },
+    {
+      "duration_ms": 0.882,
+      "pid": 42712,
+      "span_id": "fbd390ad5adf1b72",
+      "stage": "tool.deploy",
+      "started_at": "2026-10-20T07:14:45.286937Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "receipt_id": "rcpt-132fc1181d3f",
+        "reused_existing": false
+      }
+    },
+    {
+      "duration_ms": 0.597,
+      "pid": 42712,
+      "span_id": "dee8e8dd61bfbe24",
+      "stage": "state.save",
+      "started_at": "2026-10-20T07:14:45.288373Z",
+      "status": "done",
+      "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+      "summary": {
+        "saved": true,
+        "state_hash": "438ed3748356698d4dff1897d2083c833768fa341bf3af40a5ddf9d7905ea641",
+        "through_sequence": 42
+      }
+    }
+  ],
+  "started_at": "2026-10-20T07:14:45.279407Z",
+  "started_at_ns": 1792480485279411000,
+  "status": "completed",
+  "strategy": "reference",
+  "target_environment": "staging",
+  "trace_id": "d2ae06e9fdf97e58c18454d630af2cd4"
+}

@@ -1,0 +1,107 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "artifacts": {
+    "context.json": {
+      "path": "context.json",
+      "sha256": "6be53f33b330c9956382077770a7a63a31dec9688da950e62bb99cae7eb15de1"
+    },
+    "events.json": {
+      "path": "events.json",
+      "sha256": "07ffdd0cb8199ac756bd79be530bc4aac75536f76abb6af3a8d8c347bd43f541"
+    },
+    "gate.json": {
+      "path": "gate.json",
+      "sha256": "c765248c517c3dca7eeab02e412117f0f3d8a3584b1adb4642164a9b010094c1"
+    },
+    "planner-input.json": {
+      "path": "planner-input.json",
+      "sha256": "4958aaf672760048748abff39b9dcbca45e9d33330af6b5fe6deca4b58fb73d9"
+    },
+    "progress.json": {
+      "path": "progress.json",
+      "sha256": "21123fed97aaebcc0e5758afed1c5be8b9767686efc99ed8cbc00f11ae25caf2"
+    },
+    "proposal.json": {
+      "path": "proposal.json",
+      "sha256": "874b59826d89364eb16824b669b09bd9a9b23951283403088bd848f9800919b7"
+    },
+    "snapshot-before.json": {
+      "path": "snapshot-before.json",
+      "sha256": "bb1575be873393e5da05167f5139f06266459dd6aa86b139020aa1553e79fa74"
+    },
+    "spans.jsonl": {
+      "path": "spans.jsonl",
+      "sha256": "f55f4a0e266b7fd048b2c94bba20ba926f8521d64ff1ce06d8a8e35a5b9de4eb"
+    },
+    "state-diff.json": {
+      "path": "state-diff.json",
+      "sha256": "fd13fd8850e13f5fa647aa9ebb38ba4104bd49da2132a2598ed5980bf3318513"
+    },
+    "state.json": {
+      "path": "state.json",
+      "sha256": "0f62dcdf3d62c806381dc3a1a9bb20d87876dacd44840876cc9503e1d06d1b73"
+    }
+  },
+  "checkpoint": {
+    "prepared_at": "2026-10-20T07:14:45.228192Z",
+    "writer_pid": "42714"
+  },
+  "code_version": "0.1.0",
+  "configuration": {
+    "db_path": "../_work/fixed.sqlite",
+    "execution_mode": "continuous",
+    "otlp_endpoint": null,
+    "process_ids": [
+      42712
+    ],
+    "target_environment": "staging"
+  },
+  "error": null,
+  "exercise_incomplete": false,
+  "failed_stage": null,
+  "finished_at": "2026-10-20T07:14:45.272892Z",
+  "manifest_version": 1,
+  "otlp": {
+    "endpoint": null,
+    "errors": []
+  },
+  "outcome": {
+    "executed_action": "none",
+    "gate": "allowed",
+    "gate_reasons": [
+      "no_side_effect"
+    ],
+    "proposed_action": "request_approval",
+    "proposed_commit": "b2",
+    "proposed_environment": "staging",
+    "receipt_id": null
+  },
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "projection_version": 1,
+  "root_span_id": "9bcc3441baca0ede",
+  "run_id": "run-20261020T071445-3611",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 41,
+    "events_sha256": "949928bb3e8f75685c3fee73b4e88356b69670183ed310fc5cb4bde7f3955a73",
+    "first_sequence": 1,
+    "through_sequence": 41
+  },
+  "started_at": "2026-10-20T07:14:45.264172Z",
+  "status": "completed",
+  "strategy": "reference",
+  "strategy_kind": "structured",
+  "strategy_source": "reference.py",
+  "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+  "trace_id": "9252fbd1e596b4db77baaa693cff32c8"
+}

@@ -1,0 +1,14 @@
+{
+  "action": "request_approval",
+  "blockers": [
+    "approval_missing_for_target"
+  ],
+  "commit": "b2",
+  "environment": "staging",
+  "evidence_event_ids": [
+    "evt-021",
+    "evt-041",
+    "evt-012"
+  ],
+  "explanation": "Tests passed for b2, but no approval covers b2 in staging. Please approve it. The existing approval applies to a1 in staging."
+}

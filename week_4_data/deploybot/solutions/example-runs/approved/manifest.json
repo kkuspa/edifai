@@ -1,0 +1,115 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "artifacts": {
+    "context.json": {
+      "path": "context.json",
+      "sha256": "252320a609999fd30e262ef7a6a1948f62a04a130325d49e95e63e8f1ee0f864"
+    },
+    "events.json": {
+      "path": "events.json",
+      "sha256": "574b03821b426a60f6182907e680c55f834b2f4b9a6100bc41fb2a3867d01278"
+    },
+    "gate.json": {
+      "path": "gate.json",
+      "sha256": "fcc9bc9176bc206cba888e8bd407f26b4e2432ebfa3ed051f2df4e4f0ede2cd9"
+    },
+    "planner-input.json": {
+      "path": "planner-input.json",
+      "sha256": "8e6fef805fc9888cfce218af7364b4b2ce547be1c207410a989bb9d666ae785a"
+    },
+    "progress.json": {
+      "path": "progress.json",
+      "sha256": "e8804724861922d9651eefd6be362187d5fd2b77865b2483818f93697aaf6a3b"
+    },
+    "proposal.json": {
+      "path": "proposal.json",
+      "sha256": "8aada5f0699cce6b723be730c0f3cb1f2fa64ffa886ba58c0ce9b79925797197"
+    },
+    "receipt.json": {
+      "path": "receipt.json",
+      "sha256": "8ea4e3d706f84787c99b2a8c8cb5890de8adf00ee511b778907cd2f14aabebf8"
+    },
+    "snapshot-before.json": {
+      "path": "snapshot-before.json",
+      "sha256": "577969ab19e16e135728842d167584cea19628cdc131b005c5660a954e05d5e3"
+    },
+    "spans.jsonl": {
+      "path": "spans.jsonl",
+      "sha256": "778006ada54adc5d63a7bbcb78acd53ac952c4b2dd691309f9c31d7e8f34f0b6"
+    },
+    "state-diff.json": {
+      "path": "state-diff.json",
+      "sha256": "398c8d52ca896cf0a68ab8d82243cb91d2c2512d9b86b0e956089de6c576cc85"
+    },
+    "state.json": {
+      "path": "state.json",
+      "sha256": "03f65a23b506905efae49da7a08017189114a19c2d695dc9e2550ed654334fd5"
+    },
+    "tools.json": {
+      "path": "tools.json",
+      "sha256": "9edd56d1a6daf91b6d830f580b6b294b35a21d8a3388f72e45b4bf2ca1fed527"
+    }
+  },
+  "checkpoint": {
+    "prepared_at": "2026-10-20T07:14:45.228192Z",
+    "writer_pid": "42714"
+  },
+  "code_version": "0.1.0",
+  "configuration": {
+    "db_path": "../_work/fixed.sqlite",
+    "execution_mode": "continuous",
+    "otlp_endpoint": null,
+    "process_ids": [
+      42712
+    ],
+    "target_environment": "staging"
+  },
+  "error": null,
+  "exercise_incomplete": false,
+  "failed_stage": null,
+  "finished_at": "2026-10-20T07:14:45.289253Z",
+  "manifest_version": 1,
+  "otlp": {
+    "endpoint": null,
+    "errors": []
+  },
+  "outcome": {
+    "executed_action": "deploy",
+    "gate": "allowed",
+    "gate_reasons": [
+      "all_checks_passed"
+    ],
+    "proposed_action": "deploy",
+    "proposed_commit": "b2",
+    "proposed_environment": "staging",
+    "receipt_id": "rcpt-132fc1181d3f"
+  },
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "projection_version": 1,
+  "root_span_id": "01ec0602beb1064f",
+  "run_id": "run-20261020T071445-cc74",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 42,
+    "events_sha256": "d8764353bfca4d7700f61c9131bfab6e975dbf703a23074922360c5e5a4088cd",
+    "first_sequence": 1,
+    "through_sequence": 42
+  },
+  "started_at": "2026-10-20T07:14:45.279407Z",
+  "status": "completed",
+  "strategy": "reference",
+  "strategy_kind": "structured",
+  "strategy_source": "reference.py",
+  "strategy_source_sha256": "7043d2030bb341621776ea8f49d8bc364cca871c538e78ce91d45b19326f6731",
+  "trace_id": "d2ae06e9fdf97e58c18454d630af2cd4"
+}

@@ -1,0 +1,30 @@
+{
+  "changes": [
+    {
+      "after": "passed",
+      "before": "failed",
+      "change": "changed",
+      "path": "$.tests[2].result"
+    },
+    {
+      "after": 2,
+      "before": 1,
+      "change": "changed",
+      "path": "$.tests[2].run_number"
+    },
+    {
+      "after": "evt-041",
+      "before": "evt-032",
+      "change": "changed",
+      "path": "$.tests[2].source_event_id"
+    },
+    {
+      "after": 41,
+      "before": 40,
+      "change": "changed",
+      "path": "$.through_sequence"
+    }
+  ],
+  "from": "snapshot-before.json",
+  "to": "state.json"
+}

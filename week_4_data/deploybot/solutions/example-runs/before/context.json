@@ -1,0 +1,34 @@
+{
+  "blockers": [],
+  "context_version": 1,
+  "current_test": {
+    "commit": null,
+    "run_number": null,
+    "source_event_id": null,
+    "status": "passed",
+    "suite": null
+  },
+  "evidence_event_ids": [
+    "evt-021"
+  ],
+  "historical_approvals": [],
+  "historical_tests": [],
+  "matching_approval": {
+    "approval_id": null,
+    "approved_by": null,
+    "commit": null,
+    "environment": null,
+    "source_event_id": null,
+    "status": "approved"
+  },
+  "narrative_memory": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+  "session_id": "release-demo",
+  "strategy": "baseline",
+  "target": {
+    "commit": "b2",
+    "environment": "staging",
+    "source_event_id": "evt-021"
+  },
+  "through_sequence": 20,
+  "user_request": "Can you finish the deployment?"
+}

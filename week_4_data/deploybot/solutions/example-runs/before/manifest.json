@@ -1,0 +1,108 @@
+{
+  "annotation": {
+    "complete": true,
+    "missing": []
+  },
+  "artifacts": {
+    "context.json": {
+      "path": "context.json",
+      "sha256": "dd77353a6a3975c5f69529a6437b4155351848c4e9009145153f6b655b4306d0"
+    },
+    "events.json": {
+      "path": "events.json",
+      "sha256": "b1f7694340557d1de37f266296b7e16f4188c0fe7216e96f26aeebdffd58f7cc"
+    },
+    "gate.json": {
+      "path": "gate.json",
+      "sha256": "20c39de100410bd533ca9fcf157e92a56ed12f89c63eaa3d1e82f023bb6efe26"
+    },
+    "memory-loaded.json": {
+      "path": "memory-loaded.json",
+      "sha256": "af0af2bcc8928955f4686aa60b04471073db1efec9c6af596179979cb488245e"
+    },
+    "planner-input.json": {
+      "path": "planner-input.json",
+      "sha256": "4c189bfe0679d289b261e5de35a7f8695b600a7135fbb1d9ec87e75a62844d10"
+    },
+    "progress.json": {
+      "path": "progress.json",
+      "sha256": "eaf21db1b7c371e1572d6d96d4e0b54ab17bdf1a324d7da8d6b95989d1d7779d"
+    },
+    "proposal.json": {
+      "path": "proposal.json",
+      "sha256": "fbb7d8c85be1cdeb5d4381e464098855c5aaecfcb488fb9fba866179da57932b"
+    },
+    "spans.jsonl": {
+      "path": "spans.jsonl",
+      "sha256": "422feb8323b1a536ff5e92da326b320e42ff4d9722e1cdcfb8bb07f7488aa2e3"
+    },
+    "state.json": {
+      "path": "state.json",
+      "sha256": "0f0e313388ffbe46e278d9aede7c126852f335f8069fba97603712bac9aeb5ea"
+    },
+    "tools.json": {
+      "path": "tools.json",
+      "sha256": "f280e7931ba58642aa7fd8be51ea05f31f664e00be1f186a5f6654a21c07a56d"
+    }
+  },
+  "checkpoint": {
+    "prepared_at": "2026-10-20T07:14:45.107075Z",
+    "writer_pid": "42713"
+  },
+  "code_version": "0.1.0",
+  "configuration": {
+    "db_path": "../_work/base.sqlite",
+    "execution_mode": "continuous",
+    "otlp_endpoint": null,
+    "process_ids": [
+      42712
+    ],
+    "target_environment": "staging"
+  },
+  "error": null,
+  "exercise_incomplete": false,
+  "failed_stage": null,
+  "finished_at": "2026-10-20T07:14:45.243702Z",
+  "manifest_version": 1,
+  "otlp": {
+    "endpoint": null,
+    "errors": []
+  },
+  "outcome": {
+    "executed_action": "none",
+    "gate": "blocked",
+    "gate_reasons": [
+      "tests_failed",
+      "approval_missing_for_target"
+    ],
+    "proposed_action": "deploy",
+    "proposed_commit": "b2",
+    "proposed_environment": "staging",
+    "receipt_id": null
+  },
+  "planner": {
+    "model": null,
+    "planner": "simulator-v1",
+    "planner_mode": "simulated",
+    "provider": null
+  },
+  "planner_mode": "simulated",
+  "projection_version": "narrative-summary/v1",
+  "root_span_id": "55a7794efe3f7f29",
+  "run_id": "run-20261020T071445-6979",
+  "scenario": "stale-resume",
+  "session_id": "release-demo",
+  "source": {
+    "event_count": 40,
+    "events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+    "first_sequence": 1,
+    "through_sequence": 40
+  },
+  "started_at": "2026-10-20T07:14:45.231047Z",
+  "status": "completed",
+  "strategy": "baseline",
+  "strategy_kind": "summary",
+  "strategy_source": "baseline.py",
+  "strategy_source_sha256": "0b60f6a2d38a755776788149c97b544d50d7830b83f1730eb067fda6f3287077",
+  "trace_id": "b7a0d428aafb6c60c9b35491ec97e7f1"
+}

@@ -1,0 +1,1 @@
+{"schema_version": 1, "event_id": "evt-041", "session_id": "release-demo", "sequence": 41, "occurred_at": "2026-10-20T09:45:00Z", "type": "test.completed", "actor": "ci", "payload": {"commit": "b2", "suite": "required", "test_run_id": "ci-b2-2", "run_number": 2, "result": "passed"}}

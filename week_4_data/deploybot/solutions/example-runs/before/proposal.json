@@ -1,0 +1,10 @@
+{
+  "action": "deploy",
+  "blockers": [],
+  "commit": "b2",
+  "environment": "staging",
+  "evidence_event_ids": [
+    "evt-021"
+  ],
+  "explanation": "Tests passed and deployment is approved, so I will deploy b2 to staging."
+}

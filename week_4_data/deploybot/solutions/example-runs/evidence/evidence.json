@@ -1,0 +1,648 @@
+{
+  "comparison": {
+    "notices": [
+      "The before run's context presents facts with no source event: current_test, matching_approval."
+    ],
+    "rows": [
+      {
+        "after": "reference / planner_mode=simulated",
+        "before": "baseline / planner_mode=simulated",
+        "changed": true,
+        "label": "Strategy / planner"
+      },
+      {
+        "after": "40",
+        "before": "40",
+        "changed": false,
+        "label": "Source events through"
+      },
+      {
+        "after": "40",
+        "before": "20",
+        "changed": true,
+        "label": "Memory through"
+      },
+      {
+        "after": "b2 (evt-021)",
+        "before": "b2 (evt-021)",
+        "changed": false,
+        "label": "Current commit (source)"
+      },
+      {
+        "after": "failed - commit b2, source evt-032",
+        "before": "passed - NO COMMIT SCOPE, source none",
+        "changed": true,
+        "label": "Test evidence"
+      },
+      {
+        "after": "missing - b2/staging, source none; history: a1/staging (evt-012)",
+        "before": "approved - NO COMMIT/ENVIRONMENT SCOPE, source none",
+        "changed": true,
+        "label": "Approval for target"
+      },
+      {
+        "after": "tests_failed, approval_missing_for_target",
+        "before": "(none)",
+        "changed": true,
+        "label": "Context blockers"
+      },
+      {
+        "after": "report_test_failure b2 -> staging (span ec24fedb61872e6c)",
+        "before": "deploy b2 -> staging (span 191aa667d9bcab29)",
+        "changed": true,
+        "label": "Proposed action"
+      },
+      {
+        "after": "allowed: no_side_effect (span 52f6ee185bb4f02c)",
+        "before": "blocked: tests_failed, approval_missing_for_target (span 7cac3be1042184e6)",
+        "changed": true,
+        "label": "Gate result"
+      },
+      {
+        "after": "none - no tool.deploy span, no receipt",
+        "before": "none - no tool.deploy span, no receipt",
+        "changed": false,
+        "label": "Executed action"
+      }
+    ]
+  },
+  "diffs": {
+    "context.json": [
+      {
+        "after": "tests_failed",
+        "before": null,
+        "change": "added",
+        "path": "$.blockers[0]"
+      },
+      {
+        "after": "approval_missing_for_target",
+        "before": null,
+        "change": "added",
+        "path": "$.blockers[1]"
+      },
+      {
+        "after": "b2",
+        "before": null,
+        "change": "changed",
+        "path": "$.current_test.commit"
+      },
+      {
+        "after": 1,
+        "before": null,
+        "change": "changed",
+        "path": "$.current_test.run_number"
+      },
+      {
+        "after": "evt-032",
+        "before": null,
+        "change": "changed",
+        "path": "$.current_test.source_event_id"
+      },
+      {
+        "after": "failed",
+        "before": "passed",
+        "change": "changed",
+        "path": "$.current_test.status"
+      },
+      {
+        "after": "required",
+        "before": null,
+        "change": "changed",
+        "path": "$.current_test.suite"
+      },
+      {
+        "after": "evt-032",
+        "before": null,
+        "change": "added",
+        "path": "$.evidence_event_ids[1]"
+      },
+      {
+        "after": "evt-012",
+        "before": null,
+        "change": "added",
+        "path": "$.evidence_event_ids[2]"
+      },
+      {
+        "after": {
+          "approval_id": "approval-a1-staging",
+          "approved_by": "user:release-lead",
+          "commit": "a1",
+          "environment": "staging",
+          "source_event_id": "evt-012"
+        },
+        "before": null,
+        "change": "added",
+        "path": "$.historical_approvals[0]"
+      },
+      {
+        "after": {
+          "commit": "a1",
+          "result": "passed",
+          "run_number": 1,
+          "source_event_id": "evt-010",
+          "suite": "required"
+        },
+        "before": null,
+        "change": "added",
+        "path": "$.historical_tests[0]"
+      },
+      {
+        "after": "b2",
+        "before": null,
+        "change": "changed",
+        "path": "$.matching_approval.commit"
+      },
+      {
+        "after": "staging",
+        "before": null,
+        "change": "changed",
+        "path": "$.matching_approval.environment"
+      },
+      {
+        "after": "missing",
+        "before": "approved",
+        "change": "changed",
+        "path": "$.matching_approval.status"
+      },
+      {
+        "after": null,
+        "before": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+        "change": "changed",
+        "path": "$.narrative_memory"
+      },
+      {
+        "after": "reference",
+        "before": "baseline",
+        "change": "changed",
+        "path": "$.strategy"
+      },
+      {
+        "after": 40,
+        "before": 20,
+        "change": "changed",
+        "path": "$.through_sequence"
+      }
+    ],
+    "gate.json": [
+      {
+        "after": "report_test_failure",
+        "before": "deploy",
+        "change": "changed",
+        "path": "$.action"
+      },
+      {
+        "after": "allowed",
+        "before": "blocked",
+        "change": "changed",
+        "path": "$.outcome"
+      },
+      {
+        "after": "no_side_effect",
+        "before": "tests_failed",
+        "change": "changed",
+        "path": "$.reason_codes[0]"
+      },
+      {
+        "after": null,
+        "before": "approval_missing_for_target",
+        "change": "removed",
+        "path": "$.reason_codes[1]"
+      }
+    ],
+    "proposal.json": [
+      {
+        "after": "report_test_failure",
+        "before": "deploy",
+        "change": "changed",
+        "path": "$.action"
+      },
+      {
+        "after": "tests_failed",
+        "before": null,
+        "change": "added",
+        "path": "$.blockers[0]"
+      },
+      {
+        "after": "approval_missing_for_target",
+        "before": null,
+        "change": "added",
+        "path": "$.blockers[1]"
+      },
+      {
+        "after": "evt-032",
+        "before": null,
+        "change": "added",
+        "path": "$.evidence_event_ids[1]"
+      },
+      {
+        "after": "evt-012",
+        "before": null,
+        "change": "added",
+        "path": "$.evidence_event_ids[2]"
+      },
+      {
+        "after": "The required tests failed for b2, so I will not deploy it to staging. The existing approval applies to a1 in staging.",
+        "before": "Tests passed and deployment is approved, so I will deploy b2 to staging.",
+        "change": "changed",
+        "path": "$.explanation"
+      }
+    ],
+    "state.json": [
+      {
+        "after": [
+          {
+            "approval_id": "approval-a1-staging",
+            "approved_by": "user:release-lead",
+            "commit": "a1",
+            "environment": "staging",
+            "source_event_id": "evt-012"
+          }
+        ],
+        "before": null,
+        "change": "added",
+        "path": "$.approvals"
+      },
+      {
+        "after": {
+          "commit": "b2",
+          "source_event_id": "evt-021"
+        },
+        "before": null,
+        "change": "added",
+        "path": "$.head"
+      },
+      {
+        "after": {
+          "message": "Can you finish the deployment?",
+          "source_event_id": "evt-040"
+        },
+        "before": null,
+        "change": "added",
+        "path": "$.last_user_request"
+      },
+      {
+        "after": 1,
+        "before": null,
+        "change": "added",
+        "path": "$.projection_version"
+      },
+      {
+        "after": null,
+        "before": "baseline",
+        "change": "removed",
+        "path": "$.strategy"
+      },
+      {
+        "after": null,
+        "before": {
+          "facts": {
+            "deployment_approved": true,
+            "environment": "staging",
+            "tests_passed": true
+          },
+          "kind": "narrative-summary",
+          "summary_version": 1,
+          "text": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+          "through_sequence": 20
+        },
+        "change": "removed",
+        "path": "$.summary"
+      },
+      {
+        "after": null,
+        "before": 42713,
+        "change": "removed",
+        "path": "$.summary_writer_pid"
+      },
+      {
+        "after": [
+          {
+            "commit": "a1",
+            "result": "passed",
+            "run_number": 1,
+            "source_event_id": "evt-010",
+            "suite": "required"
+          },
+          {
+            "commit": "b2",
+            "result": "passed",
+            "run_number": 1,
+            "source_event_id": "evt-027",
+            "suite": "lint"
+          },
+          {
+            "commit": "b2",
+            "result": "failed",
+            "run_number": 1,
+            "source_event_id": "evt-032",
+            "suite": "required"
+          }
+        ],
+        "before": null,
+        "change": "added",
+        "path": "$.tests"
+      },
+      {
+        "after": 40,
+        "before": 20,
+        "change": "changed",
+        "path": "$.through_sequence"
+      }
+    ]
+  },
+  "evidence_version": 1,
+  "runs": [
+    {
+      "annotation_complete": true,
+      "annotation_missing": [],
+      "approval_scope": null,
+      "approval_source": null,
+      "approval_status": "approved",
+      "cited_event_ids": [
+        "evt-021"
+      ],
+      "context_blockers": [],
+      "context_through_sequence": 20,
+      "current_commit": "b2",
+      "current_commit_source": "evt-021",
+      "evidence_selected": [
+        "evt-021"
+      ],
+      "executed_action": "none",
+      "gate_authoritative": {
+        "approval_id": null,
+        "approval_source_event_id": null,
+        "checked_through_sequence": 40,
+        "head_commit": "b2",
+        "head_source_event_id": "evt-021",
+        "test_result": "failed",
+        "test_run_number": 1,
+        "test_source_event_id": "evt-032"
+      },
+      "gate_outcome": "blocked",
+      "gate_reasons": [
+        "tests_failed",
+        "approval_missing_for_target"
+      ],
+      "historical_approvals": [],
+      "model": null,
+      "narrative_memory": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+      "planner_mode": "simulated",
+      "proposal_blockers": [],
+      "proposal_explanation": "Tests passed and deployment is approved, so I will deploy b2 to staging.",
+      "proposed_action": "deploy",
+      "proposed_target": "b2 -> staging",
+      "provider": null,
+      "receipt_id": null,
+      "root_span_id": "55a7794efe3f7f29",
+      "root_status": "UNSET",
+      "run_dir": "solutions/example-runs/before",
+      "run_id": "run-20261020T071445-6979",
+      "source_events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+      "source_through_sequence": 40,
+      "span_ids": {
+        "context.build": "4d4992fbbe9d443b",
+        "planner.propose": "191aa667d9bcab29",
+        "policy.validate": "7cac3be1042184e6",
+        "tool.deploy": null
+      },
+      "state_through_sequence": 20,
+      "status": "completed",
+      "strategy": "baseline",
+      "target_environment": "staging",
+      "test_commit": null,
+      "test_source": null,
+      "test_status": "passed",
+      "trace_id": "b7a0d428aafb6c60c9b35491ec97e7f1",
+      "unresolved_event_ids": [],
+      "unsourced_facts": [
+        "current_test",
+        "matching_approval"
+      ]
+    },
+    {
+      "annotation_complete": true,
+      "annotation_missing": [],
+      "approval_scope": "b2/staging",
+      "approval_source": null,
+      "approval_status": "missing",
+      "cited_event_ids": [
+        "evt-032",
+        "evt-021",
+        "evt-012",
+        "evt-010"
+      ],
+      "context_blockers": [
+        "tests_failed",
+        "approval_missing_for_target"
+      ],
+      "context_through_sequence": 40,
+      "current_commit": "b2",
+      "current_commit_source": "evt-021",
+      "evidence_selected": [
+        "evt-021",
+        "evt-032",
+        "evt-012"
+      ],
+      "executed_action": "none",
+      "gate_authoritative": {
+        "approval_id": null,
+        "approval_source_event_id": null,
+        "checked_through_sequence": 40,
+        "head_commit": "b2",
+        "head_source_event_id": "evt-021",
+        "test_result": "failed",
+        "test_run_number": 1,
+        "test_source_event_id": "evt-032"
+      },
+      "gate_outcome": "allowed",
+      "gate_reasons": [
+        "no_side_effect"
+      ],
+      "historical_approvals": [
+        "a1/staging (evt-012)"
+      ],
+      "model": null,
+      "narrative_memory": null,
+      "planner_mode": "simulated",
+      "proposal_blockers": [
+        "tests_failed",
+        "approval_missing_for_target"
+      ],
+      "proposal_explanation": "The required tests failed for b2, so I will not deploy it to staging. The existing approval applies to a1 in staging.",
+      "proposed_action": "report_test_failure",
+      "proposed_target": "b2 -> staging",
+      "provider": null,
+      "receipt_id": null,
+      "root_span_id": "f576a487c7827731",
+      "root_status": "UNSET",
+      "run_dir": "solutions/example-runs/after",
+      "run_id": "run-20261020T071445-3a7d",
+      "source_events_sha256": "8a964f5e1f0eca404ca731cbcffc85c5e1879d29699bc913a85c9c537b640967",
+      "source_through_sequence": 40,
+      "span_ids": {
+        "context.build": "b6647ffa4a19a644",
+        "planner.propose": "ec24fedb61872e6c",
+        "policy.validate": "52f6ee185bb4f02c",
+        "tool.deploy": null
+      },
+      "state_through_sequence": 40,
+      "status": "completed",
+      "strategy": "reference",
+      "target_environment": "staging",
+      "test_commit": "b2",
+      "test_source": "evt-032",
+      "test_status": "failed",
+      "trace_id": "fbd57430a4f9e76498706ff67ba9823a",
+      "unresolved_event_ids": [],
+      "unsourced_facts": []
+    },
+    {
+      "annotation_complete": true,
+      "annotation_missing": [],
+      "approval_scope": "b2/staging",
+      "approval_source": null,
+      "approval_status": "missing",
+      "cited_event_ids": [
+        "evt-041",
+        "evt-021",
+        "evt-012",
+        "evt-010"
+      ],
+      "context_blockers": [
+        "approval_missing_for_target"
+      ],
+      "context_through_sequence": 41,
+      "current_commit": "b2",
+      "current_commit_source": "evt-021",
+      "evidence_selected": [
+        "evt-021",
+        "evt-041",
+        "evt-012"
+      ],
+      "executed_action": "none",
+      "gate_authoritative": {
+        "approval_id": null,
+        "approval_source_event_id": null,
+        "checked_through_sequence": 41,
+        "head_commit": "b2",
+        "head_source_event_id": "evt-021",
+        "test_result": "passed",
+        "test_run_number": 2,
+        "test_source_event_id": "evt-041"
+      },
+      "gate_outcome": "allowed",
+      "gate_reasons": [
+        "no_side_effect"
+      ],
+      "historical_approvals": [
+        "a1/staging (evt-012)"
+      ],
+      "model": null,
+      "narrative_memory": null,
+      "planner_mode": "simulated",
+      "proposal_blockers": [
+        "approval_missing_for_target"
+      ],
+      "proposal_explanation": "Tests passed for b2, but no approval covers b2 in staging. Please approve it. The existing approval applies to a1 in staging.",
+      "proposed_action": "request_approval",
+      "proposed_target": "b2 -> staging",
+      "provider": null,
+      "receipt_id": null,
+      "root_span_id": "9bcc3441baca0ede",
+      "root_status": "UNSET",
+      "run_dir": "solutions/example-runs/tests-pass",
+      "run_id": "run-20261020T071445-3611",
+      "source_events_sha256": "949928bb3e8f75685c3fee73b4e88356b69670183ed310fc5cb4bde7f3955a73",
+      "source_through_sequence": 41,
+      "span_ids": {
+        "context.build": "5047b1ad4f624791",
+        "planner.propose": "691cfa27fc649daa",
+        "policy.validate": "8da2c5accc061393",
+        "tool.deploy": null
+      },
+      "state_through_sequence": 41,
+      "status": "completed",
+      "strategy": "reference",
+      "target_environment": "staging",
+      "test_commit": "b2",
+      "test_source": "evt-041",
+      "test_status": "passed",
+      "trace_id": "9252fbd1e596b4db77baaa693cff32c8",
+      "unresolved_event_ids": [],
+      "unsourced_facts": []
+    },
+    {
+      "annotation_complete": true,
+      "annotation_missing": [],
+      "approval_scope": "b2/staging",
+      "approval_source": "evt-042",
+      "approval_status": "approved",
+      "cited_event_ids": [
+        "evt-041",
+        "evt-021",
+        "evt-042",
+        "evt-012",
+        "evt-010"
+      ],
+      "context_blockers": [],
+      "context_through_sequence": 42,
+      "current_commit": "b2",
+      "current_commit_source": "evt-021",
+      "evidence_selected": [
+        "evt-021",
+        "evt-041",
+        "evt-042"
+      ],
+      "executed_action": "deploy",
+      "gate_authoritative": {
+        "approval_id": "approval-b2-staging",
+        "approval_source_event_id": "evt-042",
+        "checked_through_sequence": 42,
+        "head_commit": "b2",
+        "head_source_event_id": "evt-021",
+        "test_result": "passed",
+        "test_run_number": 2,
+        "test_source_event_id": "evt-041"
+      },
+      "gate_outcome": "allowed",
+      "gate_reasons": [
+        "all_checks_passed"
+      ],
+      "historical_approvals": [
+        "a1/staging (evt-012)"
+      ],
+      "model": null,
+      "narrative_memory": null,
+      "planner_mode": "simulated",
+      "proposal_blockers": [],
+      "proposal_explanation": "Tests passed and deployment is approved, so I will deploy b2 to staging.",
+      "proposed_action": "deploy",
+      "proposed_target": "b2 -> staging",
+      "provider": null,
+      "receipt_id": "rcpt-132fc1181d3f",
+      "root_span_id": "01ec0602beb1064f",
+      "root_status": "UNSET",
+      "run_dir": "solutions/example-runs/approved",
+      "run_id": "run-20261020T071445-cc74",
+      "source_events_sha256": "d8764353bfca4d7700f61c9131bfab6e975dbf703a23074922360c5e5a4088cd",
+      "source_through_sequence": 42,
+      "span_ids": {
+        "context.build": "895fe20fe5735fcf",
+        "planner.propose": "f427e98d80bcc349",
+        "policy.validate": "d30b2512fa7de23b",
+        "tool.deploy": "fbd390ad5adf1b72"
+      },
+      "state_through_sequence": 42,
+      "status": "completed",
+      "strategy": "reference",
+      "target_environment": "staging",
+      "test_commit": "b2",
+      "test_source": "evt-041",
+      "test_status": "passed",
+      "trace_id": "d2ae06e9fdf97e58c18454d630af2cd4",
+      "unresolved_event_ids": [],
+      "unsourced_facts": []
+    }
+  ]
+}

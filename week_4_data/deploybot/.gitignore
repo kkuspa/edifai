@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Workshop state: databases, operation log, run outputs, submissions
+.workshop/
+runs/
+submissions/*
+!submissions/.gitkeep
+solutions/example-runs/_work/
+
+# Credentials
+.env
+.env.*
+!.env.example
+
+.DS_Store

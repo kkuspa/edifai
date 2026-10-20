@@ -1,0 +1,7 @@
+{
+  "kind": "narrative-summary",
+  "summary_version": 1,
+  "through_sequence": 20,
+  "text": "Checkout-service release: tests passed and deployment was approved. Next step: finish the deployment to staging when the deploy window opens.",
+  "facts": {"tests_passed": true, "deployment_approved": true, "environment": "staging"}
+}

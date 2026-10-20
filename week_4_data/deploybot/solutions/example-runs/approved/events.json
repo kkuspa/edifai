@@ -1,0 +1,548 @@
+[
+  {
+    "actor": "system",
+    "event_id": "evt-001",
+    "occurred_at": "2026-10-20T08:15:00Z",
+    "payload": {
+      "policy_id": "deploy-policy-v1",
+      "rule": "Deploy only a commit whose required test suite passed, with an explicit approval for that exact commit and environment. A request to finish or resume a deployment does not grant approval."
+    },
+    "schema_version": 1,
+    "sequence": 1,
+    "session_id": "release-demo",
+    "type": "policy.established"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-002",
+    "occurred_at": "2026-10-20T08:16:00Z",
+    "payload": {
+      "repository": "checkout-service",
+      "task": "Release the checkout-service rounding fix to staging"
+    },
+    "schema_version": 1,
+    "sequence": 2,
+    "session_id": "release-demo",
+    "type": "session.started"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-003",
+    "occurred_at": "2026-10-20T08:17:00Z",
+    "payload": {
+      "path": "README.md"
+    },
+    "schema_version": 1,
+    "sequence": 3,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-004",
+    "occurred_at": "2026-10-20T08:18:00Z",
+    "payload": {
+      "path": "src/checkout/cart.py"
+    },
+    "schema_version": 1,
+    "sequence": 4,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-005",
+    "occurred_at": "2026-10-20T08:21:00Z",
+    "payload": {
+      "path": "src/checkout/cart.py",
+      "summary": "Round line-item totals before applying tax"
+    },
+    "schema_version": 1,
+    "sequence": 5,
+    "session_id": "release-demo",
+    "type": "file.edited"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-006",
+    "occurred_at": "2026-10-20T08:22:00Z",
+    "payload": {
+      "command": "ruff check src/",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 6,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-007",
+    "occurred_at": "2026-10-20T08:24:00Z",
+    "payload": {
+      "path": "tests/test_cart.py",
+      "summary": "Add rounding regression test"
+    },
+    "schema_version": 1,
+    "sequence": 7,
+    "session_id": "release-demo",
+    "type": "file.edited"
+  },
+  {
+    "actor": "git",
+    "event_id": "evt-008",
+    "occurred_at": "2026-10-20T08:25:00Z",
+    "payload": {
+      "branch": "release/checkout-fix",
+      "commit": "a1",
+      "previous_commit": "f0"
+    },
+    "schema_version": 1,
+    "sequence": 8,
+    "session_id": "release-demo",
+    "type": "head.changed"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-009",
+    "occurred_at": "2026-10-20T08:26:00Z",
+    "payload": {
+      "command": "ci trigger --suite required --commit a1",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 9,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-010",
+    "occurred_at": "2026-10-20T08:33:00Z",
+    "payload": {
+      "commit": "a1",
+      "result": "passed",
+      "run_number": 1,
+      "suite": "required",
+      "test_run_id": "ci-a1-1"
+    },
+    "schema_version": 1,
+    "sequence": 10,
+    "session_id": "release-demo",
+    "type": "test.completed"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-011",
+    "occurred_at": "2026-10-20T08:34:00Z",
+    "payload": {
+      "text": "Asked the release lead to approve a1 for staging."
+    },
+    "schema_version": 1,
+    "sequence": 11,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "user",
+    "event_id": "evt-012",
+    "occurred_at": "2026-10-20T08:39:00Z",
+    "payload": {
+      "approval_id": "approval-a1-staging",
+      "approved_by": "user:release-lead",
+      "commit": "a1",
+      "environment": "staging"
+    },
+    "schema_version": 1,
+    "sequence": 12,
+    "session_id": "release-demo",
+    "type": "approval.granted"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-013",
+    "occurred_at": "2026-10-20T08:40:00Z",
+    "payload": {
+      "path": "deploy/staging.yaml"
+    },
+    "schema_version": 1,
+    "sequence": 13,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-014",
+    "occurred_at": "2026-10-20T08:41:00Z",
+    "payload": {
+      "command": "deployctl plan --env staging --commit a1",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 14,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-015",
+    "occurred_at": "2026-10-20T08:42:00Z",
+    "payload": {
+      "path": "CHANGELOG.md"
+    },
+    "schema_version": 1,
+    "sequence": 15,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-016",
+    "occurred_at": "2026-10-20T08:43:00Z",
+    "payload": {
+      "path": "CHANGELOG.md",
+      "summary": "Draft entry for the rounding fix"
+    },
+    "schema_version": 1,
+    "sequence": 16,
+    "session_id": "release-demo",
+    "type": "file.edited"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-017",
+    "occurred_at": "2026-10-20T08:44:00Z",
+    "payload": {
+      "text": "Staging deploy window opens at 10:00."
+    },
+    "schema_version": 1,
+    "sequence": 17,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-018",
+    "occurred_at": "2026-10-20T08:45:00Z",
+    "payload": {
+      "path": "deploy/rollback.md"
+    },
+    "schema_version": 1,
+    "sequence": 18,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-019",
+    "occurred_at": "2026-10-20T08:46:00Z",
+    "payload": {
+      "command": "git status --short",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 19,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "agent",
+    "event_id": "evt-020",
+    "occurred_at": "2026-10-20T08:47:00Z",
+    "payload": {
+      "memory_saved": "narrative-summary",
+      "reason": "Waiting for the staging deploy window"
+    },
+    "schema_version": 1,
+    "sequence": 20,
+    "session_id": "release-demo",
+    "type": "session.paused"
+  },
+  {
+    "actor": "git",
+    "event_id": "evt-021",
+    "occurred_at": "2026-10-20T08:56:00Z",
+    "payload": {
+      "branch": "release/checkout-fix",
+      "commit": "b2",
+      "previous_commit": "a1",
+      "pushed_by": "user:teammate"
+    },
+    "schema_version": 1,
+    "sequence": 21,
+    "session_id": "release-demo",
+    "type": "head.changed"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-022",
+    "occurred_at": "2026-10-20T08:57:00Z",
+    "payload": {
+      "path": "src/checkout/tax.py",
+      "summary": "Switch tax rounding to round-half-even"
+    },
+    "schema_version": 1,
+    "sequence": 22,
+    "session_id": "release-demo",
+    "type": "file.edited"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-023",
+    "occurred_at": "2026-10-20T08:58:00Z",
+    "payload": {
+      "path": "src/checkout/cart.py",
+      "summary": "Inline the rounding helper"
+    },
+    "schema_version": 1,
+    "sequence": 23,
+    "session_id": "release-demo",
+    "type": "file.edited"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-024",
+    "occurred_at": "2026-10-20T08:59:00Z",
+    "payload": {
+      "command": "ci trigger --suite required --commit b2",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 24,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-025",
+    "occurred_at": "2026-10-20T09:00:00Z",
+    "payload": {
+      "path": "tests/test_tax.py"
+    },
+    "schema_version": 1,
+    "sequence": 25,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-026",
+    "occurred_at": "2026-10-20T09:01:00Z",
+    "payload": {
+      "text": "Pushed the tax rounding change on top of the cart fix."
+    },
+    "schema_version": 1,
+    "sequence": 26,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-027",
+    "occurred_at": "2026-10-20T09:02:00Z",
+    "payload": {
+      "commit": "b2",
+      "result": "passed",
+      "run_number": 1,
+      "suite": "lint",
+      "test_run_id": "ci-b2-lint-1"
+    },
+    "schema_version": 1,
+    "sequence": 27,
+    "session_id": "release-demo",
+    "type": "test.completed"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-028",
+    "occurred_at": "2026-10-20T09:03:00Z",
+    "payload": {
+      "path": "src/checkout/tax.py"
+    },
+    "schema_version": 1,
+    "sequence": 28,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-029",
+    "occurred_at": "2026-10-20T09:04:00Z",
+    "payload": {
+      "text": "Required suite started for b2 (run 1)."
+    },
+    "schema_version": 1,
+    "sequence": 29,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-030",
+    "occurred_at": "2026-10-20T09:05:00Z",
+    "payload": {
+      "path": "docs/tax.md"
+    },
+    "schema_version": 1,
+    "sequence": 30,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-031",
+    "occurred_at": "2026-10-20T09:06:00Z",
+    "payload": {
+      "command": "git log --oneline -3",
+      "exit_code": 0
+    },
+    "schema_version": 1,
+    "sequence": 31,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-032",
+    "occurred_at": "2026-10-20T09:12:00Z",
+    "payload": {
+      "commit": "b2",
+      "result": "failed",
+      "run_number": 1,
+      "suite": "required",
+      "test_run_id": "ci-b2-1"
+    },
+    "schema_version": 1,
+    "sequence": 32,
+    "session_id": "release-demo",
+    "type": "test.completed"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-033",
+    "occurred_at": "2026-10-20T09:13:00Z",
+    "payload": {
+      "text": "2 failures in tests/test_tax.py: test_round_half_even, test_round_negative_total."
+    },
+    "schema_version": 1,
+    "sequence": 33,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-034",
+    "occurred_at": "2026-10-20T09:15:00Z",
+    "payload": {
+      "path": "tests/test_tax.py"
+    },
+    "schema_version": 1,
+    "sequence": 34,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-035",
+    "occurred_at": "2026-10-20T09:16:00Z",
+    "payload": {
+      "text": "Looking into the tax rounding failures."
+    },
+    "schema_version": 1,
+    "sequence": 35,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-036",
+    "occurred_at": "2026-10-20T09:18:00Z",
+    "payload": {
+      "path": "tests/conftest.py"
+    },
+    "schema_version": 1,
+    "sequence": 36,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-037",
+    "occurred_at": "2026-10-20T09:20:00Z",
+    "payload": {
+      "command": "pytest -q tests/test_tax.py -k rounding",
+      "exit_code": 1
+    },
+    "schema_version": 1,
+    "sequence": 37,
+    "session_id": "release-demo",
+    "type": "command.ran"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-038",
+    "occurred_at": "2026-10-20T09:22:00Z",
+    "payload": {
+      "path": "tests/fixtures/rates.json"
+    },
+    "schema_version": 1,
+    "sequence": 38,
+    "session_id": "release-demo",
+    "type": "file.inspected"
+  },
+  {
+    "actor": "teammate",
+    "event_id": "evt-039",
+    "occurred_at": "2026-10-20T09:24:00Z",
+    "payload": {
+      "text": "Failures look like a shared rate-fixture race. Will re-run the required suite."
+    },
+    "schema_version": 1,
+    "sequence": 39,
+    "session_id": "release-demo",
+    "type": "note.recorded"
+  },
+  {
+    "actor": "user",
+    "event_id": "evt-040",
+    "occurred_at": "2026-10-20T09:30:00Z",
+    "payload": {
+      "message": "Can you finish the deployment?"
+    },
+    "schema_version": 1,
+    "sequence": 40,
+    "session_id": "release-demo",
+    "type": "session.resume_requested"
+  },
+  {
+    "actor": "ci",
+    "event_id": "evt-041",
+    "occurred_at": "2026-10-20T09:45:00Z",
+    "payload": {
+      "commit": "b2",
+      "result": "passed",
+      "run_number": 2,
+      "suite": "required",
+      "test_run_id": "ci-b2-2"
+    },
+    "schema_version": 1,
+    "sequence": 41,
+    "session_id": "release-demo",
+    "type": "test.completed"
+  },
+  {
+    "actor": "user",
+    "event_id": "evt-042",
+    "occurred_at": "2026-10-20T09:51:00Z",
+    "payload": {
+      "approval_id": "approval-b2-staging",
+      "approved_by": "user:release-lead",
+      "commit": "b2",
+      "environment": "staging"
+    },
+    "schema_version": 1,
+    "sequence": 42,
+    "session_id": "release-demo",
+    "type": "approval.granted"
+  }
+]

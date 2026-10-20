@@ -1,0 +1,25 @@
+{
+  "action": "deploy",
+  "authoritative": {
+    "approval_id": null,
+    "approval_source_event_id": null,
+    "checked_through_sequence": 40,
+    "head_commit": "b2",
+    "head_source_event_id": "evt-021",
+    "test_result": "failed",
+    "test_run_number": 1,
+    "test_source_event_id": "evt-032"
+  },
+  "authoritative_blockers": [
+    "tests_failed",
+    "approval_missing_for_target"
+  ],
+  "commit": "b2",
+  "environment": "staging",
+  "gate_version": 1,
+  "outcome": "blocked",
+  "reason_codes": [
+    "tests_failed",
+    "approval_missing_for_target"
+  ]
+}

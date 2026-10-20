@@ -1,0 +1,1 @@
+{"schema_version": 1, "event_id": "evt-042", "session_id": "release-demo", "sequence": 42, "occurred_at": "2026-10-20T09:51:00Z", "type": "approval.granted", "actor": "user", "payload": {"approval_id": "approval-b2-staging", "commit": "b2", "environment": "staging", "approved_by": "user:release-lead"}}
