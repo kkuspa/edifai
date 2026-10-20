@@ -11,7 +11,7 @@ You will learn to:
 - build the context for a model's next action from stored state rather than from the transcript;
 - separate what the model decides from what code calculates and checks.
 
-You will run three implementations, write two functions in one Python file, and compare your state-driven agent with the transcript-driven one. Take the time you need. Nothing is graded or handed in.
+You will run three implementations, write two functions in one Python file, and compare your state-driven agent with the transcript-driven one.
 
 ## The story
 
